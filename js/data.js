@@ -234,6 +234,40 @@ Under.DATA = {
     { nombre: "Yunque", apodo: "Yunke" }
   ],
 
+  /* ---------- Escenarios del under ----------
+     Locales, salas y rincones donde se toca bajo tierra. Cada
+     evento puede elegir uno al azar para que la escena cambie
+     de nombre de partida en partida y no se sienta repetida.
+     capacidad 0 = al aire libre / sin boletería. */
+  ESCENARIOS: [
+    { nombre: "Bar El Gato Tuerto",   tipo: "bar",      capacidad: 60 },
+    { nombre: "La Fábrica Abandonada", tipo: "galpón",  capacidad: 200 },
+    { nombre: "Club Sur",             tipo: "club",     capacidad: 90 },
+    { nombre: "Centro Cultural Del Ancla", tipo: "centro", capacidad: 150 },
+    { nombre: "Plaza del Ferrocarril", tipo: "plaza",   capacidad: 0 },
+    { nombre: "Cine Astral",          tipo: "cine",     capacidad: 120 },
+    { nombre: "Estudio La Cabina",    tipo: "estudio",  capacidad: 30 },
+    { nombre: "Patio de la Escuela Vieja", tipo: "patio", capacidad: 80 },
+    { nombre: "Bar El Desvío",        tipo: "bar",      capacidad: 50 },
+    { nombre: "Casa Roké",            tipo: "casa",     capacidad: 40 },
+    { nombre: "Galpón de los Espejos", tipo: "galpón",  capacidad: 300 },
+    { nombre: "Salón del Club Italiano", tipo: "salón", capacidad: 100 },
+    { nombre: "Parada del Ómnibus 4", tipo: "espacio",  capacidad: 0 },
+    { nombre: "Estudio Don Beats",    tipo: "estudio",  capacidad: 20 },
+    { nombre: "Techo del Edificio Comunal", tipo: "azotea", capacidad: 60 },
+    { nombre: "Bar La Bicicleta",     tipo: "bar",      capacidad: 70 }
+  ],
+
+  /* ---------- Artistas de la escena ----------
+     Nombres del under para eventos que mencionan colegas,
+     referentes y caras nuevas de tu generación. */
+  ARTISTAS_ESCENA: [
+    "Luciana Aire", "Nano Quilla", "La Jefa", "Kilo Verde", "Mara Siete",
+    "El Tano Bravo", "Flor de Nube", "Punto Ciego", "Romi Cero", "Selva Kurt",
+    "Beto Arena", "Iara Luna", "Toro Gris", "Pepa Calle", "Dante Hume",
+    "Ania Púa", "Mosca Baja", "Leandro Cuco", "Vera Filo", "Oso Tinta"
+  ],
+
   /* ---------- Lanzamientos (FASE 2) ----------
      Estrategias de lanzamiento. costo se escala con el nivel.
      calidad → mejora la calidad del tema.
@@ -649,6 +683,16 @@ Under.DATA = {
       id: "under_advertencia", peso: 2,
       disponible: function (s) { return s.año >= 3 && Under.STATE.nivelCarrera(s).nivel <= 3; },
       generar: function (s) { return Under.UNDER.crearEventoAdvertencia(s); }
+    },
+    {
+      id: "under_sala", peso: 2,
+      disponible: function (s) { return s.año >= 1 && Under.STATE.nivelCarrera(s).nivel <= 3; },
+      generar: function (s) { return Under.UNDER.crearEventoSala(s); }
+    },
+    {
+      id: "under_ciclo", peso: 2,
+      disponible: function (s) { return s.año >= 1 && Under.STATE.nivelCarrera(s).nivel <= 3; },
+      generar: function (s) { return Under.UNDER.crearEventoCiclo(s); }
     },
     /* Gran actualización: misiones exclusivas para cuando ya
        saliste del underground (nivel 4+ alcanzado alguna vez). */

@@ -76,6 +76,23 @@ Under.SYSTEMS = {
     return lista;
   },
 
+  /* Baraja del guion por partida: los eventos guionados (EVENTS)
+     se ofrecen en un orden barajado distinto en cada carrera, así
+     el año 1 y el año 2 no son siempre los mismos. El primer tema
+     siempre abre la historia. */
+  _crearOrdenGuion: function () {
+    var ids = [];
+    for (var i = 0; i < Under.DATA.EVENTS.length; i++) {
+      if (Under.DATA.EVENTS[i].id !== "primer_tema") ids.push(Under.DATA.EVENTS[i].id);
+    }
+    for (var j = ids.length - 1; j > 0; j--) {
+      var k = Math.floor(Math.random() * (j + 1));
+      var t = ids[j]; ids[j] = ids[k]; ids[k] = t;
+    }
+    ids.unshift("primer_tema");
+    return ids;
+  },
+
   seleccionarEvento: function (state) {
     /* Hook de cobertura para el smoke test: agenda un evento exacto
        una vez (p. ej. el documental). Se consume en el flujo normal,
@@ -89,12 +106,29 @@ Under.SYSTEMS = {
     /* Desde el año 2 la música sale sola (Under.MUSIC.lanzarAutomatico
        se ejecuta en iniciarAnio). Las decisiones de cada año son los
        otros eventos de la escena: giras, sellos, festivales, crisis… */
-    var disponibles = Under.SYSTEMS.eventosDisponibles(state);
-    if (disponibles.length > 0) {
-      disponibles.sort(function (a, b) {
-        return (a.prioridad - b.prioridad) || (a.añoMin - b.añoMin);
-      });
-      return disponibles[0];
+    if (!state.ordenGuion) state.ordenGuion = Under.SYSTEMS._crearOrdenGuion();
+    var scripted = Under.SYSTEMS.eventosDisponibles(state);
+    if (scripted.length) {
+      /* Rotación (PRIORIDAD: variedad de partida). En los primeros
+         años los eventos guionados compiten con los dinámicos: a lo
+         sumo la mitad de las decisiones del año son de guion, en el
+         orden barajado de esta partida. Así cada carrera ve un guion
+         distinto y se mezcla con la vida del under (toques, radios,
+         cyphers…). En años avanzados el guion se completa igual. */
+      var capGuion = state.año <= 3
+        ? Math.max(1, Math.ceil(Under.SYSTEMS.decisionesParaAnio(state) / 2))
+        : scripted.length;
+      if ((state.scriptedEsteAnio || 0) < capGuion) {
+        for (var i = 0; i < state.ordenGuion.length; i++) {
+          var id = state.ordenGuion[i];
+          for (var j = 0; j < scripted.length; j++) {
+            if (scripted[j].id === id) {
+              state.scriptedEsteAnio = (state.scriptedEsteAnio || 0) + 1;
+              return scripted[j];
+            }
+          }
+        }
+      }
     }
     return Under.SYSTEMS.seleccionarTemplate(state);
   },
@@ -361,6 +395,9 @@ Under.SYSTEMS = {
       inicioStats: {},
       momentos: []
     };
+    /* Rotación del guion: cuántos eventos guionados se ofrecieron
+       ya este año (el tope lo decide seleccionarEvento). */
+    state.scriptedEsteAnio = 0;
     for (var k in state.stats) state.planAnio.inicioStats[k] = state.stats[k];
     /* La música ya no es una decisión: el artista publica un tema
        por año solo. Desde el segundo año (el primero lo cubre la

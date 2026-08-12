@@ -20,6 +20,19 @@ Under.UNDER = {
     Under.UNDER._pendientes[id] = null;
   },
 
+  /* Un escenario de la escena al azar (rotación de nombres para
+     que los toques no se sientan en el mismo lugar de siempre). */
+  _escenario: function () {
+    var list = Under.DATA.ESCENARIOS;
+    return list[Under.STATE.randInt(0, list.length - 1)];
+  },
+
+  /* Un artista de la escena al azar. */
+  _artista: function () {
+    var list = Under.DATA.ARTISTAS_ESCENA;
+    return list[Under.STATE.randInt(0, list.length - 1)];
+  },
+
   /* Factory común: cachea el evento por id para que el texto
      elegido no cambie entre renders y resuelve al decidir. */
   _crear: function (id, titulo, textos, opciones) {
@@ -41,10 +54,13 @@ Under.UNDER = {
 
   /* ---------- Tocar en un bar de la escena ---------- */
   crearEventoCiudad: function (state) {
+    var esc = Under.UNDER._escenario();
+    var esc2 = Under.UNDER._escenario();
+    var esc3 = Under.UNDER._escenario();
     return Under.UNDER._crear("under_ciudad", "Un toque en la escena", [
-      "Un bar del bajo te ofrece un viernes. Poca gente, cero escenario: un rincón con dos parlantes y una puerta que no cierra del todo.",
-      "Un ciclo de artistas nuevos arranca en un local del centro. Te ofrecen la primera fecha.",
-      "Una casa de la escena arma un toque entre amigos. Entrada a la gorra y mucho ruido."
+      "Un bar del bajo te ofrece un viernes en " + esc.nombre + ". Poca gente, cero escenario: un rincón con dos parlantes y una puerta que no cierra del todo.",
+      "Un ciclo de artistas nuevos arranca en " + esc2.nombre + ". Te ofrecen la primera fecha.",
+      "En " + esc3.nombre + " arman un toque entre amigos. Entrada a la gorra y mucho ruido."
     ], [
       {
         texto: "Aceptar el toque",
@@ -520,6 +536,7 @@ Under.UNDER = {
         efectos: function (s) {
           Under.UNDER._limpiar("under_colega");
           Under.MISIONES.sumar(s, "colega", 1);
+          Under.MISIONES.sumar(s, "artistas", 1);
           return { talent: 1, fans: Under.SYSTEMS.fansEscala(s, 400), popularity: 2, _energia: -8 };
         },
         resultado: "El tema sale y la escena lo repite. Tu nombre suena al lado del de otro, y eso se nota.",
@@ -548,6 +565,103 @@ Under.UNDER = {
     ]);
   },
 
+  /* ---------- Una sala te ofrece una fecha fija ---------- */
+  crearEventoSala: function (state) {
+    var esc = Under.UNDER._escenario();
+    var esc2 = Under.UNDER._escenario();
+    return Under.UNDER._crear("under_sala", "Una sala te ofrece una fecha", [
+      "En " + esc.nombre + " quieren darte una fecha fija al mes. Poco caché, pero un lugar con nombre para hacerte el dueño.",
+      "Un ciclo de residencias arranca en " + esc2.nombre + " y te ofrecen el jueves de cada mes.",
+      "El dueño de " + esc.nombre + " vio tu último toque y te invita a tocar una vez por mes, sin bajarte del escenario."
+    ], [
+      {
+        texto: "Tomar la residencia",
+        desc: "Un lugar fijo donde crecer y que te conozcan.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_sala");
+          Under.MISIONES.sumar(s, "salas", 1);
+          Under.MISIONES.sumar(s, "artistas", 1);
+          return { money: Under.SYSTEMS.efectivoEscala(s, 150), fans: Under.SYSTEMS.fansEscala(s, 450), popularity: 3, _energia: -15 };
+        },
+        resultado: "Mes a mes vas a " + esc.nombre + " y la sala empieza a llenarse con tu nombre. Un lugar propio en la escena.",
+        log: "Consiguió una fecha fija mensual en una sala de la escena."
+      },
+      {
+        texto: "Negociar un porcentaje de la barra",
+        desc: "Más plata, más riesgo de quedar afuera.",
+        riesgo: 0.3,
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_sala");
+          Under.MISIONES.sumar(s, "salas", 1);
+          return { money: Under.SYSTEMS.efectivoEscala(s, 300), popularity: 2, _energia: -15 };
+        },
+        resultado: "Negociás y te llevás un porcentaje de la barra. La sala acepta a regañadientes, pero la fecha es tuya.",
+        log: "Negoció un porcentaje de barra en una sala.",
+        riesgoEfectos: function (s) {
+          Under.UNDER._limpiar("under_sala");
+          return { money: Under.SYSTEMS.efectivoEscala(s, 80), popularity: -2, _energia: -10 };
+        },
+        riesgoResultado: "Pedís demasiado y la sala elige a otro. Esa puerta se cerró antes de abrirse.",
+        riesgoLog: "Perdió la fecha de sala por negociar demasiado."
+      },
+      {
+        texto: "Dejarlo pasar",
+        desc: "Tu tiempo es tuyo.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_sala");
+          return {};
+        },
+        resultado: "Lo dejás pasar. Otra noche, otro lugar, otra historia.",
+        log: "Dejó pasar una fecha fija en una sala."
+      }
+    ]);
+  },
+
+  /* ---------- Un ciclo de tu barrio ---------- */
+  crearEventoCiclo: function (state) {
+    var esc = Under.UNDER._escenario();
+    var nombre = Under.UNDER._artista();
+    return Under.UNDER._crear("under_ciclo", "Un ciclo de tu barrio", [
+      "Tres fechas seguidas en el ciclo del barrio. La escena entera va a mirar.",
+      "El ciclo 'Nuevas Sangres' arma un line-up de 3 noches en " + esc.nombre + ".",
+      "Un ciclo de artistas nuevos te invita a cerrar la segunda noche, con " + nombre + " abriendo."
+    ], [
+      {
+        texto: "Sumarte al ciclo",
+        desc: "Tres noches para hacerte un nombre.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_ciclo");
+          Under.MISIONES.sumar(s, "ciclos", 1);
+          Under.MISIONES.sumar(s, "artistas", 1);
+          return { talent: 1, fans: Under.SYSTEMS.fansEscala(s, 600), popularity: 4, _energia: -12 };
+        },
+        resultado: "Tocás las tres noches y para la última ya hay gente que va a verte a vos. El ciclo te adopta.",
+        log: "Participó de un ciclo de su barrio."
+      },
+      {
+        texto: "Aportar a la organización",
+        desc: "Quedás bien con la escena y conocés gente.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_ciclo");
+          Under.MISIONES.sumar(s, "artistas", 1);
+          return { _relaciones: 3, popularity: 1, money: -Under.SYSTEMS.efectivoEscala(s, 40) };
+        },
+        resultado: "Ayudás a coordinar fechas y sonido. La escena te anota como alguien que suma, no solo que toca.",
+        log: "Aportó a la organización de un ciclo."
+      },
+      {
+        texto: "No sumarte",
+        desc: "Tu energía tiene otros destinos.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_ciclo");
+          return {};
+        },
+        resultado: "No te sumás. El ciclo sigue sin vos, y la escena también.",
+        log: "No participó de un ciclo del barrio."
+      }
+    ]);
+  },
+
   /* ---------- Backstage: conocer a un referente ---------- */
   crearEventoReferente: function (state) {
     return Under.UNDER._crear("under_referente", "Un referente te habla", [
@@ -561,6 +675,7 @@ Under.UNDER = {
         efectos: function (s) {
           Under.UNDER._limpiar("under_referente");
           Under.MISIONES.sumar(s, "referente", 1);
+          Under.MISIONES.sumar(s, "artistas", 1);
           return { talent: 2, popularity: 2, fans: Under.SYSTEMS.fansEscala(s, 200) };
         },
         resultado: "Escuchás cada palabra. Algunas duelen, pero la mayoría sirven. El referente te anota en su radar.",

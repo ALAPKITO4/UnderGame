@@ -1044,6 +1044,58 @@ Under.MISIONES = (function () {
     "🎯 Misión completada: El primer millón. Tu música ya se escuchó en serio.");
 
   /* ============================================================
+     LOTE 4 — ROTACIÓN Y ESCENAS NUEVAS (salas, ciclos, artistas)
+     ============================================================ */
+  /* Grind: las salas y las fechas fijas del under */
+  m("m4_salas_6", "grind", 1, 4, "🎟️", "Dueño de la sala", "Conseguí 6 fechas fijas en salas de la escena", 6, "salas",
+    { fans: 12000, popularity: 5, money: 3000, _energia: 8 },
+    "🎯 Misión completada: Dueño de la sala. Ya tenés un rincón del under que te espera cada mes.");
+  m("m4_salas_12", "grind", 3, 6, "🎟️", "La casa es tuya", "Conseguí 12 fechas fijas en salas de la escena", 12, "salas",
+    { fans: 25000, popularity: 5, money: 8000, _energia: 10 },
+    "🎯 Misión completada: La casa es tuya. Hay salas que ya no se imaginan el mes sin vos.");
+  m("m4_ciclos_2", "grind", 1, 4, "🎪", "Parte del circuito", "Participá en 2 ciclos del barrio", 2, "ciclos",
+    { fans: 8000, popularity: 4, _relaciones: 4 },
+    "🎯 Misión completada: Parte del circuito. Los ciclos te empiezan a llamar para la próxima edición.");
+
+  /* Escena: más escenarios, más fechas */
+  m("m4_ciclos_5", "escena", 2, 5, "🎪", "Reina del ciclo", "Participá en 5 ciclos del barrio", 5, "ciclos",
+    { fans: 20000, popularity: 5, money: 5000, _energia: 8 },
+    "🎯 Misión completada: Reina del ciclo. La escena ya te pone al frente del cartel.");
+
+  /* Red: los artistas nuevos que te cruzás bajo tierra */
+  m("m4_artistas_8", "red", 1, 4, "🤝", "Cara nueva por semana", "Conocé 8 artistas de la escena", 8, "artistas",
+    { _relaciones: 5, talent: 2, fans: 6000 },
+    "🎯 Misión completada: Cara nueva por semana. Tu agenda del under está llena de nombres.");
+  m("m4_artistas_20", "red", 3, 6, "🤝", "El que conoce a todos", "Conocé 20 artistas de la escena", 20, "artistas",
+    { _relaciones: 6, talent: 3, fans: 15000 },
+    "🎯 Misión completada: El que conoce a todos. Si se arma algo en el under, tu nombre suena.");
+
+  /* Público: la base y el contenido */
+  m("m4_contenido_8", "publico", 1, 4, "📱", "Cara en los reels", "Publicá 8 contenidos con la escena", 8, "contenido",
+    { fans: 12000, popularity: 4, money: 2000 },
+    "🎯 Misión completada: Cara en los reels. Tu nombre ya aparece en los feed de la zona.");
+  m("m4_fieles_40k", "publico", 3, 6, "🤝", "La base crece", "Tené 40.000 fans fieles", 40000, function (s) { return s.fansFieles || 0; },
+    { fans: 25000, _relaciones: 5, popularity: 4 },
+    "🎯 Misión completada: La base crece. Los fieles ya son una multitud que no se va.");
+
+  /* Vida: el under te exige pero vos seguís */
+  m("m4_relaciones_70", "vida", 2, 6, "💚", "Casa llena de los tuyos", "Llevá tu vida personal a 70", 70, function (s) { return s.relaciones; },
+    { _relaciones: 6, _energia: 8, money: 3000 },
+    "🎯 Misión completada: Casa llena de los tuyos. El éxito no se llevó a nadie.");
+  m("m4_energia_90", "vida", 3, 6, "⚡", "Imparable", "Mantené tu energía en 90", 90, function (s) { return s.energia; },
+    { _energia: 12, popularity: 3, money: 3000 },
+    "🎯 Misión completada: Imparable. Ni el grind ni la fama te doblan.");
+
+  /* Música: el catálogo sigue creciendo */
+  m("m4_temas_25", "musica", 5, 8, "💿", "Veinticinco joyas", "Lanzá 25 temas", 25, function (s) { return s.lanzamientos; },
+    { popularity: 4, money: 9000, talent: 2 },
+    "🎯 Misión completada: Veinticinco joyas. Tu catálogo ya pesa en cualquier conversación.");
+  m("m4_repros_5m", "musica", 5, 8, "🎧", "Cinco millones", "Pasá los cinco millones de reproducciones", 5000000,
+    function (s) { return s.totalReproducciones; },
+    { fans: 40000, popularity: 6, money: 12000 },
+    "🎯 Misión completada: Cinco millones. Tu música ya dio la vuelta al mundo más de una vez.");
+
+  /* ============================================================
      METADATOS DE SECCIONES (nombre + tope de misiones activas)
      ============================================================ */
   var SECCIONES = {
@@ -1086,7 +1138,9 @@ Under.MISIONES = (function () {
 
   /* Asegura que cada sección tenga hasta "cap" misiones activas */
   function _mantenerActivas(state) {
+    if (!state.barajaMisiones) state.barajaMisiones = _crearBaraja();
     var secs = Object.keys(SECCIONES);
+    var dibujo = false;
     for (var i = 0; i < secs.length; i++) {
       var sec = secs[i];
       var cap = SECCIONES[sec].cap;
@@ -1099,12 +1153,21 @@ Under.MISIONES = (function () {
       while (activas < cap) {
         var cand = Under.MISIONES._candidatas(state, sec);
         if (!cand.length) break;
-        var elegida = cand[Math.floor(Math.random() * cand.length)];
-        state.misiones[elegida.id] = { completada: false, activaDesde: state.año };
-        state.misionesUsadas[elegida.id] = true;
+        /* En orden de baraja: la candidata que esté más arriba en la
+           baraja de esta partida. Así la mano depende de la baraja,
+           no de un sorteo por misión. */
+        var mejor = cand[0], mejorIdx = Under.MISIONES._indiceEnBaraja(state, cand[0].id);
+        for (var j = 1; j < cand.length; j++) {
+          var idx = Under.MISIONES._indiceEnBaraja(state, cand[j].id);
+          if (idx < mejorIdx) { mejor = cand[j]; mejorIdx = idx; }
+        }
+        state.misiones[mejor.id] = { completada: false, activaDesde: state.año };
+        state.misionesUsadas[mejor.id] = true;
         activas++;
+        dibujo = true;
       }
     }
+    if (dibujo) Under.MISIONES._registrarVistas(state);
   }
 
   /* Rota misiones que llevan años clavadas: si una misión activa
@@ -1133,12 +1196,79 @@ Under.MISIONES = (function () {
     if (cambio) Under.MISIONES._mantenerActivas(state);
   }
 
+  /* ---- Rotación entre partidas ----
+     La baraja de cada partida se arma con las misiones barajadas,
+     pero las que ya se ofrecieron en partidas recientes se mandan
+     al fondo: así cada carrera arranca con una mano distinta y
+     no te tocan siempre las mismas en los primeros años. */
+  var RECENTS_KEY = "under_mision_recents";
+  var RECENTS_MAX = 40;
+
+  function _leerRecents() {
+    try {
+      if (typeof localStorage === "undefined") return [];
+      var raw = localStorage.getItem(RECENTS_KEY);
+      var arr = raw ? JSON.parse(raw) : [];
+      return Array.isArray(arr) ? arr : [];
+    } catch (e) { return []; }
+  }
+
+  function _guardarRecents(lista) {
+    try {
+      if (typeof localStorage === "undefined") return;
+      localStorage.setItem(RECENTS_KEY, JSON.stringify(lista));
+    } catch (e) {}
+  }
+
+  /* Registra las misiones que esta partida está ofreciendo como
+     "vistas recientes", para que la próxima carrera arranque con
+     otras. Se llama cuando la mano se dibuja (año 1 o al reponer). */
+  function _registrarVistas(state) {
+    var vistas = _leerRecents();
+    Under.MISIONES._activas(state).forEach(function (def) {
+      if (vistas.indexOf(def.id) === -1) vistas.push(def.id);
+    });
+    _guardarRecents(vistas.slice(-RECENTS_MAX));
+  }
+
+  /* Fisher-Yates con Math.random (el smoke test siembra el PRNG por
+     partida, así la baraja es estable partida a partida). */
+  function _barajar(arr) {
+    var a = arr.slice();
+    for (var i = a.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = a[i]; a[i] = a[j]; a[j] = t;
+    }
+    return a;
+  }
+
+  /* Baraja de esta partida: frescas primero, recientes al fondo. */
+  function _crearBaraja() {
+    var recents = _leerRecents();
+    var frescas = [], recientes = [];
+    for (var i = 0; i < DEFS.length; i++) {
+      var id = DEFS[i].id;
+      if (recents.indexOf(id) !== -1) recientes.push(id);
+      else frescas.push(id);
+    }
+    return _barajar(frescas).concat(_barajar(recientes));
+  }
+
+  function _indiceEnBaraja(state, id) {
+    var b = state.barajaMisiones || [];
+    for (var i = 0; i < b.length; i++) {
+      if (b[i] === id) return i;
+    }
+    return Infinity;
+  }
+
   /* Crea el estado de misiones de una partida nueva */
   function _inicializar(state) {
     state.misiones = {};
     state.contadores = {};
     state.misionesUsadas = {};
     state.misionesRotadas = true;
+    state.barajaMisiones = _crearBaraja();
     Under.MISIONES._mantenerActivas(state);
   }
 
@@ -1180,7 +1310,12 @@ Under.MISIONES = (function () {
       }
       huboCompletada = true;
     }
-    if (huboCompletada) Under.MISIONES._mantenerActivas(state);
+    /* Si se completó alguna, se repone; y si la mano quedó vacía
+       (años 1 donde la carrera todavía está en nivel 0), se dibuja
+       la primera mano en cuanto haya misiones elegibles. */
+    if (huboCompletada || Under.MISIONES._activas(state).length === 0) {
+      Under.MISIONES._mantenerActivas(state);
+    }
   }
 
   /* Misiones activas (no completadas), en orden de aparición */
@@ -1204,6 +1339,9 @@ Under.MISIONES = (function () {
     _def: _def,
     _progreso: _progreso,
     _activas: _activas,
+    _indiceEnBaraja: _indiceEnBaraja,
+    _crearBaraja: _crearBaraja,
+    _registrarVistas: _registrarVistas,
     rotar: rotar,
     sumar: sumar,
     chequear: chequear

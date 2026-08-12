@@ -659,6 +659,7 @@ function jugarRetiro() {
     safety++;
     var m = Under.MAIN;
     if (m.overlay === "resultado") { m.continuarResultado(); continue; }
+    if (m.overlay === "hit") { m.continuarHit(); continue; }
 
     var s = m.estado;
     if (s.año >= 4) {
@@ -704,6 +705,7 @@ function jugarCrisis() {
     safety++;
     var m = Under.MAIN;
     if (m.overlay === "resultado") { m.continuarResultado(); continue; }
+    if (m.overlay === "hit") { m.continuarHit(); continue; }
 
     var s = m.estado;
     /* Años 3 a 5: se mantiene el fondo para que la crisis ocurra,
