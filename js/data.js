@@ -297,7 +297,7 @@ Under.DATA = {
     normal:  { repros: 30000,    fans: 150,   popularidad: 1,  talento: 1 },
     exito:   { repros: 130000,   fans: 600,   popularidad: 2,  talento: 1 },
     hit:     { repros: 600000,   fans: 2500,  popularidad: 4,  talento: 1 },
-    viral:   { repros: 2800000,  fans: 10000, popularidad: 8,  talento: 1 },
+    viral:   { repros: 1500000,  fans: 10000, popularidad: 8,  talento: 1 },
     cult:    { repros: 550000,   fans: 350,   popularidad: 1,  talento: 5 },
     global:  { repros: 16000000, fans: 25000, popularidad: 14, talento: 2 }
   },
@@ -767,6 +767,20 @@ Under.DATA = {
         return s.año >= 2 && s.lanzamientos >= 1 && Under.STATE.nivelCarrera(s).nivel <= 3;
       },
       generar: function (s) { return Under.UNDER.crearEventoIvo(s); }
+    },
+    {
+      id: "under_blake", peso: 2,
+      disponible: function (s) {
+        return s.año >= 2 && s.lanzamientos >= 1 && Under.STATE.nivelCarrera(s).nivel <= 3;
+      },
+      generar: function (s) { return Under.UNDER.crearEventoBlake(s); }
+    },
+    {
+      id: "under_hongo_tv", peso: 2,
+      disponible: function (s) {
+        return s.año >= 3 && s.lanzamientos >= 1 && Under.STATE.nivelCarrera(s).nivel <= 3;
+      },
+      generar: function (s) { return Under.UNDER.crearEventoHongoTv(s); }
     },
     /* Gran actualización: misiones exclusivas para cuando ya
        saliste del underground (nivel 4+ alcanzado alguna vez). */

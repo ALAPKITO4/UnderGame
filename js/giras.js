@@ -39,8 +39,10 @@ Under.GIRAS = {
            mejores contratos (+10% de ganancia) */
         var agente = (Under.EQUIPO && Under.EQUIPO.tiene(s, "agente")) ? 1.2 : 1;
         var manager = (Under.EQUIPO && Under.EQUIPO.tiene(s, "manager")) ? 1.1 : 1;
+        /* hongo TV en el equipo consigue mejores fechas (+20% fans) */
+        var hongo = (s.flags && s.flags.hongoTvEquipo) ? 1.2 : 1;
         var neto = Math.round((bruto - costo) * manager);
-        var fans = Math.round(Under.SYSTEMS.fansEscala(s, gira.fans) * agente);
+        var fans = Math.round(Under.SYSTEMS.fansEscala(s, gira.fans) * agente * hongo);
 
         s.giras.push({ año: s.año, nombre: gira.nombre, costo: costo, bruto: bruto, neto: neto, fans: fans });
         s.totalGiras += 1;

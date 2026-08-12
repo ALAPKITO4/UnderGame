@@ -335,10 +335,10 @@ Under.MISIONES = (function () {
   /* ============================================================
      SECCIÓN 5 — LA RED Y COLABORACIONES (etapa 2-8)
      ============================================================ */
-  m("m_colab_1", "red", 2, 5, "🤝", "Primera colaboración", "Hacé 1 colaboración", 1, function (s) { return s.totalColabs; },
+  m("m_colab_1", "red", 3, 5, "🤝", "Primera colaboración", "Hacé 1 colaboración", 1, function (s) { return s.totalColabs; },
     { fans: 5000, popularity: 3, talent: 1 },
     "🎯 Misión completada: Primera colaboración. Dos nombres, una canción.");
-  m("m_colabs_3", "red", 3, 6, "🤝", "El under se junta", "Hacé 3 colaboraciones", 3, function (s) { return s.totalColabs; },
+  m("m_colabs_3", "red", 4, 6, "🤝", "El under se junta", "Hacé 3 colaboraciones", 3, function (s) { return s.totalColabs; },
     { fans: 15000, popularity: 4, money: 3000 },
     "🎯 Misión completada: El under se junta. Tres collabs y la escena se conecta.");
   m("m_colabs_5", "red", 4, 7, "🤝", "Red de artistas", "Hacé 5 colaboraciones", 5, function (s) { return s.totalColabs; },
@@ -347,11 +347,11 @@ Under.MISIONES = (function () {
   m("m_colabs_8", "red", 5, 8, "🤝", "La escena te busca", "Hacé 8 colaboraciones", 8, function (s) { return s.totalColabs; },
     { fans: 60000, popularity: 6, money: 12000 },
     "🎯 Misión completada: La escena te busca. Ocho collabs y tu agenda no descansa.");
-  m("m_colab_emergente", "red", 2, 4, "🌱", "Apostar al futuro", "Colaborá con un artista emergente", 1,
+  m("m_colab_emergente", "red", 3, 4, "🌱", "Apostar al futuro", "Colaborá con un artista emergente", 1,
     function (s) { return (s.colaboraciones || []).filter(function (c) { return c.tipo === "emergente"; }).length; },
     { fans: 4000, _relaciones: 4, popularity: 2 },
     "🎯 Misión completada: Apostar al futuro. Ayudaste a crecer a alguien y creciste vos.");
-  m("m_colab_estrella", "red", 4, 7, "⭐", "Con los grandes", "Colaborá con una estrella", 1,
+  m("m_colab_estrella", "red", 5, 7, "⭐", "Con los grandes", "Colaborá con una estrella", 1,
     function (s) { return (s.colaboraciones || []).filter(function (c) { return c.tipo === "estrella"; }).length; },
     { fans: 25000, popularity: 6, money: 8000 },
     "🎯 Misión completada: Con los grandes. Compartiste micrófono con una estrella.");
@@ -1118,9 +1118,13 @@ Under.MISIONES = (function () {
     return null;
   }
 
-  /* ¿La misión puede aparecer en la etapa actual (nivel 1-8)? */
+  /* ¿La misión puede aparecer en la etapa actual (nivel 1-8)?
+     El año 1 arranca en nivel 0 (CAREER_LEVELS[0]): se lo trata
+     como etapa 1 para que la primera mano ya ofrezca misiones
+     del under y no aparezca vacía hasta subir de nivel. */
   function _elegible(def, state) {
     var nivel = Under.STATE.nivelCarrera(state).nivel;
+    if (nivel < 1) nivel = 1;
     if (def.etapaMin && nivel < def.etapaMin) return false;
     if (def.etapaMax && nivel > def.etapaMax) return false;
     return true;

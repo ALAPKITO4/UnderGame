@@ -1165,6 +1165,88 @@ Under.UNDER = {
     ]);
   },
 
+  /* ---------- Blake quiere comprar tu catálogo ---------- */
+  crearEventoBlake: function (state) {
+    return Under.UNDER._crear("under_blake", "Blake quiere comprar tu catálogo", [
+      "Blake, el productor que te compra los beats desde que arrancaste, te llama de madrugada: quiere quedarse con TODO tu catálogo de una. La cifra que te tira nunca la viste escrita así de grande.",
+      "Blake te junta en el estudio y te pone el trato en la mesa: se queda con tus type-beats y todo el material que grabaste hasta ahora. Paga bien, y hoy mismo.",
+      "El trato de Blake llega sin avisar: compra tu catálogo completo con un número adelante. Muy buena plata… pero todo lo que es tuyo deja de serlo."
+    ], [
+      {
+        texto: "Vender el catálogo",
+        desc: "Mucha plata ahora, aunque tu material quede en sus manos.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_blake");
+          return { money: Under.SYSTEMS.dineroEscala(s, 4000), popularity: 1 };
+        },
+        resultado: "Firmás y la plata entra al toque. Blake se queda con tu catálogo y vos arrancás de cero, pero con los bolsillos llenos.",
+        log: "Vendió su catálogo de beats a Blake."
+      },
+      {
+        texto: "Negociar la mitad",
+        desc: "Vender los beats, quedarte con tus temas.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_blake");
+          return { money: Under.SYSTEMS.dineroEscala(s, 1800), talent: 1 };
+        },
+        resultado: "Blake se lleva los beats y una parte del material, pero tus temas siguen siendo tuyos. La plata entra y el catálogo queda a medias.",
+        log: "Negoció con Blake y se quedó con su música."
+      },
+      {
+        texto: "No vender",
+        desc: "Tu material no se toca.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_blake");
+          return { talent: 1 };
+        },
+        resultado: "Le decís que no. Blake se va masticando bronca, pero tu catálogo sigue siendo tuyo y la escena lo anota.",
+        log: "No vendió su catálogo a Blake."
+      }
+    ]);
+  },
+
+  /* ---------- hongo TV se suma al equipo ---------- */
+  crearEventoHongoTv: function (state) {
+    return Under.UNDER._crear("under_hongo_tv", "hongo TV se suma al equipo", [
+      "hongo TV, el que arma los streams de la escena, te propone laburar juntos: te consigue fechas nuevas en serio, te arma el bolo y te muestra en su canal. A cambio pide un corte de cada gira.",
+      "hongo TV quiere entrar a tu equipo: consigue fechas que nadie te conseguía y te da pantalla en el stream del under. Pide su parte de cada gira.",
+      "Después del bardo con WTF IVO, hongo TV te busca para aliarse: más fechas, más pantalla, más plata. Pero quiere su porcentaje en cada gira."
+    ], [
+      {
+        texto: "Sumarlo al equipo",
+        desc: "hongo TV consigue fechas y +20% de fans en cada gira.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_hongo_tv");
+          s.flags.hongoTvEquipo = true;
+          return { _relaciones: 3 };
+        },
+        resultado: "hongo TV se suma. Desde ahora te llegan fechas que antes no llegaban y cada gira te trae más gente de la que esperabas.",
+        log: "Sumó a hongo TV a su equipo."
+      },
+      {
+        texto: "Pedirle mejores condiciones",
+        desc: "Entra, pero con tu palabra por encima.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_hongo_tv");
+          s.flags.hongoTvEquipo = true;
+          return { popularity: 1 };
+        },
+        resultado: "Negociás hasta el último punto y hongo TV acepta. Se suma con condiciones claras y te promueve sin meter presión.",
+        log: "Sumó a hongo TV a su equipo con condiciones negociadas."
+      },
+      {
+        texto: "No sumarlo",
+        desc: "Tu carrera se arma sin intermediarios.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_hongo_tv");
+          return {};
+        },
+        resultado: "Le decís que no. hongo TV sigue con sus streams y vos seguís armando tu camino, sin repartir porcentajes.",
+        log: "No sumó a hongo TV a su equipo."
+      }
+    ]);
+  },
+
   /* ---------- Backstage: conocer a un referente ---------- */
   crearEventoReferente: function (state) {
     return Under.UNDER._crear("under_referente", "Un referente te habla", [

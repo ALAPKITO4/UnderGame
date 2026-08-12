@@ -81,13 +81,20 @@ Under.MUSIC = {
     var distMult = sello ? sello.distribucion : 1;
     var retencion = sello ? sello.retencion : 1;
 
+    /* Era de la carrera: el mismo tier no vale lo mismo para un pibe
+       del under que para una estrella. En años tempranos (nivel 0-1)
+       hasta un viral queda en un rango realista y no pasa el millón
+       de vistas; después el alcance crece con la carrera. */
+    var ERA_REPROS = [0.32, 0.38, 0.6, 0.85, 1.2, 1.6, 2.2, 2.9, 3.8];
+    var eraMult = ERA_REPROS[Math.min(nivel, ERA_REPROS.length - 1)];
+
     var multRepros = 1 + nivel * 0.5 + p / 250 + state.momentum / 300;
     /* Carreras por género (PRIORIDAD 5): cada escena convierte
        oídos distinto. Urban/pop multiplican el alcance comercial;
        rap/rock convierten más lento pero la crítica los juzga
        con otra vara (más abajo). */
     var genComercial = Under.GENEROS ? Under.GENEROS.comercial(state) : 1;
-    var repros = Math.round(data.repros * multRepros * distMult * genComercial * (0.75 + Math.random() * 0.5));
+    var repros = Math.round(data.repros * eraMult * multRepros * distMult * genComercial * (0.75 + Math.random() * 0.5));
     var multFans = 1 + nivel * 0.15;
     /* El público (PRIORIDAD 3): los haters encarecen cada oído
        nuevo. El odio no frena los streams del todo, pero sí
