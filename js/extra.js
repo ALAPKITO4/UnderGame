@@ -129,8 +129,9 @@ Under.EXTRA = {
 
   /* ---------- Pop: un productor quiere un himno ---------- */
   crearEventoGeneroPop: function (state) {
+    var p = Under.DATA.escena({ grupo: "los amigos" });
     return Under.EXTRA._crear("gen_pop", "Un productor pop te quiere", [
-      "Un productor de pop quiere que tu tema sea el himno del verano.",
+      p.nombre + ", de Los Amigos, quiere que tu tema sea el himno del verano.",
       "Una discográfica chica te propone un videoclip con coreografía completa.",
       "Un estudio de pop te ofrece producir tu próximo tema para sonar en todas las radios."
     ], [
@@ -151,7 +152,7 @@ Under.EXTRA = {
           Under.EXTRA._limpiar("gen_pop");
           return { popularity: 2, talent: 2, fans: Under.SYSTEMS.fansEscala(s, 700) };
         },
-        resultado: "Negociás: pegadizo, pero con tu sonido adentro. El productor queda conforme y vos también.",
+        resultado: "Negociás con " + p.nombre + ": pegadizo, pero con tu sonido adentro. El productor queda conforme y vos también.",
         log: "Hizo pop con su esencia intacta."
       },
       {
@@ -161,7 +162,7 @@ Under.EXTRA = {
           Under.EXTRA._limpiar("gen_pop");
           return { talent: 1 };
         },
-        resultado: "Decís que no. El productor busca a otro y tu sonido queda a salvo.",
+        resultado: "Decís que no. " + p.nombre + " busca a otro y tu sonido queda a salvo.",
         log: "Rechazó al productor pop."
       }
     ]);
@@ -169,10 +170,11 @@ Under.EXTRA = {
 
   /* ---------- Urban: un productor internacional ---------- */
   crearEventoGeneroUrban: function (state) {
+    var p = Under.DATA.escena({ grupo: "family racks" });
     return Under.EXTRA._crear("gen_urban", "Un productor urbano te busca", [
-      "Un productor con hits internacionales te ofrece un beat para un tema de reggaetón.",
+      p.nombre + ", de Family Racks, te ofrece un beat para un tema de reggaetón.",
       "Una sesión urbana con artistas consagrados quiere sumar tu voz.",
-      "Un sello urbano te ofrece grabar con un productor que suena en todo el continente."
+      "Un sello urbano te ofrece grabar con " + p.nombre + ", de Family Racks, que suena en todo el continente."
     ], [
       {
         texto: "Grabar el tema urbano",
@@ -181,7 +183,7 @@ Under.EXTRA = {
           Under.EXTRA._limpiar("gen_urban");
           return { money: Under.SYSTEMS.dineroEscala(s, 800), fans: Under.SYSTEMS.fansEscala(s, 2000), popularity: 5, talent: -1 };
         },
-        resultado: "El tema sale y suena en cada calle. El productor te escribe para la próxima, y esa llamada vale oro.",
+        resultado: "El tema sale y suena en cada calle. " + p.nombre + " te escribe para la próxima, y esa llamada vale oro.",
         log: "Grabó con un productor urbano internacional."
       },
       {
@@ -191,7 +193,7 @@ Under.EXTRA = {
           Under.EXTRA._limpiar("gen_urban");
           return { talent: 2, popularity: 3, fans: Under.SYSTEMS.fansEscala(s, 800) };
         },
-        resultado: "Usás su beat pero le metés tu flow. El productor se sorprende: te toma en serio.",
+        resultado: "Usás su beat pero le metés tu flow. " + p.nombre + " se sorprende: te toma en serio.",
         log: "Grabó un beat urbano con su estilo propio."
       },
       {
@@ -201,7 +203,7 @@ Under.EXTRA = {
           Under.EXTRA._limpiar("gen_urban");
           return {};
         },
-        resultado: "No vas a la sesión. El productor arma el tema con otro y la oportunidad se va con él.",
+        resultado: "No vas a la sesión. " + p.nombre + " arma el tema con otro y la oportunidad se va con él.",
         log: "Dejó pasar la sesión con un productor urbano."
       }
     ]);
@@ -213,10 +215,11 @@ Under.EXTRA = {
 
   /* ---------- Tu tema entra en una serie ---------- */
   crearEventoSerie: function (state) {
+    var p = Under.DATA.escena();
     return Under.EXTRA._crear("extra_serie", "Tu tema entra en una serie", [
-      "Un productor de streaming quiere usar tu tema en una escena clave de una serie.",
-      "Una serie de tu país quiere tu canción para los créditos de su temporada.",
-      "Un director de cine te pide un tema para una escena de su película."
+      p.nombre + ", de la escena, te consigue el oído de un productor de streaming: quiere usar tu tema en una escena clave de una serie.",
+      "Una serie de tu país quiere tu canción para los créditos de su temporada, y " + p.nombre + " te pasó el dato.",
+      "Un director de cine te pide un tema para una escena de su película: " + p.nombre + " habló bien de vos."
     ], [
       {
         texto: "Ceder el tema",
@@ -377,10 +380,11 @@ Under.EXTRA = {
 
   /* ---------- Se forma tu club de fans ---------- */
   crearEventoFanClub: function (state) {
+    var p = Under.DATA.escena({ rol: "público activo" });
     return Under.EXTRA._crear("fan_club", "Nace tu club de fans", [
-      "Un grupo de fans arma un club en tu honor, con página y todo.",
-      "Tu comunidad crece hasta que alguien propone organizar un club oficial.",
-      "Unos pibes de otra ciudad crean un fandom tuyo con memes y remeras."
+      p.nombre + " y un grupo de fans arman un club en tu honor, con página y todo.",
+      "Tu comunidad crece hasta que " + p.nombre + " propone organizar un club oficial.",
+      p.nombre + " creó un fandom tuyo con memes y remeras desde la primera fila."
     ], [
       {
         texto: "Abrazarlo",
@@ -460,10 +464,11 @@ Under.EXTRA = {
 
   /* ---------- Un fan se tatúa tu logo ---------- */
   crearEventoFanTatuaje: function (state) {
+    var p = Under.DATA.escena({ rol: "público activo" });
     return Under.EXTRA._crear("fan_tatuaje", "Un fan se tatúa tu logo", [
-      "Un fan se tatúa tu logo en el brazo y el video se vuelve viral en tu comunidad.",
-      "Una fan muestra en redes el tatuaje de la letra de tu tema favorito.",
-      "Un seguidor se tatuó tu firma y te escribe para que lo veas."
+      p.nombre + ", de tu público activo, se tatúa tu logo en el brazo y el video se vuelve viral en tu comunidad.",
+      p.nombre + " muestra en redes el tatuaje de la letra de tu tema favorito.",
+      p.nombre + " se tatuó tu firma y te escribe para que lo veas."
     ], [
       {
         texto: "Celebrarlo",
@@ -502,12 +507,12 @@ Under.EXTRA = {
      MÁS MISIONES DEL UNDER
      ============================================================ */
 
-  /* ---------- Una casa abre sus puertas ---------- */
+  /* ---------- Casa Babylon abre sus puertas ---------- */
   crearEventoCasa: function (state) {
-    return Under.EXTRA._crear("under_casa", "Una casa abre sus puertas", [
-      "Unos amigos abren su casa para un toque íntimo y te invitan a tocar.",
-      "Una casa de la escena arma un living show: público en el piso, vos al frente.",
-      "Un ciclo de 'toques de living' recorre las casas de la zona y te anotan."
+    return Under.EXTRA._crear("under_casa", "Casa Babylon abre sus puertas", [
+      "En Casa Babylon arman un toque íntimo y te invitan a tocar: público en el piso, vos al frente.",
+      "Casa Babylon organiza un living show: un espacio de la escena con el público a dos metros.",
+      "El ciclo de 'toques de living' recorre las casas de la zona, y Casa Babylon te anota para el próximo."
     ], [
       {
         texto: "Tocar la casa",
@@ -516,8 +521,8 @@ Under.EXTRA = {
           Under.EXTRA._limpiar("under_casa");
           return { fans: Under.SYSTEMS.fansEscala(s, 200), popularity: 2, _energia: -8 };
         },
-        resultado: "Tocás a dos metros de la gente. Cada suspiro se escucha y cada barra queda grabada a fuego.",
-        log: "Tocó en una casa de la escena."
+        resultado: "Tocás en Casa Babylon a dos metros de la gente. Cada suspiro se escucha y cada barra queda grabada a fuego.",
+        log: "Tocó en Casa Babylon."
       },
       {
         texto: "Grabar la sesión en vivo",
@@ -526,8 +531,8 @@ Under.EXTRA = {
           Under.EXTRA._limpiar("under_casa");
           return { talent: 1, fans: Under.SYSTEMS.fansEscala(s, 400), _energia: -8 };
         },
-        resultado: "Grabás la sesión cruda. La publicación se comparte en la escena y el living se llena de nuevo.",
-        log: "Grabó una sesión en vivo en una casa."
+        resultado: "Grabás la sesión cruda en Casa Babylon. La publicación se comparte en la escena y el living se llena de nuevo.",
+        log: "Grabó una sesión en vivo en Casa Babylon."
       },
       {
         texto: "No ir",
@@ -536,28 +541,28 @@ Under.EXTRA = {
           Under.EXTRA._limpiar("under_casa");
           return {};
         },
-        resultado: "No vas. La casa se llena igual con otro artista y la oportunidad se esfuma.",
-        log: "No fue a un toque de casa."
+        resultado: "No vas. Casa Babylon se llena igual con otro artista y la oportunidad se esfuma.",
+        log: "No fue a un toque en Casa Babylon."
       }
     ]);
   },
 
-  /* ---------- Un toque en la plaza ---------- */
+  /* ---------- Un toque en La Sobre ---------- */
   crearEventoPlaza: function (state) {
-    return Under.EXTRA._crear("under_plaza", "Un toque en la plaza", [
-      "Te ofrecen un escenario improvisado en la plaza del barrio para un domingo.",
-      "La feria de la plaza quiere música en vivo y piensan en vos.",
-      "Un grupo de la zona arma un evento en la plaza y te da el horario central."
+    return Under.EXTRA._crear("under_plaza", "Un toque en La Sobre", [
+      "Te ofrecen un escenario improvisado en La Sobre, el lugar más crudo de la escena, para un domingo.",
+      "La Sobre quiere música en vivo y piensan en vos: el lugar donde el under es under de verdad.",
+      "La Sobre arma un evento y te da el horario central. Ahí no hay escenario: hay hueco entre la gente."
     ], [
       {
         texto: "Tocar el domingo",
-        desc: "El barrio entero pasa por la plaza.",
+        desc: "El barrio entero pasa por La Sobre.",
         efectos: function (s) {
           Under.EXTRA._limpiar("under_plaza");
           return { fans: Under.SYSTEMS.fansEscala(s, 350), popularity: 3, _energia: -8 };
         },
-        resultado: "Tocás al sol con los pibes sentados alrededor. Las familias se quedan a escuchar y el barrio te adopta.",
-        log: "Tocó un domingo en la plaza del barrio."
+        resultado: "Tocás en La Sobre con los pibes sentados alrededor. Las familias se quedan a escuchar y el barrio te adopta.",
+        log: "Tocó un domingo en La Sobre."
       },
       {
         texto: "Vender merch ahí",
@@ -566,28 +571,28 @@ Under.EXTRA = {
           Under.EXTRA._limpiar("under_plaza");
           return { money: Under.SYSTEMS.efectivoEscala(s, 120), fans: Under.SYSTEMS.fansEscala(s, 200), _energia: -10 };
         },
-        resultado: "Tocás y vendés remeras desde una valija. El barrio compra y tu nombre queda sonando.",
-        log: "Tocó y vendió merch en la plaza."
+        resultado: "Tocás en La Sobre y vendés remeras desde una valija. El barrio compra y tu nombre queda sonando.",
+        log: "Tocó y vendió merch en La Sobre."
       },
       {
         texto: "Dejarlo pasar",
-        desc: "La plaza no es tu escenario.",
+        desc: "La Sobre no es tu escenario.",
         efectos: function (s) {
           Under.EXTRA._limpiar("under_plaza");
           return {};
         },
-        resultado: "No vas. Otro artista ocupa tu lugar y el domingo transcurre igual.",
-        log: "Dejó pasar un toque en la plaza."
+        resultado: "No vas. Otro artista ocupa tu lugar en La Sobre y el domingo transcurre igual.",
+        log: "Dejó pasar un toque en La Sobre."
       }
     ]);
   },
 
-  /* ---------- Un video casero ---------- */
+  /* ---------- Un video con Burger ---------- */
   crearEventoVideo: function (state) {
-    return Under.EXTRA._crear("under_video", "Un video casero", [
-      "Un amigo te propone grabar un video casero para tu próximo tema.",
-      "Te ofrecen filmar un videoclip low cost en el barrio, con cámara de teléfono.",
-      "Una productora chica quiere un video crudo para uno de tus temas nuevos."
+    return Under.EXTRA._crear("under_video", "Un video con Burger", [
+      "Burger, el filmmaker de fruittyaudiovisual, te propone grabar un video casero para tu próximo tema.",
+      "Burger te ofrece filmar un videoclip low cost en el barrio, con cámara de teléfono y ojo de cine.",
+      "Fruitty audiovisual quiere un video crudo para uno de tus temas nuevos, con Burger en la cámara."
     ], [
       {
         texto: "Grabar el video",
@@ -596,8 +601,8 @@ Under.EXTRA = {
           Under.EXTRA._limpiar("under_video");
           return { money: -Under.SYSTEMS.efectivoEscala(s, 60), fans: Under.SYSTEMS.fansEscala(s, 500), popularity: 2, _energia: -8 };
         },
-        resultado: "El video sale crudo y real. Tu barrio se convierte en el set y la gente lo siente propio.",
-        log: "Grabó un video casero en el barrio."
+        resultado: "El video de Burger sale crudo y real. Tu barrio se convierte en el set y la gente lo siente propio.",
+        log: "Grabó un video casero con Burger."
       },
       {
         texto: "Video minimalista",
@@ -606,8 +611,8 @@ Under.EXTRA = {
           Under.EXTRA._limpiar("under_video");
           return { fans: Under.SYSTEMS.fansEscala(s, 250), talent: 1 };
         },
-        resultado: "Filmás una sola toma, sin cortes. La crudeza hace el resto y el tema gana fuerza.",
-        log: "Filmó un video minimalista de un tema."
+        resultado: "Burger filma una sola toma, sin cortes. La crudeza hace el resto y el tema gana fuerza.",
+        log: "Filmó un video minimalista con Burger."
       },
       {
         texto: "Postergarlo",
@@ -622,12 +627,12 @@ Under.EXTRA = {
     ]);
   },
 
-  /* ---------- Un fanzine de la escena ---------- */
+  /* ---------- El fotógrafo de undercba ---------- */
   crearEventoFanzine: function (state) {
     return Under.EXTRA._crear("under_fanzine", "Un fanzine de la escena", [
-      "Un fanzine de la escena quiere una nota con vos y una sesión de fotos.",
-      "Un blog local quiere una entrevista escrita para su sección de artistas nuevos.",
-      "Una revista under de tu ciudad te dedica una página completa."
+      "El fotógrafo de undercba te quiere en una nota con sesión de fotos para el fanzine de la escena.",
+      "Un blog local de undercba quiere una entrevista escrita para su sección de artistas nuevos.",
+      "El fotógrafo de undercba te dedica una página completa del fanzine con su cámara."
     ], [
       {
         texto: "Dar la nota",
@@ -646,8 +651,8 @@ Under.EXTRA = {
           Under.EXTRA._limpiar("under_fanzine");
           return { popularity: 2, fans: Under.SYSTEMS.fansEscala(s, 350), _energia: -5 };
         },
-        resultado: "Saldás en la tapa con tu mejor pose. El fanzine se cuelga en los locales de la zona.",
-        log: "Hizo una sesión de fotos para un fanzine."
+        resultado: "Saldás en la tapa con la cámara del fotógrafo de undercba. El fanzine se cuelga en los locales de la zona.",
+        log: "Hizo una sesión de fotos con el fotógrafo de undercba."
       },
       {
         texto: "Dejarlo pasar",
@@ -665,9 +670,9 @@ Under.EXTRA = {
   /* ---------- El estudio de la escena ---------- */
   crearEventoEstudio: function (state) {
     return Under.EXTRA._crear("under_estudio", "El estudio de la escena", [
-      "El estudio de la escena te ofrece una sesión barata para probar sonido nuevo.",
-      "Un productor local te invita a una tarde de estudio para experimentar.",
-      "El estudio comunitario del barrio tiene un hueco y te lo ofrecen."
+      "En Undersc te ofrecen una sesión barata para probar sonido nuevo.",
+      "Un productor local te invita a una tarde de estudio en Undersc para experimentar.",
+      "Undersc, el espacio de la escena, tiene un hueco en la agenda y te lo ofrecen."
     ], [
       {
         texto: "Grabar un tema",
@@ -676,8 +681,8 @@ Under.EXTRA = {
           Under.EXTRA._limpiar("under_estudio");
           return { money: -Under.SYSTEMS.efectivoEscala(s, 80), talent: 1, fans: Under.SYSTEMS.fansEscala(s, 200) };
         },
-        resultado: "Grabás un tema nuevo en una tarde. El resultado crudo, honesto y listo para el mundo.",
-        log: "Grabó un tema en el estudio de la escena."
+        resultado: "Grabás un tema nuevo en Undersc en una tarde. El resultado crudo, honesto y listo para el mundo.",
+        log: "Grabó un tema en Undersc."
       },
       {
         texto: "Probar sonido nuevo",
@@ -686,8 +691,8 @@ Under.EXTRA = {
           Under.EXTRA._limpiar("under_estudio");
           return { talent: 2, _energia: -5 };
         },
-        resultado: "Pasás la tarde probando sonidos que no conocías. Tu música se ensancha un poco más.",
-        log: "Experimentó con sonido nuevo en el estudio."
+        resultado: "Pasás la tarde en Undersc probando sonidos que no conocías. Tu música se ensancha un poco más.",
+        log: "Experimentó con sonido nuevo en Undersc."
       },
       {
         texto: "No ir",
@@ -696,8 +701,8 @@ Under.EXTRA = {
           Under.EXTRA._limpiar("under_estudio");
           return {};
         },
-        resultado: "No vas. El hueco se lo dan a otro y la tarde pasa sin tu sonido.",
-        log: "No fue al estudio de la escena."
+        resultado: "No vas. El hueco de Undersc se lo dan a otro y la tarde pasa sin tu sonido.",
+        log: "No fue al estudio de Undersc."
       }
     ]);
   }

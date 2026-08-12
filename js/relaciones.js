@@ -100,10 +100,12 @@ Under.RELACIONES = {
   crearEventoProductor: function (state) {
     var prod = Under.RELACIONES.mejorVinculo(state, "productor");
     var primero = !prod;
+    /* Nombre real de la escena para el productor nuevo (alterna). */
+    var nombreNuevo = Under.DATA.escena({ rol: "artista" }).nombre;
 
     var textos = primero ? [
-      "Un productor local te busca después de escuchar tu maqueta. Tiene un estudio chico pero sabe sacar lo mejor de cada voz.",
-      "Un productor del barrio propone grabar una sesión con vos. Trabaja con sonido crudo y sin vueltas."
+      nombreNuevo + " te busca después de escuchar tu maqueta. Tiene un estudio chico pero sabe sacar lo mejor de cada voz.",
+      nombreNuevo + ", del barrio, propone grabar una sesión con vos. Trabaja con sonido crudo y sin vueltas."
     ] : [
       prod.nombre + " te propone una sesión nueva en su estudio. Ya se conocen: el vínculo que construyeron se nota.",
       "Tu productor de confianza tiene una idea para un tema nuevo. Su estudio ya es casi tu casa."
@@ -120,7 +122,7 @@ Under.RELACIONES = {
       soloSi: function (s) { return s.stats.money >= costo; },
       efectos: function (s) {
         var idProd = prod ? prod.id : "prod_" + Under.STATE.randInt(100, 999);
-        var nombre = prod ? prod.nombre : "Vale Romero";
+        var nombre = prod ? prod.nombre : nombreNuevo;
         if (!prod) Under.RELACIONES.agregar(s, idProd, nombre, "productor", 25);
         Under.RELACIONES.mover(s, idProd, 12);
         s.flags.relProductorEsteAnio = true;
@@ -128,10 +130,10 @@ Under.RELACIONES = {
         return { talent: talento, _energia: -8, _relaciones: 2 };
       },
       resultado: function (s) {
-        var nombre = prod ? prod.nombre : "Vale Romero";
+        var nombre = prod ? prod.nombre : nombreNuevo;
         return "La sesión sale redonda. " + nombre + " ya es parte estable de tu circuito: el sonido se nota más cada vez.";
       },
-      log: "Grabó una sesión con " + (prod ? prod.nombre : "Vale Romero") + "."
+      log: "Grabó una sesión con " + (prod ? prod.nombre : nombreNuevo) + "."
     });
 
     opciones.push({
@@ -139,7 +141,7 @@ Under.RELACIONES = {
       desc: "Menos compromiso, menos costos.",
       efectos: function (s) {
         var idProd = prod ? prod.id : "prod_" + Under.STATE.randInt(100, 999);
-        var nombre = prod ? prod.nombre : "Vale Romero";
+        var nombre = prod ? prod.nombre : nombreNuevo;
         if (!prod) Under.RELACIONES.agregar(s, idProd, nombre, "productor", 15);
         Under.RELACIONES.mover(s, idProd, 5);
         s.flags.relProductorEsteAnio = true;

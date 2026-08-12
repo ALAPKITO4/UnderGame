@@ -88,10 +88,11 @@ Under.CONTEXTO = {
 
   /* ---------- Quemado: la escena te dio la espalda ---------- */
   crearEventoReputacionBaja: function (state) {
+    var p = Under.DATA.escena({ rol: "admin" });
     return Under.CONTEXTO._crear("ctx_reputacion_baja", "La escena te da la espalda", [
       "En los bares de la escena ya no te ofrecen fecha, y el rumor dice que sos complicado.",
-      "Un ciclo te saca del cartel sin aviso: alguien no quiere tu nombre pegado al evento.",
-      "Un productor que antes te llamaba ahora no te devuelve los mensajes."
+      "Un ciclo te saca del cartel sin aviso: " + p.nombre + " no quiere tu nombre pegado al evento.",
+      p.nombre + ", que antes te llamaba, ahora no te devuelve los mensajes."
     ], [
       {
         texto: "Enfrentarlo cara a cara",

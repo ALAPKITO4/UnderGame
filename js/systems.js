@@ -157,11 +157,11 @@ Under.SYSTEMS = {
       var peso = typeof d.peso === "function" ? d.peso(state) : d.peso;
       peso = Math.max(0, Math.round(peso || 0));
       /* La amiga trae la vida del under: en los primeros años las
-         misiones de la escena (under_*) salen más que el resto.
+         misiones de la escena (under_*) salen mucho más que el resto.
          Pero quien eligió quedarse en el under no se queda sin
          carrera: sus giras, premios y colabs siguen teniendo aire. */
       if (d.id.indexOf("under_") === 0) {
-        if (state.año <= 3) peso *= 2;
+        if (state.año <= 3) peso *= 3;
         else if (state.flags && state.flags.camino === "under") peso = Math.max(1, Math.round(peso / 2));
       }
       for (var w = 0; w < peso; w++) pool.push(d.id);
@@ -216,7 +216,13 @@ Under.SYSTEMS = {
       }
       if (!(k in stats)) continue;
       stats[k] += efectos[k];
-      if (k === "fans" || k === "money") {
+      if (k === "fans") {
+        /* Tope de fama (PRIORIDAD 10): en los primeros años el
+           under no crece de golpe: los fans se frenan en el techo
+           del año para que la fama no explote antes de tiempo. */
+        var tope = Under.STATE.topeFama(state);
+        stats[k] = tope === null ? Math.max(0, stats[k]) : Math.min(tope, Math.max(0, stats[k]));
+      } else if (k === "money") {
         stats[k] = Math.max(0, stats[k]);
       } else {
         stats[k] = Under.STATE.clamp(stats[k], 0, 100);
@@ -410,6 +416,11 @@ Under.SYSTEMS = {
 
   /* ---------- Ciclo anual ---------- */
   iniciarAnio: function (state) {
+    /* Tope de fama (PRIORIDAD 10): al arrancar el año, los fans se
+       ajustan al techo del año (red de seguridad para cualquier
+       ganancia que no pase por aplicarEfectos). */
+    var tope = Under.STATE.topeFama(state);
+    if (tope !== null && state.stats.fans > tope) state.stats.fans = tope;
     var decisiones = Under.SYSTEMS.decisionesParaAnio(state);
     state.planAnio = {
       decisiones: decisiones,

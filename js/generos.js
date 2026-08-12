@@ -238,7 +238,7 @@ Under.GENEROS = {
     return Under.GENEROS._crear("gen2_urban", "El continente baila", [
       "Una sesión urbana internacional arma un tema con los grandes del momento y quieren tu parte.",
       "Un festival de playa te reserva el escenario principal para la fecha de cierre.",
-      "Un productor de otro país quiere construir un tema completo alrededor de tu voz."
+      "Drokerr, de Family Racks, quiere construir un tema completo alrededor de tu voz para el continente."
     ], [
       {
         texto: "Entrar a la sesión internacional",

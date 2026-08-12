@@ -118,10 +118,11 @@ Under.GRANDE = {
 
   /* ---------- Colabo con una leyenda ---------- */
   crearEventoLeyenda: function (state) {
+    var p = Under.DATA.escena({ rol: "artista" });
     return Under.GRANDE._crear("grande_leyenda", "Una leyenda te busca", [
-      "Un artista legendario de tu género quiere grabarte un verso para tu próximo tema.",
+      p.nombre + ", una leyenda de la escena, quiere grabarte un verso para tu próximo tema.",
       "Una leyenda de otra generación te invita a compartir escenario en su despedida.",
-      "Un productor histórico te ofrece una sesión en su estudio para un tema conjunto."
+      p.nombre + " te ofrece una sesión en su estudio para un tema conjunto: un productor que hizo historia."
     ], [
       {
         texto: "Aceptar el homenaje",
@@ -398,10 +399,11 @@ Under.GRANDE = {
 
   /* ---------- Tu banda en vivo ---------- */
   crearEventoBanda: function (state) {
+    var p = Under.DATA.escena({ grupo: "los amigos" });
     return Under.GRANDE._crear("grande_banda", "Tu banda en vivo", [
       "Tu equipo te propone armar una banda estable para las fechas grandes.",
       "Los ensayos con una banda nueva cambian el sonido en vivo de tu gira.",
-      "Un productor arma un grupo de músicos fijos para tu próximo tour."
+      p.nombre + ", de Los Amigos, arma un grupo de músicos fijos para tu próximo tour."
     ], [
       {
         texto: "Armar la banda",
@@ -521,10 +523,11 @@ Under.GRANDE = {
 
   /* ---------- El verano te reclama ---------- */
   crearEventoVerano: function (state) {
+    var p = Under.DATA.escena({ rol: "admin" });
     return Under.GRANDE._crear("grande_verano", "El verano te reclama", [
       "Te proponen una gira de verano por las playas y ciudades turísticas.",
       "Los festivales de verano arman un circuito y quieren que lo encabeces.",
-      "Un productor arma un tour de temporada alta y te ofrece la cabeza de cartel."
+      p.nombre + " arma un tour de temporada alta y te ofrece la cabeza de cartel."
     ], [
       {
         texto: "Tour de verano",

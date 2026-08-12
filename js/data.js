@@ -179,6 +179,73 @@ Under.DATA = {
     { id: "legado",        nombre: "Legado",        texto: "Lo que hagas ahora define cómo te van a recordar.",       añoMin: 18, añoMax: 25 }
   ],
 
+  /* ---------- La escena real (PRIORIDAD 10) ----------
+     Los nombres de la escena under de Córdoba que trae la amiga:
+     artistas, admins, público y audiovisual. Los eventos usan
+     estos nombres (alternando) para que cada misión no diga
+     siempre «un productor» sino una persona concreta. */
+  ESCENA: [
+    { nombre: "Marti",          rol: "admin",              grupo: "undercba" },
+    { nombre: "Fabrizio",       rol: "admin",              grupo: "undercba" },
+    { nombre: "Benja Fuego",    rol: "admin",              grupo: "undercba" },
+    { nombre: "Lucio Fuego",    rol: "admin",              grupo: "undercba" },
+    { nombre: "Kiwa El Distinto", rol: "admin",            grupo: "undercba" },
+    { nombre: "Drokerr",        rol: "artista",            grupo: "family racks" },
+    { nombre: "EssKiff",        rol: "artista",            grupo: "family racks" },
+    { nombre: "gk",             rol: "artista",            grupo: "family racks" },
+    { nombre: "I Love Swag",    rol: "artista",            grupo: "family racks" },
+    { nombre: "Vlempiree",      rol: "artista",            grupo: "family racks" },
+    { nombre: "Caupiii",        rol: "artista",            grupo: "family racks" },
+    { nombre: "Emile",          rol: "artista",            grupo: "los amigos y fruittyaudiovisual" },
+    { nombre: "Pascu",          rol: "artista",            grupo: "los amigos" },
+    { nombre: "Pulmon1312",     rol: "artista y DJ",       grupo: "los amigos OBS" },
+    { nombre: "Tuconeone",      rol: "artista",            grupo: "los amigos" },
+    { nombre: "Ivinn",          rol: "creador del under de Sierras Chicas", grupo: null },
+    { nombre: "Burger",         rol: "filmmaker",          grupo: "fruittyaudiovisual" },
+    { nombre: "Genaa",          rol: "público activo",     grupo: null },
+    { nombre: "roro",           rol: "público activo",     grupo: null },
+    { nombre: "Agus",           rol: "público activo",     grupo: null }
+  ],
+
+  /* ---------- Lugares del under (PRIORIDAD 10) ----------
+     De mejor a peor según la escena: Club Paraguay es la cima
+     del under y La Sobre el lugar más crudo. */
+  LUGARES: [
+    { nombre: "Club Paraguay",   nivel: 4 },
+    { nombre: "Cayo Makensi",    nivel: 3 },
+    { nombre: "990 Club",        nivel: 3 },
+    { nombre: "Undersc",         nivel: 2 },
+    { nombre: "Pétalos del sol", nivel: 2 },
+    { nombre: "Casa Babylon",    nivel: 1 },
+    { nombre: "La Sobre",        nivel: 0 }
+  ],
+
+  /* Elige una persona de la escena. Puede filtrarse por grupo o rol
+     y alterna para no repetir el último nombre usado. */
+  escena: function (opts) {
+    opts = opts || {};
+    var filtrados = Under.DATA.ESCENA.filter(function (p) {
+      if (opts.grupo && (!p.grupo || p.grupo.indexOf(opts.grupo) !== 0)) return false;
+      if (opts.rol && p.rol !== opts.rol) return false;
+      return true;
+    });
+    if (!filtrados.length) filtrados = Under.DATA.ESCENA;
+    var pool = filtrados.slice();
+    if (pool.length > 1 && Under.DATA._escenaUltimo) {
+      pool = pool.filter(function (p) { return p.nombre !== Under.DATA._escenaUltimo; });
+    }
+    var p = pool[Math.floor(Math.random() * pool.length)];
+    Under.DATA._escenaUltimo = p.nombre;
+    return p;
+  },
+
+  /* Un lugar del under según el rango (nivel mínimo). */
+  lugar: function (minNivel) {
+    var pool = Under.DATA.LUGARES.filter(function (l) { return l.nivel >= (minNivel || 0); });
+    if (!pool.length) pool = Under.DATA.LUGARES;
+    return pool[Math.floor(Math.random() * pool.length)];
+  },
+
   /* ---------- Etapas de la carrera (PRIORIDAD 1) ----------
      La madurez artística (experiencia) marca la etapa: con los
      años y las decisiones el artista deja de ser un novato.
@@ -259,13 +326,14 @@ Under.DATA = {
   ],
 
   /* ---------- Artistas de la escena ----------
-     Nombres del under para eventos que mencionan colegas,
-     referentes y caras nuevas de tu generación. */
+     Los nombres reales del under que pasó la amiga: colegas,
+     referentes y caras nuevas de tu generación. Los eventos los
+     usan para que la escena se sienta de verdad. */
   ARTISTAS_ESCENA: [
-    "Luciana Aire", "Nano Quilla", "La Jefa", "Kilo Verde", "Mara Siete",
-    "El Tano Bravo", "Flor de Nube", "Punto Ciego", "Romi Cero", "Selva Kurt",
-    "Beto Arena", "Iara Luna", "Toro Gris", "Pepa Calle", "Dante Hume",
-    "Ania Púa", "Mosca Baja", "Leandro Cuco", "Vera Filo", "Oso Tinta"
+    "Marti", "Fabrizio", "Benja Fuego", "Lucio Fuego", "Kiwa El Distinto",
+    "Drokerr", "EssKiff", "gk", "I Love Swag", "Vlempiree",
+    "Caupiii", "Emile", "Pascu", "Pulmon1312", "Tuconeone",
+    "Ivinn", "Burger", "Genaa", "roro", "Agus"
   ],
 
   /* ---------- Lanzamientos (FASE 2) ----------
@@ -801,6 +869,81 @@ Under.DATA = {
       },
       generar: function (s) { return Under.UNDER.crearEventoFruity(s); }
     },
+    /* La escena real que trae la amiga (PRIORIDAD 10): Family Racks,
+       Kiwa El Distinto, Marti, los lugares de verdad y Los Amigos. */
+    {
+      id: "under_family_cypher", peso: 2,
+      disponible: function (s) {
+        return s.año >= 2 && s.lanzamientos >= 1 && Under.STATE.nivelCarrera(s).nivel <= 3;
+      },
+      generar: function (s) { return Under.UNDER.crearEventoFamilyCypher(s); }
+    },
+    {
+      id: "under_kiwa", peso: 2,
+      disponible: function (s) {
+        return s.año >= 2 && s.lanzamientos >= 1 && Under.STATE.nivelCarrera(s).nivel <= 3;
+      },
+      generar: function (s) { return Under.UNDER.crearEventoKiwa(s); }
+    },
+    {
+      id: "under_marti", peso: 3,
+      disponible: function (s) {
+        return s.año >= 1 && s.lanzamientos >= 1 && Under.STATE.nivelCarrera(s).nivel <= 3;
+      },
+      generar: function (s) { return Under.UNDER.crearEventoMarti(s); }
+    },
+    {
+      id: "under_club_paraguay", peso: 2,
+      disponible: function (s) {
+        return s.año >= 2 && s.lanzamientos >= 1 && Under.STATE.nivelCarrera(s).nivel <= 3;
+      },
+      generar: function (s) { return Under.UNDER.crearEventoClubParaguay(s); }
+    },
+    {
+      id: "under_990", peso: 2,
+      disponible: function (s) {
+        return s.año >= 2 && s.lanzamientos >= 1 && Under.STATE.nivelCarrera(s).nivel <= 3;
+      },
+      generar: function (s) { return Under.UNDER.crearEvento990(s); }
+    },
+    {
+      id: "under_undersc", peso: 2,
+      disponible: function (s) {
+        return s.año >= 1 && s.lanzamientos >= 1 && Under.STATE.nivelCarrera(s).nivel <= 3;
+      },
+      generar: function (s) { return Under.UNDER.crearEventoUndersc(s); }
+    },
+    {
+      id: "under_la_sobre", peso: 2,
+      disponible: function (s) {
+        return s.año >= 1 && s.lanzamientos >= 1 && Under.STATE.nivelCarrera(s).nivel <= 3;
+      },
+      generar: function (s) { return Under.UNDER.crearEventoLaSobre(s); }
+    },
+    {
+      id: "under_pascu", peso: 2,
+      disponible: function (s) {
+        return s.año >= 2 && s.lanzamientos >= 1 && Under.STATE.nivelCarrera(s).nivel <= 3;
+      },
+      generar: function (s) { return Under.UNDER.crearEventoPascu(s); }
+    },
+    /* Los nombres de la escena cuando ya saliste del underground:
+       Ivinn, Pulmon1312 y Drokerr crecen con el mainstream. */
+    {
+      id: "main_ivinn", peso: 1,
+      disponible: function (s) { return s.flags.salioDelUnderground && s.año >= 4; },
+      generar: function (s) { return Under.UNDER.crearEventoMainIvinn(s); }
+    },
+    {
+      id: "main_pulmon", peso: 1,
+      disponible: function (s) { return s.flags.salioDelUnderground && s.año >= 4; },
+      generar: function (s) { return Under.UNDER.crearEventoMainPulmon(s); }
+    },
+    {
+      id: "main_drokerr", peso: 1,
+      disponible: function (s) { return s.flags.salioDelUnderground && s.año >= 4; },
+      generar: function (s) { return Under.UNDER.crearEventoMainDrokerr(s); }
+    },
     /* La bifurcación de carrera: aparece SIEMPRE al cruzar al
        nivel 4 (la intercepta seleccionarEvento). Vive acá para
        que buscarEvento la resuelva en una recarga. */
@@ -1302,11 +1445,18 @@ Under.DATA = {
       añoMin: 1, añoMax: 2,
       condiciones: { flags: { primerTema: true } },
       titulo: "Un productor local te contactó",
-      texto: "Un productor de tu ciudad escuchó tu tema. Te ofrece grabar en un estudio de verdad, con un sonido profesional.\n\nA cambio, quiere un porcentaje de tus canciones futuras.\n\n¿Qué hacés?",
+      texto: function (s) {
+        /* Nombre de la escena real: se guarda para que la memoria
+           (años 5-8) hable de la misma persona. */
+        if (!s.flags.productorNombre) s.flags.productorNombre = Under.DATA.escena({ rol: "artista" }).nombre;
+        return s.flags.productorNombre + ", un productor de tu ciudad, escuchó tu tema. Te ofrece grabar en un estudio de verdad, con un sonido profesional.\n\nA cambio, quiere un porcentaje de tus canciones futuras.\n\n¿Qué hacés?";
+      },
       opciones: [
         {
           texto: "Aceptar y grabar con él",
-          resultado: "Entrás a un estudio por primera vez. Escuchás tu voz con un sonido que nunca habías logrado. Firmás el acuerdo y sentís que diste un paso.",
+          resultado: function (s) {
+            return "Entrás a un estudio por primera vez. Escuchás tu voz con un sonido que nunca habías logrado. Firmás el acuerdo con " + (s.flags.productorNombre || "el productor") + " y sentís que diste un paso.";
+          },
           efectos: { money: -80, talent: 2, fans: 150, popularity: 3 },
           flags: { trabajoConProductor: true },
           log: "Aceptaste grabar con un productor local."
@@ -1741,7 +1891,9 @@ Under.DATA = {
         },
         {
           texto: "Grabar con un productor nuevo",
-          resultado: "Sumás a un productor que te aporta otra mirada. El resultado sorprende.",
+          resultado: function (state) {
+            return "Sumás a " + Under.DATA.escena({ rol: "artista" }).nombre + ", un productor que te aporta otra mirada. El resultado sorprende.";
+          },
           efectos: function (state) { return { money: -Under.SYSTEMS.efectivoEscala(state, 200), talent: 2, fans: Under.SYSTEMS.fansEscala(state, 300) }; },
           log: "Grabaste con un productor nuevo."
         }
@@ -1850,7 +2002,9 @@ Under.DATA = {
     {
       id: "tpl_beats",
       titulo: "Alguien quiere tus beats",
-      texto: "Un artista emergente te escribe pidiendo comprarte beats o instrumentales que hiciste de más.\n\n¿Qué hacés?",
+      texto: function (state) {
+        return Under.DATA.escena({ rol: "artista" }).nombre + ", un artista emergente de la escena, te escribe pidiendo comprarte beats o instrumentales que hiciste de más.\n\n¿Qué hacés?";
+      },
       opciones: [
         {
           texto: "Venderlos",
@@ -2003,7 +2157,9 @@ Under.DATA = {
     {
       id: "tpl_colab_chica",
       titulo: "Un verso para un artista nuevo",
-      texto: "Un artista emergente te escribe para que le regales un verso en su tema. No tiene plata, pero tiene hambre y un público chico que te escucharía.",
+      texto: function (state) {
+        return Under.DATA.escena({ rol: "artista" }).nombre + ", un artista emergente de la escena, te escribe para que le regales un verso en su tema. No tiene plata, pero tiene hambre y un público chico que te escucharía.";
+      },
       opciones: [
         {
           texto: "Regalarle un verso",

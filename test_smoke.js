@@ -199,6 +199,8 @@ function jugar(gen, per) {
          "under_obs", "under_ig", "under_petalos", "under_coscu", "under_makensi",
          "under_massita", "under_estudio_grande", "under_viral_cayo", "under_cancion_anio", "under_ivo",
          "under_blake", "under_hongo_tv", "under_galperin", "under_fruity", "camino_carrera",
+         "under_family_cypher", "under_kiwa", "under_marti", "under_club_paraguay", "under_990",
+         "under_undersc", "under_la_sobre", "under_pascu", "main_ivinn", "main_pulmon", "main_drokerr",
          "merch_barrio",
          "mem_productor", "mem_nova", "mem_escena",
          "cat_revival", "cat_onehit",

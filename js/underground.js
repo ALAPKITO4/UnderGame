@@ -20,10 +20,11 @@ Under.UNDER = {
     Under.UNDER._pendientes[id] = null;
   },
 
-  /* Un escenario de la escena al azar (rotación de nombres para
-     que los toques no se sientan en el mismo lugar de siempre). */
+  /* Un escenario de la escena al azar. Los lugares reales que pasó
+     la amiga (LUGARES) salen más seguido que los genéricos, así el
+     under se siente de Córdoba de verdad. */
   _escenario: function () {
-    var list = Under.DATA.ESCENARIOS;
+    var list = Math.random() < 0.6 ? Under.DATA.LUGARES : Under.DATA.ESCENARIOS;
     return list[Under.STATE.randInt(0, list.length - 1)];
   },
 
@@ -389,9 +390,10 @@ Under.UNDER = {
 
   /* ---------- Un DJ quiere un remix ---------- */
   crearEventoRemix: function (state) {
+    var nombre = Under.UNDER._artista();
     return Under.UNDER._crear("under_remix", "Te piden un remix", [
-      "Un DJ de la escena quiere un remix de tu último tema para sus sets.",
-      "Un productor de electrónica te propone llevar una de tus canciones a la pista.",
+      nombre + ", un DJ de la escena, quiere un remix de tu último tema para sus sets.",
+      nombre + " te propone llevar una de tus canciones a la pista.",
       "Un canal de reels musicales quiere usar tu tema de fondo en sus edits."
     ], [
       {
@@ -421,7 +423,7 @@ Under.UNDER = {
           Under.UNDER._limpiar("under_remix");
           return {};
         },
-        resultado: "Te negás. El DJ usa otra cosa, y la oportunidad se va con él.",
+        resultado: "Te negás. " + nombre + " usa otra cosa, y la oportunidad se va con él.",
         log: "No cedió su tema para un remix."
       }
     ]);
@@ -509,8 +511,9 @@ Under.UNDER = {
 
   /* ---------- Grabar tu primera maqueta ---------- */
   crearEventoMaqueta: function (state) {
+    var nombre = Under.UNDER._artista();
     return Under.UNDER._crear("under_maqueta", "Una maqueta en puerta", [
-      "Un productor de la escena te propone grabar tu primera maqueta, con 5 temas.",
+      nombre + ", un productor de la escena, te propone grabar tu primera maqueta, con 5 temas.",
       "Te invitan a una sesión colectiva para grabar un compilado de la escena.",
       "Un estudio de barrio te ofrece un paquete barato para grabar tus temas."
     ], [
@@ -550,10 +553,11 @@ Under.UNDER = {
 
   /* ---------- Un colega te propone grabar juntos ---------- */
   crearEventoColega: function (state) {
+    var nombre = Under.UNDER._artista();
     return Under.UNDER._crear("under_colega", "Un colega de la escena", [
-      "Un artista de tu misma camada te propone grabar un tema juntos, sin plata de por medio.",
-      "Un MC de tu ciudad quiere que compartan un verso en un tema suyo.",
-      "Una productora local te ofrece grabar un tema conjunto para su sello chico."
+      nombre + ", un artista de tu misma camada, te propone grabar un tema juntos, sin plata de por medio.",
+      nombre + ", un MC de tu ciudad, quiere que compartan un verso en un tema suyo.",
+      nombre + " te ofrece grabar un tema conjunto para su sello chico."
     ], [
       {
         texto: "Grabar juntos",
@@ -1110,13 +1114,13 @@ Under.UNDER = {
     ]);
   },
 
-  /* ---------- WTF IVO te bardea en hongo TV ---------- */
+  /* ---------- Ivinn (ex WTF IVO) te bardea en hongo TV ---------- */
   crearEventoIvo: function (state) {
     var tema = (state.ultimoLanzamiento && state.ultimoLanzamiento.nombre) || "tu último tema";
-    return Under.UNDER._crear("under_ivo", "WTF IVO te bardea en hongo TV", [
-      "Un rival aparece: WTF IVO. En un stream con hongo TV dice que «" + tema + "» es un clon de 'lune a lune'. La gente empieza a elegir bando.",
-      "WTF IVO, un npc de la escena, largó en un stream de hongo TV que tu tema «" + tema + "» es un clon de 'lune a lune'. Tu nombre empieza a sonar pegado al suyo.",
-      "En hongo TV, WTF IVO tira que «" + tema + "» es una copia de 'lune a lune'. Los comentarios se dividen y vos quedás en el medio del bardo."
+    return Under.UNDER._crear("under_ivo", "Ivinn te bardea en hongo TV", [
+      "Un rival aparece: Ivinn, el creador del under de Sierras Chicas. En un stream con hongo TV dice que «" + tema + "» es un clon de 'lune a lune'. La gente empieza a elegir bando.",
+      "Ivinn, el creador del under de Sierras Chicas, largó en un stream de hongo TV que tu tema «" + tema + "» es un clon de 'lune a lune'. Tu nombre empieza a sonar pegado al suyo.",
+      "En hongo TV, Ivinn tira que «" + tema + "» es una copia de 'lune a lune'. Los comentarios se dividen y vos quedás en el medio del bardo."
     ], [
       {
         texto: "Responder con un tema",
@@ -1126,14 +1130,14 @@ Under.UNDER = {
           Under.UNDER._limpiar("under_ivo");
           return { talent: 1, popularity: 5, fans: Under.SYSTEMS.fansEscala(s, 900), _energia: -8 };
         },
-        resultado: "La diss apunta directo a IVO. La escena se prende, el clip circula y tu nombre queda una plaza arriba del suyo.",
-        log: "Respondió a WTF IVO con una diss contundente.",
+        resultado: "La diss apunta directo a Ivinn. La escena se prende, el clip circula y tu nombre queda una plaza arriba del suyo.",
+        log: "Respondió a Ivinn con una diss contundente.",
         riesgoEfectos: function (s) {
           Under.UNDER._limpiar("under_ivo");
           return { popularity: -3, fans: -Under.SYSTEMS.fansEscala(s, 150), _energia: -8 };
         },
-        riesgoResultado: "La diss te sale floja y hongo TV la repite con IVO comentándola en vivo. La risa es de ellos.",
-        riesgoLog: "Su diss contra WTF IVO salió mal."
+        riesgoResultado: "La diss te sale floja y hongo TV la repite con Ivinn comentándola en vivo. La risa es de ellos.",
+        riesgoLog: "Su diss contra Ivinn salió mal."
       },
       {
         texto: "Enfrentarlo en el mismo stream",
@@ -1144,13 +1148,13 @@ Under.UNDER = {
           return { popularity: 4, fans: Under.SYSTEMS.fansEscala(s, 500), _energia: -8 };
         },
         resultado: "Entrás al stream y se arma el bardo en vivo. La gente elige bando y vos ganás la mitad de la pelea.",
-        log: "Enfrentó a WTF IVO en su stream.",
+        log: "Enfrentó a Ivinn en su stream.",
         riesgoEfectos: function (s) {
           Under.UNDER._limpiar("under_ivo");
           return { popularity: -2, _energia: -8 };
         },
-        riesgoResultado: "En el vivo te enredás con las palabras y IVO te corta el audio. El clip queda mal para vos.",
-        riesgoLog: "Perdió el ida y vuelta con WTF IVO en el stream."
+        riesgoResultado: "En el vivo te enredás con las palabras y Ivinn te corta el audio. El clip queda mal para vos.",
+        riesgoLog: "Perdió el ida y vuelta con Ivinn en el stream."
       },
       {
         texto: "Ignorarlo",
@@ -1159,8 +1163,8 @@ Under.UNDER = {
           Under.UNDER._limpiar("under_ivo");
           return {};
         },
-        resultado: "No respondés. El clip se apaga solo y tu nombre queda limpio, aunque IVO se queda con la última palabra.",
-        log: "Ignoró la provocación de WTF IVO."
+        resultado: "No respondés. El clip se apaga solo y tu nombre queda limpio, aunque Ivinn se queda con la última palabra.",
+        log: "Ignoró la provocación de Ivinn."
       }
     ]);
   },
@@ -1210,7 +1214,7 @@ Under.UNDER = {
     return Under.UNDER._crear("under_hongo_tv", "hongo TV se suma al equipo", [
       "hongo TV, el que arma los streams de la escena, te propone laburar juntos: te consigue fechas nuevas en serio, te arma el bolo y te muestra en su canal. A cambio pide un corte de cada gira.",
       "hongo TV quiere entrar a tu equipo: consigue fechas que nadie te conseguía y te da pantalla en el stream del under. Pide su parte de cada gira.",
-      "Después del bardo con WTF IVO, hongo TV te busca para aliarse: más fechas, más pantalla, más plata. Pero quiere su porcentaje en cada gira."
+      "Después del bardo con Ivinn, hongo TV te busca para aliarse: más fechas, más pantalla, más plata. Pero quiere su porcentaje en cada gira."
     ], [
       {
         texto: "Sumarlo al equipo",
@@ -1332,9 +1336,9 @@ Under.UNDER = {
   crearEventoFruity: function (state) {
     var tema = (state.ultimoLanzamiento && state.ultimoLanzamiento.nombre) || "tu último tema";
     return Under.UNDER._crear("under_fruity", "Fruity audiovisual quiere tu tema", [
-      "Tu amiga te pasa el mensaje: Fruity audiovisual, un estudio de la facu, quiere licenciar «" + tema + "» para una escena clave de un corto. Pagan por usarla, pero la ceden a una película que no conocés.",
-      "Fruity audiovisual te escribe por la amiga: necesitan «" + tema + "» para la escena central de su corto de la facu. Hay plata de por medio y el material queda en manos que no conocés.",
-      "Un estudio de la facu, Fruity audiovisual, quiere usar «" + tema + "» en una escena clave de un corto. Pagan, pero la ceden para una película que no viste."
+      "Tu amiga te pasa el mensaje de Emile: Fruity audiovisual, el sello de la facu donde labura Burger de filmmaker, quiere licenciar «" + tema + "» para una escena clave de un corto. Pagan por usarla, pero la ceden a una película que no conocés.",
+      "Emile y Burger, los de Fruity audiovisual, te escriben por la amiga: necesitan «" + tema + "» para la escena central de su corto de la facu. Hay plata de por medio y el material queda en manos que no conocés.",
+      "El estudio de la facu, Fruity audiovisual (Emile con Burger en la cámara), quiere usar «" + tema + "» en una escena clave de un corto. Pagan, pero la ceden para una película que no viste."
     ], [
       {
         texto: "Licenciar el tema",
@@ -1431,10 +1435,11 @@ Under.UNDER = {
 
   /* ---------- Backstage: conocer a un referente ---------- */
   crearEventoReferente: function (state) {
+    var nombre = Under.UNDER._artista();
     return Under.UNDER._crear("under_referente", "Un referente te habla", [
-      "En un toque, un referente de la escena se acerca a hablar con vos después de tu show.",
-      "Un veterano del under te para en la calle y te dice que tu último tema no es lo tuyo.",
-      "Un productor que hizo historia en tu ciudad te invita a tomar un café y te aconseja."
+      "En un toque, " + nombre + ", un referente de la escena, se acerca a hablar con vos después de tu show.",
+      nombre + ", un veterano del under, te para en la calle y te dice que tu último tema no es lo tuyo.",
+      nombre + ", que hizo historia en tu ciudad, te invita a tomar un café y te aconseja."
     ], [
       {
         texto: "Escuchar y tomar nota",
@@ -1704,9 +1709,10 @@ Under.UNDER = {
 
   /* ---------- Te piden la banda en vivo ---------- */
   crearEventoBanda: function (state) {
+    var nombre = Under.UNDER._artista();
     return Under.UNDER._crear("under_banda", "Te piden la banda en vivo", [
-      "Un artista del under te pide que lo acompañes con una banda en vivo para su fecha.",
-      "Un productor necesita músicos para el show de un cantante local y piensa en vos.",
+      nombre + ", un artista del under, te pide que lo acompañes con una banda en vivo para su fecha.",
+      nombre + " necesita músicos para el show de un cantante local y piensa en vos.",
       "Una banda de tu ciudad quiere sumarte como voz invitada en una gira chica."
     ], [
       {
@@ -1794,9 +1800,10 @@ Under.UNDER = {
 
   /* ---------- Ensayar en serio ---------- */
   crearEventoEnsayo: function (state) {
+    var nombre = Under.UNDER._artista();
     return Under.UNDER._crear("under_ensayo", "El ensayo que te forma", [
-      "Un amigo con un estudio chico te propone ensayar una vez por semana: juntar canciones y afinarlas de verdad.",
-      "Un productor de tu zona te deja su sala dos horas por semana a cambio de que lo ayudes con sus proyectos.",
+      nombre + ", un amigo con un estudio chico, te propone ensayar una vez por semana: juntar canciones y afinarlas de verdad.",
+      nombre + " te deja su sala dos horas por semana a cambio de que lo ayudes con sus proyectos.",
       "Encontrás un espacio de ensayo barato en tu barrio. Solo, con el micrófono y las ideas."
     ], [
       {
@@ -1926,6 +1933,506 @@ Under.UNDER = {
         },
         resultado: "No comprás. Seguís con lo que tenés y la calidad se mantiene donde está.",
         log: "No compró equipo nuevo."
+      }
+    ]);
+  },
+
+  /* ============================================================
+     LA ESCENA REAL (PRIORIDAD 10): eventos con los nombres y los
+     lugares que pasó la amiga. Alternan y respetan los roles.
+     ============================================================ */
+
+  /* ---------- Family Racks arma un cypher ---------- */
+  crearEventoFamilyCypher: function (state) {
+    var tema = (state.ultimoLanzamiento && state.ultimoLanzamiento.nombre) || "tu último tema";
+    return Under.UNDER._crear("under_family_cypher", "Un cypher de Family Racks", [
+      "Drokerr, EssKiff, gk, I Love Swag, Vlempiree y Caupiii, toda Family Racks, arman un cypher y te quieren adentro. Una sola sesión, todos al frente del mic.",
+      "Family Racks junta a la camada nueva para un cypher y te reservan un lugar. Drokerr dice que «" + tema + "» tiene el flow para bancarlo.",
+      "El cypher de Family Racks se arma y tu nombre está en la lista: EssKiff lo propuso después de escucharte."
+    ], [
+      {
+        texto: "Sumarte al cypher",
+        desc: "Tu parte circula con el nombre de la familia.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_family_cypher");
+          Under.MISIONES.sumar(s, "colega", 1);
+          return { talent: 2, fans: Under.SYSTEMS.fansEscala(s, 800), popularity: 3, _energia: -8 };
+        },
+        resultado: "La sesión sale al primer take. Family Racks te difunde con ellos y la escena te asocia a la familia.",
+        log: "Participó del cypher de Family Racks."
+      },
+      {
+        texto: "Grabar tu parte solo",
+        desc: "Tu verso viaja, pero no la sesión.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_family_cypher");
+          Under.MISIONES.sumar(s, "contenido", 1);
+          return { talent: 1, fans: Under.SYSTEMS.fansEscala(s, 400), popularity: 2 };
+        },
+        resultado: "Mandás tu parte grabada y la meten igual. Queda bien, aunque sin la química de la sesión.",
+        log: "Grabó su parte del cypher de Family Racks a distancia."
+      },
+      {
+        texto: "Declinar",
+        desc: "Tu sonido primero.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_family_cypher");
+          return {};
+        },
+        resultado: "Dejás pasar el cypher. Family Racks sigue con lo suyo y tu parte se queda en tu cabeza.",
+        log: "Declinó el cypher de Family Racks."
+      }
+    ]);
+  },
+
+  /* ---------- Kiwa El Distinto y una fecha de undercba ---------- */
+  crearEventoKiwa: function (state) {
+    var tema = (state.ultimoLanzamiento && state.ultimoLanzamiento.nombre) || "tu último tema";
+    return Under.UNDER._crear("under_kiwa", "Kiwa El Distinto te quiere en el cartel", [
+      "Kiwa El Distinto, admin de undercba, escuchó «" + tema + "» y te quiere en la fecha grande de undercba. Un lugar con nombre y la escena entera mirando.",
+      "undercba arma una fecha fuerte y Kiwa El Distinto te reserva un lugar. Dice que tu sonido es distinto y que eso se nota.",
+      "Kiwa El Distinto te escribe: te sumás al cartel de undercba. Es una fecha que la escena no se pierde."
+    ], [
+      {
+        texto: "Aceptar la fecha",
+        desc: "La escena entera te ve.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_kiwa");
+          Under.MISIONES.sumar(s, "toques", 1);
+          return { talent: 1, fans: Under.SYSTEMS.fansEscala(s, 1000), popularity: 3, _energia: -12 };
+        },
+        resultado: "Tocás en la fecha de undercba y Kiwa te presenta en persona. La escena te anota: no sos uno más.",
+        log: "Tocó en una fecha de undercba invitado por Kiwa El Distinto."
+      },
+      {
+        texto: "Pedir el lugar central",
+        desc: "El riesgo de exigir con nombre propio.",
+        riesgo: 0.4,
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_kiwa");
+          return { fans: Under.SYSTEMS.fansEscala(s, 700), popularity: 2, _energia: -12 };
+        },
+        resultado: "Kiwa te da un mejor horario. La fecha sale y tu nombre queda arriba en el flyer.",
+        log: "Consiguió un horario central en la fecha de undercba.",
+        riesgoEfectos: function (s) {
+          Under.UNDER._limpiar("under_kiwa");
+          return { popularity: -2 };
+        },
+        riesgoResultado: "Kiwa lo toma a mal y te deja fuera del cartel. La fecha de undercba sale sin vos.",
+        riesgoLog: "Perdió su lugar en la fecha de undercba por exigir."
+      },
+      {
+        texto: "Dejarlo pasar",
+        desc: "undercba puede esperar.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_kiwa");
+          return {};
+        },
+        resultado: "Le decís que no. Kiwa busca a otro y la fecha de undercba sale igual.",
+        log: "Dejó pasar la fecha de undercba."
+      }
+    ]);
+  },
+
+  /* ---------- Marti, la amiga, te mete en la escena ---------- */
+  crearEventoMarti: function (state) {
+    var tema = (state.ultimoLanzamiento && state.ultimoLanzamiento.nombre) || "tu último tema";
+    return Under.UNDER._crear("under_marti", "Marti te mete en la movida", [
+      "Marti, tu amiga, no para de insistirte: «" + tema + "» tiene que sonar en la escena. Ya le habló a los de undercba y les gustó.",
+      "Marti te manda capturas: pasó «" + tema + "» en la juntada de undercba y la mitad preguntó quién sos.",
+      "Marti te busca con una fecha en la mano: te consiguió un lugar en el ciclo que organizan los del under, y dice que va a estar todo el grupo."
+    ], [
+      {
+        texto: "Ir con todo",
+        desc: "Marti lo armó: no la dejás en banda.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_marti");
+          Under.MISIONES.sumar(s, "toques", 1);
+          return { fans: Under.SYSTEMS.fansEscala(s, 600), popularity: 3, _relaciones: 3, _energia: -10 };
+        },
+        resultado: "Vas y tocás para el grupo de Marti. Ella te presenta a todos y la fecha se siente como de la familia.",
+        log: "Tocó en la fecha que le consiguió Marti."
+      },
+      {
+        texto: "Grabarle un agradecimiento",
+        desc: "Mostrar el gesto en tus redes.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_marti");
+          Under.MISIONES.sumar(s, "contenido", 1);
+          return { fans: Under.SYSTEMS.fansEscala(s, 300), popularity: 2, _relaciones: 4 };
+        },
+        resultado: "Grabás un video agradeciéndole a Marti y a los que la bancan. El gesto circula y tu nombre gana la buena fama.",
+        log: "Agradeció a Marti en público por su apoyo."
+      },
+      {
+        texto: "Esquivar el momento",
+        desc: "No querés ese empujón todavía.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_marti");
+          return { _relaciones: -1 };
+        },
+        resultado: "Le decís que no por ahora. Marti lo entiende, aunque se nota que esperaba otra cosa.",
+        log: "No aprovechó el empujón que le consiguió Marti."
+      }
+    ]);
+  },
+
+  /* ---------- Club Paraguay: la cima del under ---------- */
+  crearEventoClubParaguay: function (state) {
+    return Under.UNDER._crear("under_club_paraguay", "Una fecha en Club Paraguay", [
+      "Club Paraguay, la cima del under, te ofrece una fecha. Ahí se juega de verdad: el lugar donde la escena se pone seria.",
+      "Los de Club Paraguay vieron tu último toque y te quieren en su cartel. Es el mejor lugar del under y lo sabés.",
+      "Una fecha en Club Paraguay: el lugar con más nombre de la escena. Te la ofrecen y no podés creerlo."
+    ], [
+      {
+        texto: "Tocar en Club Paraguay",
+        desc: "El lugar que todo el under quiere.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_club_paraguay");
+          Under.MISIONES.sumar(s, "toques", 1);
+          return { money: Under.SYSTEMS.efectivoEscala(s, 250), fans: Under.SYSTEMS.fansEscala(s, 1500), popularity: 5, _energia: -15 };
+        },
+        resultado: "Tocás en Club Paraguay y la fecha se siente grande. La escena entera habla de tu show al día siguiente.",
+        log: "Tocó en Club Paraguay."
+      },
+      {
+        texto: "Invitar a un colega a abrir",
+        desc: "Sumar a un amigo: la escena se lo agradece.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_club_paraguay");
+          Under.MISIONES.sumar(s, "artistas", 1);
+          return { fans: Under.SYSTEMS.fansEscala(s, 1000), popularity: 3, _relaciones: 4, _energia: -15 };
+        },
+        resultado: "Le das la apertura a un colega y la fecha sale redonda. En Club Paraguay, el que reparte, crece.",
+        log: "Dio la apertura de su fecha en Club Paraguay a un colega."
+      },
+      {
+        texto: "Dejarlo pasar",
+        desc: "Todavía no estás listo.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_club_paraguay");
+          return {};
+        },
+        resultado: "Dejás pasar la fecha. Club Paraguay va a estar, y vos también, cuando toque.",
+        log: "Dejó pasar la fecha de Club Paraguay."
+      }
+    ]);
+  },
+
+  /* ---------- 990 Club ---------- */
+  crearEvento990: function (state) {
+    return Under.UNDER._crear("under_990", "Una noche en el 990 Club", [
+      "El 990 Club arma una fecha de artistas nuevos y te quieren en el line-up.",
+      "990 Club te ofrece una noche para presentar tu material. Un lugar con buena gente y buen sonido.",
+      "Los del 990 Club te anotaron en su fecha mensual. La escena de los nuevos pasa por ahí."
+    ], [
+      {
+        texto: "Tocar en el 990",
+        desc: "Público nuevo, lugar con nombre.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_990");
+          Under.MISIONES.sumar(s, "toques", 1);
+          return { money: Under.SYSTEMS.efectivoEscala(s, 150), fans: Under.SYSTEMS.fansEscala(s, 900), popularity: 3, _energia: -12 };
+        },
+        resultado: "La fecha del 990 sale bien: el público nuevo te descubre y el lugar te invita a volver.",
+        log: "Tocó en el 990 Club."
+      },
+      {
+        texto: "Pedir una residencia",
+        desc: "Un mes fijo en el 990 para crecer.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_990");
+          Under.MISIONES.sumar(s, "salas", 1);
+          return { money: Under.SYSTEMS.efectivoEscala(s, 300), fans: Under.SYSTEMS.fansEscala(s, 600), popularity: 2, _energia: -18 };
+        },
+        resultado: "Negociás una fecha al mes en el 990. Tu nombre empieza a llenar el lugar de a poco.",
+        log: "Consiguió una fecha mensual en el 990 Club."
+      },
+      {
+        texto: "Dejarlo pasar",
+        desc: "Otra noche, otro lugar.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_990");
+          return {};
+        },
+        resultado: "Dejás pasar la noche. El 990 busca a otro y la fecha sale sin tu nombre.",
+        log: "Dejó pasar la fecha del 990 Club."
+      }
+    ]);
+  },
+
+  /* ---------- Undersc: el espacio de la escena ---------- */
+  crearEventoUndersc: function (state) {
+    return Under.UNDER._crear("under_undersc", "Una fecha en Undersc", [
+      "Undersc, el espacio del under, te ofrece una fecha para presentar tu sonido.",
+      "Te ofrecen el escenario de Undersc para una fecha doble con otro artista de tu camada.",
+      "Undersc quiere tu música en su ciclo. Un lugar chico pero con la escena mirando."
+    ], [
+      {
+        texto: "Tocar en Undersc",
+        desc: "El espacio de la escena te conoce.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_undersc");
+          Under.MISIONES.sumar(s, "toques", 1);
+          return { fans: Under.SYSTEMS.fansEscala(s, 700), popularity: 3, _energia: -12 };
+        },
+        resultado: "Tocás en Undersc y la fecha se siente como en casa. La escena te ubica en su mapa.",
+        log: "Tocó en Undersc."
+      },
+      {
+        texto: "Fecha doble con un colega",
+        desc: "Dos nombres, el doble de público.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_undersc");
+          Under.MISIONES.sumar(s, "colega", 1);
+          Under.MISIONES.sumar(s, "toques", 1);
+          return { talent: 1, fans: Under.SYSTEMS.fansEscala(s, 900), popularity: 3, _energia: -14 };
+        },
+        resultado: "Armás una fecha doble en Undersc. Los públicos se cruzan y los dos salen ganando.",
+        log: "Hizo una fecha doble en Undersc con un colega."
+      },
+      {
+        texto: "Dejarlo pasar",
+        desc: "Undersc sigue abierto.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_undersc");
+          return {};
+        },
+        resultado: "Dejás pasar la fecha. Undersc sigue y tu momento va a llegar.",
+        log: "Dejó pasar la fecha de Undersc."
+      }
+    ]);
+  },
+
+  /* ---------- La Sobre: el lugar más crudo ---------- */
+  crearEventoLaSobre: function (state) {
+    return Under.UNDER._crear("under_la_sobre", "La Sobre te abre el sótano", [
+      "La Sobre, el lugar más crudo del under, te abre una noche. Ahí no hay escenario ni red: es la prueba de los de verdad.",
+      "Te ofrecen una fecha en La Sobre: el antro donde el under se mide sin vueltas.",
+      "La Sobre te quiere en su cartel. El lugar más básico de la escena, y por eso el más respetado."
+    ], [
+      {
+        texto: "Tocar en La Sobre",
+        desc: "Sin red, sin vueltas: la prueba real.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_la_sobre");
+          Under.MISIONES.sumar(s, "toques", 1);
+          return { talent: 2, fans: Under.SYSTEMS.fansEscala(s, 500), popularity: 3, _energia: -14 };
+        },
+        resultado: "Tocás en La Sobre a un metro de la gente. Los puristas del under lo registran: bancaste la fecha más difícil.",
+        log: "Tocó en La Sobre."
+      },
+      {
+        texto: "Grabar la sesión cruda",
+        desc: "Esa noche también se comparte.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_la_sobre");
+          Under.MISIONES.sumar(s, "contenido", 1);
+          return { talent: 1, fans: Under.SYSTEMS.fansEscala(s, 800), popularity: 3, _energia: -14 };
+        },
+        resultado: "Grabás la noche en La Sobre y la subís. La crudeza se comparte sola: la escena valora a quien bancó la Sobre.",
+        log: "Grabó su sesión en La Sobre."
+      },
+      {
+        texto: "Declinar",
+        desc: "Ese sótano puede esperar.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_la_sobre");
+          return {};
+        },
+        resultado: "Dejás pasar La Sobre. El lugar más crudo espera a quien esté listo.",
+        log: "Declinó tocar en La Sobre."
+      }
+    ]);
+  },
+
+  /* ---------- Pascu te propone una fecha de Los Amigos ---------- */
+  crearEventoPascu: function (state) {
+    var tema = (state.ultimoLanzamiento && state.ultimoLanzamiento.nombre) || "tu último tema";
+    return Under.UNDER._crear("under_pascu", "Pascu y Los Amigos te invitan", [
+      "Pascu, de Los Amigos, escuchó «" + tema + "» y quiere que compartas fecha con ellos.",
+      "Los Amigos arman un toque y Pascu te reserva un lugar en el cartel.",
+      "Pascu te propone una fecha conjunta: su público conoce a Los Amigos, y quiere que te escuchen a vos."
+    ], [
+      {
+        texto: "Compartir la fecha",
+        desc: "El público de Los Amigos te adopta.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_pascu");
+          Under.MISIONES.sumar(s, "colega", 1);
+          Under.MISIONES.sumar(s, "toques", 1);
+          return { talent: 1, fans: Under.SYSTEMS.fansEscala(s, 900), popularity: 3, _relaciones: 3, _energia: -12 };
+        },
+        resultado: "Compartís fecha con Los Amigos y Pascu te presenta en persona. Su gente se queda a escucharte.",
+        log: "Compartió fecha con Pascu y Los Amigos."
+      },
+      {
+        texto: "Grabar algo juntos antes",
+        desc: "La química primero, el escenario después.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_pascu");
+          Under.MISIONES.sumar(s, "contenido", 1);
+          return { talent: 2, fans: Under.SYSTEMS.fansEscala(s, 600), popularity: 2, _energia: -8 };
+        },
+        resultado: "Grabás un tema con Pascu y Los Amigos. La fecha queda para después, con la química ya hecha.",
+        log: "Grabó un tema con Pascu y Los Amigos."
+      },
+      {
+        texto: "Declinar",
+        desc: "Tu camino, tu ritmo.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_pascu");
+          return {};
+        },
+        resultado: "Dejás pasar la fecha. Los Amigos siguen y la puerta queda abierta.",
+        log: "Declinó la fecha con Pascu y Los Amigos."
+      }
+    ]);
+  },
+
+  /* ---------- MAINFLOW: Ivinn cruza las Sierras Chicas ---------- */
+  crearEventoMainIvinn: function (state) {
+    var tema = (state.ultimoLanzamiento && state.ultimoLanzamiento.nombre) || "tu último tema";
+    return Under.UNDER._crear("main_ivinn", "Ivinn propone cruzar las sierras", [
+      "Ivinn, el creador del under de Sierras Chicas, te propone un tema cruzando las dos escenas: la suya y la tuya. Ya no es el bardero de hongo TV: es un nombre que creció con el under.",
+      "Ivinn te busca para una colab entre Sierras Chicas y tu ciudad. Los dos salieron del under y los dos saben lo que cuesta.",
+      "Ivinn propone regrabar «" + tema + "» llevándolo a su sonido de las sierras. Dice que el cruce puede sonar en todos lados."
+    ], [
+      {
+        texto: "Grabar la colab",
+        desc: "Dos under que crecieron, un tema que cruza.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("main_ivinn");
+          var est = { calidad: 5, viral: 0, texto: "colab con Ivinn cruzando las sierras" };
+          var L = Under.MUSIC._calcular(s, "Sierras y cemento (feat. Ivinn)", est);
+          Under.MUSIC._registrar(s, L, est, 0);
+          s.colaboraciones.push({ año: s.año, nombre: L.nombre, partner: "Ivinn", tipo: "igual", tier: L.tier, repros: L.repros, fans: L.fans, dinero: L.dinero });
+          s.totalColabs += 1;
+          s.flags.colabEsteAnio = true;
+          if (Under.RELACIONES) Under.RELACIONES.agregar(s, "red_ivinn", "Ivinn", "colega", 30);
+          return { fans: L.fans, popularity: L.popularidad, talent: L.talento, money: L.dinero, _energia: -10, _lanzamiento: L };
+        },
+        resultado: function (s, efectos) {
+          var L = efectos._lanzamiento;
+          return "El tema de las sierras y el cemento sale redondo.\n\n" + Under.MUSIC.TIER_FLAVOR[L.tier] +
+            "\n\n" + L.tierIcono + " " + L.tierNombre + " · " + Under.UI.fmtExacto(L.repros) + " reproducciones.";
+        },
+        log: "Colaboró con Ivinn cruzando Sierras Chicas y su ciudad."
+      },
+      {
+        texto: "Sumar una fecha juntos",
+        desc: "Tu ciudad y las sierras en un solo show.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("main_ivinn");
+          return { fans: Under.SYSTEMS.fansEscala(s, 2500), popularity: 3, money: Under.SYSTEMS.efectivoEscala(s, 400), _energia: -12 };
+        },
+        resultado: "Hacen una fecha juntos a mitad de camino entre las dos escenas. La gente de los dos lados aparece.",
+        log: "Hizo una fecha junto a Ivinn cruzando las escenas."
+      },
+      {
+        texto: "Dejarlo pasar",
+        desc: "Tu nombre ya no necesita cruces.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("main_ivinn");
+          return {};
+        },
+        resultado: "Le decís que no. Ivinn lo respeta: los dos saben que el under tiene códigos.",
+        log: "Declinó la propuesta de Ivinn."
+      }
+    ]);
+  },
+
+  /* ---------- Pulmon1312 te suma a su fecha ---------- */
+  crearEventoMainPulmon: function (state) {
+    var tema = (state.ultimoLanzamiento && state.ultimoLanzamiento.nombre) || "tu último tema";
+    return Under.UNDER._crear("main_pulmon", "Pulmon1312 te suma a la fecha", [
+      "Pulmon1312, artista y DJ de Los Amigos OBS, quiere que cantes «" + tema + "» en su fecha. El bolo se arma con los de siempre, ahora en serio.",
+      "Pulmon1312 te convoca para su fecha como artista invitado y después te deja la pista: quiere que cantes y que la gente baile.",
+      "La fecha de Pulmon1312 arma un line-up de lujo y tu nombre está en la lista. Los Amigos OBS te reciben en su casa."
+    ], [
+      {
+        texto: "Cantar en la fecha de Pulmon",
+        desc: "Su público + el tuyo = fecha grande.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("main_pulmon");
+          Under.MISIONES.sumar(s, "toques", 1);
+          return { money: Under.SYSTEMS.efectivoEscala(s, 500), fans: Under.SYSTEMS.fansEscala(s, 2000), popularity: 4, _energia: -12 };
+        },
+        resultado: "Cantás en la fecha de Pulmon1312 y la pista explota. Después él te sube al DJ set: tu música y la suya en la misma noche.",
+        log: "Cantó en la fecha de Pulmon1312."
+      },
+      {
+        texto: "Grabar algo con él antes",
+        desc: "La colab suena antes que el show.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("main_pulmon");
+          Under.MISIONES.sumar(s, "contenido", 1);
+          return { talent: 1, fans: Under.SYSTEMS.fansEscala(s, 1200), popularity: 3, _energia: -8 };
+        },
+        resultado: "Grabás un tema con Pulmon1312 en el estudio de Los Amigos. El cruce queda para la historia de la escena.",
+        log: "Grabó un tema con Pulmon1312."
+      },
+      {
+        texto: "Declinar",
+        desc: "Tu agenda no da más.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("main_pulmon");
+          return {};
+        },
+        resultado: "Le decís que no por ahora. Pulmon lo entiende: los tiempos del under se respetan.",
+        log: "Declinó la fecha de Pulmon1312."
+      }
+    ]);
+  },
+
+  /* ---------- Drokerr entra en la industria ---------- */
+  crearEventoMainDrokerr: function (state) {
+    var tema = (state.ultimoLanzamiento && state.ultimoLanzamiento.nombre) || "tu último tema";
+    return Under.UNDER._crear("main_drokerr", "Drokerr cruzó la puerta grande", [
+      "Drokerr, de Family Racks, firmó con un sello y no se olvidó de vos: te llama para un proyecto grande con su gente.",
+      "Family Racks dio el salto y Drokerr quiere llevarte en la ola. Te propone un tema con toda la familia, pero en serio.",
+      "Drokerr te escribe desde la oficina del sello: «" + tema + "» sonó en la reunión y quieren que Family Racks y vos hagan algo juntos."
+    ], [
+      {
+        texto: "Subirte a la ola de Drokerr",
+        desc: "La familia entró a la industria y vos con ellos.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("main_drokerr");
+          var est = { calidad: 5, viral: 2, texto: "proyecto con Drokerr y Family Racks" };
+          var L = Under.MUSIC._calcular(s, "Family (feat. Drokerr)", est);
+          Under.MUSIC._registrar(s, L, est, 0);
+          s.colaboraciones.push({ año: s.año, nombre: L.nombre, partner: "Drokerr", tipo: "igual", tier: L.tier, repros: L.repros, fans: L.fans, dinero: L.dinero });
+          s.totalColabs += 1;
+          s.flags.colabEsteAnio = true;
+          if (Under.RELACIONES) Under.RELACIONES.agregar(s, "red_drokerr", "Drokerr", "colega", 30);
+          return { fans: L.fans, popularity: L.popularidad, talent: L.talento, money: L.dinero, _energia: -10, _lanzamiento: L };
+        },
+        resultado: function (s, efectos) {
+          var L = efectos._lanzamiento;
+          return "El proyecto con Drokerr y Family Racks sale a la luz.\n\n" + Under.MUSIC.TIER_FLAVOR[L.tier] +
+            "\n\n" + L.tierIcono + " " + L.tierNombre + " · " + Under.UI.fmtExacto(L.repros) + " reproducciones.";
+        },
+        log: "Hizo un proyecto con Drokerr y Family Racks."
+      },
+      {
+        texto: "Cobrar tu parte adelantada",
+        desc: "Plata ya, aunque la familia quede a medias.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("main_drokerr");
+          return { money: Under.SYSTEMS.dineroEscala(s, 1200), popularity: 2, _energia: -6 };
+        },
+        resultado: "Cobrás adelantado y el proyecto sale igual. La familia lo acepta, aunque el gesto queda anotado.",
+        log: "Cobró adelantado su parte del proyecto de Drokerr."
+      },
+      {
+        texto: "Mantener distancia",
+        desc: "La familia se fue; tu camino sigue siendo tuyo.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("main_drokerr");
+          return { talent: 1 };
+        },
+        resultado: "Le decís que no. Family Racks siguió su rumbo y vos el tuyo, con respeto.",
+        log: "Declinó el proyecto de Drokerr y Family Racks."
       }
     ]);
   }

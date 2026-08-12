@@ -265,6 +265,15 @@ Under.STATE = {
     return eras[eras.length - 1];
   },
 
+  /* Tope de fama (PRIORIDAD 10): los primeros años son del under.
+     Año 1 ≈ 6k fans · año 2 ≈ 14k · año 3 ≈ 22k · año 4 ≈ 30k.
+     Recién desde el año 5 la carrera puede explotar. */
+  topeFama: function (state) {
+    var año = state.año || 1;
+    if (año < 1 || año >= 5) return null;
+    return [0, 6000, 14000, 22000, 30000][año];
+  },
+
   /* Etapa de la carrera según la madurez artística (PRIORIDAD 1) */
   etapaActual: function (state) {
     var etapas = Under.DATA.ETAPAS;

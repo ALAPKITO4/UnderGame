@@ -161,10 +161,11 @@ Under.CRISIS = {
   /* ---------- Evolución: madurar sin romper el sonido ---------- */
   crearEventoEvolucion: function (state) {
     var gen = Under.DATA.GENRES[state.artista.genero];
+    var p = Under.DATA.escena({ rol: "artista" });
     var textos = [
       "Tu sonido ya no te representa del todo. La música que hacés está bien, pero la que te gustaría hacer quedó en el camino.",
       "Escuchás tus primeros temas y los sentís lejanos. Creciste: la pregunta es si tu música creció con vos.",
-      "Un productor te muestra una dirección nueva para tu " + gen.nombre + ". Podrías seguir igual… o dar el paso."
+      p.nombre + " te muestra una dirección nueva para tu " + gen.nombre + ". Podrías seguir igual… o dar el paso."
     ];
 
     var opciones = [];

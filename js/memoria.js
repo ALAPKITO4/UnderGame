@@ -142,9 +142,12 @@ Under.MEMORIA = {
      El productor local al que le dijiste que no ahora es alguien.
      La escena cambió y las cuentas viejas vuelven a la mesa. */
   crearEventoProductor: function (state) {
+    /* La misma persona que te ofreció grabar al comienzo: el nombre
+       quedó guardado en la partida. */
+    var nombre = (state.flags && state.flags.productorNombre) || Under.DATA.escena({ rol: "artista" }).nombre;
     return Under.MEMORIA._crear("mem_productor", "El productor que rechazaste", [
-      "Ese productor local que te ofreció grabar hace años ahora produce a una estrella nacional. Te lo cruzaste en un estudio y te miró dos veces.",
-      "El productor al que le dijiste que no cuando arrancabas ahora maneja un estudio grande. Tu manager te avisa que hay una sesión abierta… y él está al mando."
+      nombre + ", ese productor local que te ofreció grabar hace años, ahora produce a una estrella nacional. Te lo cruzaste en un estudio y te miró dos veces.",
+      "El productor al que le dijiste que no cuando arrancabas ahora maneja un estudio grande. " + nombre + " está al mando y tu manager te avisa que hay una sesión abierta."
     ], [
       {
         texto: "Reconocerlo y pedir disculpas",
