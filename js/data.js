@@ -204,7 +204,13 @@ Under.DATA = {
     { nombre: "Burger",         rol: "filmmaker",          grupo: "fruittyaudiovisual" },
     { nombre: "Genaa",          rol: "público activo",     grupo: null },
     { nombre: "roro",           rol: "público activo",     grupo: null },
-    { nombre: "Agus",           rol: "público activo",     grupo: null }
+    { nombre: "Agus",           rol: "público activo",     grupo: null },
+    /* Los grandes del under (PRIORIDAD 10): mientras más te va,
+       más te cruzás con ellos. fansMin marca el piso para que
+       aparezcan en la escena. */
+    { nombre: "lil naue",       rol: "artista",            grupo: null, fansMin: 20000 },
+    { nombre: "cero",           rol: "artista",            grupo: null, fansMin: 50000 },
+    { nombre: "zell",           rol: "artista",            grupo: null, fansMin: 200000 }
   ],
 
   /* ---------- Lugares del under (PRIORIDAD 10) ----------
@@ -221,12 +227,16 @@ Under.DATA = {
   ],
 
   /* Elige una persona de la escena. Puede filtrarse por grupo o rol
-     y alterna para no repetir el último nombre usado. */
+     y alterna para no repetir el último nombre usado. Si pasás
+     state, los grandes del under (lil naue, cero, zell) solo
+     aparecen cuando tu fama llegó a su piso. */
   escena: function (opts) {
     opts = opts || {};
+    var fama = opts.state ? (opts.state.stats && opts.state.stats.fans) || 0 : 0;
     var filtrados = Under.DATA.ESCENA.filter(function (p) {
       if (opts.grupo && (!p.grupo || p.grupo.indexOf(opts.grupo) !== 0)) return false;
       if (opts.rol && p.rol !== opts.rol) return false;
+      if (p.fansMin && fama < p.fansMin) return false;
       return true;
     });
     if (!filtrados.length) filtrados = Under.DATA.ESCENA;
@@ -244,6 +254,23 @@ Under.DATA = {
     var pool = Under.DATA.LUGARES.filter(function (l) { return l.nivel >= (minNivel || 0); });
     if (!pool.length) pool = Under.DATA.LUGARES;
     return pool[Math.floor(Math.random() * pool.length)];
+  },
+
+  /* Un par de nombres del público activo de la escena, para que los
+     shows se sientan de verdad (PRIORIDAD 10). Devuelve algo como
+     "Genaa y roro". */
+  publico: function (n) {
+    n = n || 2;
+    var pool = Under.DATA.ESCENA.filter(function (p) { return p.rol === "público activo"; });
+    var eligio = [];
+    var intentos = 0;
+    while (eligio.length < n && intentos < 12) {
+      var p = pool[Math.floor(Math.random() * pool.length)];
+      intentos++;
+      if (eligio.indexOf(p.nombre) === -1) eligio.push(p.nombre);
+    }
+    if (eligio.length === 1) return eligio[0];
+    return eligio.slice(0, eligio.length - 1).join(", ") + " y " + eligio[eligio.length - 1];
   },
 
   /* ---------- Etapas de la carrera (PRIORIDAD 1) ----------
@@ -417,7 +444,7 @@ Under.DATA = {
   PARTNERS: {
     emergente: {
       desc: "alguien emergente que te admira", calidad: 2, audiencia: 0.6, retencion: 0.6,
-      nombres: ["Mía Nova", "Ela Corte", "Feroz", "Luna Raviol", "Tío Rico"]
+      nombres: ["Ela Corte", "Feroz", "Luna Raviol", "Tío Rico"]
     },
     igual: {
       desc: "un colega de tu mismo nivel", calidad: 4, audiencia: 1, retencion: 0.5,
@@ -479,7 +506,7 @@ Under.DATA = {
       id: "grave", nombre: "Controversia seria", gravedad: "grave", nivelMin: 3, peso: 2, popularidad: -8, fans: -9000,
       textos: [
         "Un ex socio habla mal de vos en un documental y los titulares te apuntan.",
-        "Cancelan tu participación en un festival después de una polémica.",
+        "Cancelan tu participación en una fecha del under después de una polémica.",
         "Te acusan de plagio y la industria debate el tema durante semanas."
       ]
     },
@@ -536,21 +563,16 @@ Under.DATA = {
      Conquistar un mercado cuesta plata, suma fans y popularidad,
      y multiplica tus ingresos por streaming para siempre. */
   MERCADOS: [
-    { id: "latam",     nombre: "Latinoamérica", emoji: "🌎", nivelMin: 2, costo: 1500,  fans: 2000,  popularidad: 5, desc: "Tu región natural: radios, boca en boca y festivales." },
-    { id: "europa",    nombre: "Europa",         emoji: "🇪🇺", nivelMin: 4, costo: 6000,  fans: 4000,  popularidad: 6, desc: "Públicos que llenan festivales y pagan bien." },
+    { id: "latam",     nombre: "Latinoamérica", emoji: "🌎", nivelMin: 2, costo: 1500,  fans: 2000,  popularidad: 5, desc: "Tu región natural: radios, boca en boca y fechas del under." },
+    { id: "europa",    nombre: "Europa",         emoji: "🇪🇺", nivelMin: 4, costo: 6000,  fans: 4000,  popularidad: 6, desc: "Públicos que llenan fechas y pagan bien." },
     { id: "norteam",   nombre: "Norteamérica",   emoji: "🇺🇸", nivelMin: 6, costo: 15000, fans: 8000,  popularidad: 7, desc: "El mercado más grande del planeta." },
     { id: "asia",      nombre: "Asia",           emoji: "🌏", nivelMin: 8, costo: 30000, fans: 15000, popularidad: 8, desc: "Un continente entero de oídos nuevos." }
   ],
 
-  /* ---------- Festivales y shows en vivo (FASE 5) ----------
-     Grandes escenarios de una sola noche: mucha plata, fans
-     y un empujón de legado. neto = bruto - costo. */
-  FESTIVALES: [
-    { id: "local",    nombre: "Festival de tu ciudad",         emoji: "🎪", nivelMin: 1, costo: 500,  base: 800,   fans: 500,   popularidad: 3, legado: 2, desc: "El primer escenario grande de tu carrera." },
-    { id: "nacional", nombre: "Festival nacional",             emoji: "🏟️", nivelMin: 3, costo: 2500, base: 4000,  fans: 2500,  popularidad: 5, legado: 3, desc: "Tu música frente a miles de personas." },
-    { id: "regional", nombre: "Festival internacional regional", emoji: "🌎", nivelMin: 5, costo: 8000,  base: 12000, fans: 6000,  popularidad: 7, legado: 4, desc: "Artistas de todo el continente en el mismo cartel." },
-    { id: "global",   nombre: "Festival global estrella",      emoji: "✨", nivelMin: 7, costo: 20000, base: 30000, fans: 15000, popularidad: 9, legado: 5, desc: "El festival de los festivales. El mundo te mira." }
-  ],
+  /* ---------- Shows en el under (FASE 5) ----------
+     No hay festivales: los shows se arman en los lugares de la
+     escena (Under.FESTIVALES elige LUGARES según tu nivel).
+     neto = bruto - costo. */
 
   /* ---------- Créditos y deudas (FASE 5) ----------
      Pedís plata ahora, la devolvés en cuotas con interés.
@@ -627,7 +649,7 @@ Under.DATA = {
       disponible: function (s) { return !s.flags.inversionOfrecidaEsteAnio && !!Under.INVERSIONES._ofrecible(s); },
       generar: function (s) { return Under.INVERSIONES.crearEventoInversion(s); }
     },
-    /* Fase 5: plataformas, mercados, festivales, evolución, documental, créditos y catálogo */
+    /* Fase 5: plataformas, mercados, shows, evolución, documental, créditos y catálogo */
     {
       id: "plataforma", peso: 2,
       disponible: function (s) { return !s.flags.plataformaEsteAnio && !!Under.PLATAFORMAS._mejorOfrecible(s); },
@@ -927,6 +949,31 @@ Under.DATA = {
       },
       generar: function (s) { return Under.UNDER.crearEventoPascu(s); }
     },
+    /* Los grandes del under (PRIORIDAD 10): lil naue, cero y zell.
+       Cuanto mejor te va (más fans), más se te abren. Están
+       disponibles para el que se quedó en el under y para el
+       que salió pero sigue manteniendo la escena cerca. */
+    {
+      id: "under_lil_naue", peso: 2,
+      disponible: function (s) {
+        return s.stats.fans >= 20000 && s.lanzamientos >= 1;
+      },
+      generar: function (s) { return Under.UNDER.crearEventoLilNaue(s); }
+    },
+    {
+      id: "under_cero", peso: 2,
+      disponible: function (s) {
+        return s.stats.fans >= 50000 && s.lanzamientos >= 1;
+      },
+      generar: function (s) { return Under.UNDER.crearEventoCero(s); }
+    },
+    {
+      id: "under_zell", peso: 2,
+      disponible: function (s) {
+        return s.stats.fans >= 200000 && s.lanzamientos >= 1;
+      },
+      generar: function (s) { return Under.UNDER.crearEventoZell(s); }
+    },
     /* Los nombres de la escena cuando ya saliste del underground:
        Ivinn, Pulmon1312 y Drokerr crecen con el mainstream. */
     {
@@ -1222,14 +1269,6 @@ Under.DATA = {
           !!Under.MEMORIA && Under.MEMORIA.recuerda(s, "rechazoProductor");
       },
       generar: function (s) { return Under.MEMORIA.crearEventoProductor(s); }
-    },
-    {
-      id: "mem_nova", peso: 1,
-      disponible: function (s) {
-        return s.año >= 6 && s.año <= 10 && !s.flags.memNovaUsado &&
-          !!Under.MEMORIA && Under.MEMORIA.recuerda(s, "rechazoMiaNova");
-      },
-      generar: function (s) { return Under.MEMORIA.crearEventoNova(s); }
     },
     {
       id: "mem_escena", peso: 1,
@@ -1633,38 +1672,6 @@ Under.DATA = {
           resultado: "Tu foco sigue siendo la música. El merch espera.",
           efectos: { talent: 1 },
           log: "Dejó pasar la chance de hacer merch."
-        }
-      ]
-    },
-
-    {
-      id: "colaboracion_emergente",
-      prioridad: 0,
-      era: ["comienzos"],
-      añoMin: 3, añoMax: 4,
-      titulo: "Una colaboración con Mía Nova",
-      texto: "Mía Nova es una artista emergente de tu ciudad con más seguidores que vos. Le gusta tu sonido y propone un tema juntos, 50/50.",
-      opciones: [
-        {
-          texto: "Aceptar, 50/50",
-          resultado: "El tema sale y su público te descubre. La escena habla bien de vos por sumarte sin vueltas.",
-          efectos: { fans: 900, popularity: 7 },
-          flags: { colaboroMiaNova: true },
-          log: "Colaboraste con Mía Nova 50/50."
-        },
-        {
-          texto: "Aceptar, pero querer el crédito",
-          resultado: "Aceptás pero pedís que tu nombre vaya primero y la mitad del dinero. El tema sale, pero Mía Nova te mira distinto.",
-          efectos: { money: 150, fans: 700, popularity: 5 },
-          flags: { colaboroMiaNova: true, condicionesDuras: true },
-          log: "Colaboraste con Mía Nova con condiciones duras."
-        },
-        {
-          texto: "Rechazar la colaboración",
-          resultado: "Preferís no compartir tu sonido todavía. Seguís en lo tuyo, más lento pero más tuyo.",
-          efectos: { talent: 1, popularity: -1 },
-          flags: { rechazoMiaNova: true },
-          log: "Rechazaste colaborar con Mía Nova."
         }
       ]
     },
@@ -2237,8 +2244,8 @@ Under.DATA = {
     { id: "primera_inversion", icono: "📈", nombre: "Primera inversión",    check: function (s) { return s.totalInversiones >= 1; } },
     { id: "vida_equilibrada", icono: "💚", nombre: "Vida equilibrada",     check: function (s) { return s.relaciones >= 70; } },
     { id: "retiro_cima",      icono: "👑", nombre: "Retiro en la cima",    check: function (s) { return !!s.retirado && !!s.resultadoFinal && s.resultadoFinal.tipo === "retiro_cima"; } },
-    /* Fase 5: plataformas, mercados, festivales, legado y economía */
-    { id: "primer_festival",    icono: "🎪", nombre: "Primer festival",      check: function (s) { return s.totalFestivales >= 1; } },
+    /* Fase 5: plataformas, mercados, shows del under, legado y economía */
+    { id: "primer_show",         icono: "🎤", nombre: "Primer show en el under", check: function (s) { return s.totalFestivales >= 1; } },
     { id: "primer_mercado",     icono: "🌎", nombre: "Conquistó un mercado", check: function (s) { return s.mercados.length >= 1; } },
     { id: "mundo_conquistado",  icono: "🌏", nombre: "Mundo conquistado",    check: function (s) { return s.mercados.length >= 4; } },
     { id: "documental",         icono: "🎬", nombre: "Su historia se cuenta", check: function (s) { return s.documentales >= 1; } },

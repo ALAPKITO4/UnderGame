@@ -112,7 +112,7 @@ Under.SYSTEMS = {
     }
     /* Desde el año 2 la música sale sola (Under.MUSIC.lanzarAutomatico
        se ejecuta en iniciarAnio). Las decisiones de cada año son los
-       otros eventos de la escena: giras, sellos, festivales, crisis… */
+       otros eventos de la escena: giras, sellos, shows, crisis… */
     if (!state.ordenGuion) state.ordenGuion = Under.SYSTEMS._crearOrdenGuion();
     var scripted = Under.SYSTEMS.eventosDisponibles(state);
     if (scripted.length) {

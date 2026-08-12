@@ -161,7 +161,7 @@ Under.GRANDE = {
   crearEventoEstadio: function (state) {
     return Under.GRANDE._crear("grande_estadio", "Una fecha en el estadio", [
       "Un estadio de tu ciudad te ofrece la fecha de apertura de su temporada.",
-      "Un festival gigante te ubica en el escenario principal, antes del headliner.",
+      "Una fecha gigante te ubica en el escenario principal, antes del headliner.",
       "Te proponen un show único en un estadio, con producción completa."
     ], [
       {
@@ -526,7 +526,7 @@ Under.GRANDE = {
     var p = Under.DATA.escena({ rol: "admin" });
     return Under.GRANDE._crear("grande_verano", "El verano te reclama", [
       "Te proponen una gira de verano por las playas y ciudades turísticas.",
-      "Los festivales de verano arman un circuito y quieren que lo encabeces.",
+      "Los lugares del under arman el circuito de verano y quieren que lo encabeces.",
       p.nombre + " arma un tour de temporada alta y te ofrece la cabeza de cartel."
     ], [
       {

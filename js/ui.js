@@ -337,7 +337,7 @@ Under.UI = {
     if (s.totalEscandalos) act.push('⚠️ ' + s.totalEscandalos + ' escándalo' + (s.totalEscandalos === 1 ? "" : "s"));
     if (s.inversiones.length) act.push('📈 ' + s.inversiones.length + ' inversión' + (s.inversiones.length === 1 ? "" : "es"));
     if (s.equipo.length) act.push('🛠️ ' + s.equipo.length + ' en el equipo');
-    if (s.totalFestivales) act.push('🎪 ' + s.totalFestivales + ' festival' + (s.totalFestivales === 1 ? "" : "es"));
+    if (s.totalFestivales) act.push('🎤 ' + s.totalFestivales + ' show en el under' + (s.totalFestivales === 1 ? "" : "es"));
     if (s.mercados.length) act.push('🌎 ' + s.mercados.length + ' mercado' + (s.mercados.length === 1 ? "" : "s"));
     if (s.plataforma) act.push(s.plataforma.emoji + ' ' + s.plataforma.nombre);
     if (Under.RELACIONES) {
@@ -410,7 +410,7 @@ Under.UI = {
             '<div class="mision">' +
               '<div class="mision-top"><span>' + def.icono + ' ' + Under.UI.esc(def.titulo) + '</span><b>' +
                 Under.UI.fmt(prog) + ' / ' + Under.UI.fmt(def.meta) + '</b></div>' +
-              '<div class="mision-desc">' + Under.UI.esc(def.desc) + '</div>' +
+              '<div class="mision-desc">' + Under.UI.esc(Under.UI.txt(s, def.desc)) + '</div>' +
               Under.UI.bar(pct) +
             '</div>'
           );
@@ -726,7 +726,7 @@ Under.UI = {
         return Under.UI.sumRow(f.emoji + " " + f.nombre + " · Año " + f.año,
           "Neto " + Under.UI.fmtDinero(f.neto) + " · " + Under.UI.fmt(f.fans) + " fans");
       }).join("");
-      resumen += Under.UI.sec("🎪 Festivales · " + s.totalFestivales, fest);
+      resumen += Under.UI.sec("🎤 Shows en el under · " + s.totalFestivales, fest);
     }
 
     if (s.mercados.length) {
@@ -833,7 +833,7 @@ Under.UI = {
         '<div class="card fin-stat"><div class="v">' + Math.round(s.energia) + '</div><div class="k">Energía final</div></div>' +
         '<div class="card fin-stat"><div class="v">' + Math.round(s.relaciones) + '</div><div class="k">Vida personal</div></div>' +
         '<div class="card fin-stat"><div class="v">' + Math.round(s.legado) + '</div><div class="k">Legado</div></div>' +
-        '<div class="card fin-stat"><div class="v">' + s.totalFestivales + '</div><div class="k">Festivales</div></div>' +
+        '<div class="card fin-stat"><div class="v">' + s.totalFestivales + '</div><div class="k">Shows en el under</div></div>' +
         '<div class="card fin-stat"><div class="v">' + s.mercados.length + '</div><div class="k">Mercados</div></div>' +
         (s.deudas.length
           ? '<div class="card fin-stat"><div class="v">' + s.deudas.length + '</div><div class="k">Deudas</div></div>'

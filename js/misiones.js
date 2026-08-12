@@ -9,7 +9,7 @@
 
    Progreso: cada misión lee un contador del estado
    (state.contadores) o una estadística global (fans, giras,
-   festivales, premios…). Al completarse aplica su recompensa,
+   shows en lugares del under, premios…). Al completarse aplica su recompensa,
    la registra en el historial y avisa con un toast.
 
    Contadores: los eventos los incrementan con
@@ -205,7 +205,9 @@ Under.MISIONES = (function () {
   m("m_gira_1", "escena", 2, 4, "🎪", "Primera gira", "Hacé 1 gira", 1, function (s) { return s.totalGiras; },
     { fans: 3000, money: 2000, popularity: 2 },
     "🎯 Misión completada: Primera gira. Tu música sale de gira por primera vez.");
-  m("m_giras_3", "escena", 3, 5, "🎪", "La carretera", "Hacé 3 giras", 3, function (s) { return s.totalGiras; },
+  m("m_giras_3", "escena", 3, 5, "🎪", "La carretera", function (s) {
+    return "Hacé 3 giras. En la primera fila ya están " + Under.DATA.publico(2) + ".";
+  }, 3, function (s) { return s.totalGiras; },
     { fans: 15000, money: 5000, popularity: 3 },
     "🎯 Misión completada: La carretera. Tres giras y el país ya conoce tu show.");
   m("m_giras_5", "escena", 4, 6, "🎪", "Rodando sin parar", "Hacé 5 giras", 5, function (s) { return s.totalGiras; },
@@ -217,27 +219,31 @@ Under.MISIONES = (function () {
   m("m_giras_8", "escena", 5, 7, "🎪", "La ruta te conoce", "Hacé 8 giras", 8, function (s) { return s.totalGiras; },
     { fans: 60000, money: 18000, popularity: 5 },
     "🎯 Misión completada: La ruta te conoce. Ocho giras y ninguna ciudad te queda chica.");
-  m("m_fest_1", "escena", 1, 4, "🎪", "Una noche grande", "Tocá en 1 festival", 1, function (s) { return s.totalFestivales; },
+  m("m_fest_1", "escena", 1, 4, "🎪", "Una noche grande", "Tocá en 1 show en un lugar del under", 1, function (s) { return s.totalFestivales; },
     { fans: 2000, popularity: 4, _legado: 2 },
-    "🎯 Misión completada: Una noche grande. Tocaste frente a una multitud.");
-  m("m_fest_3", "escena", 3, 6, "🎪", "El circuito de festivales", "Tocá en 3 festivales", 3, function (s) { return s.totalFestivales; },
+    "🎯 Misión completada: Una noche grande. Tocaste en un lugar del under lleno.");
+  m("m_fest_3", "escena", 3, 6, "🎪", "El circuito de la escena", function (s) {
+    return "Tocá en 3 shows en lugares del under. " + Under.DATA.publico(2) + " ya te siguen a todos lados.";
+  }, 3, function (s) { return s.totalFestivales; },
     { fans: 15000, popularity: 5, _legado: 5 },
-    "🎯 Misión completada: El circuito de festivales. Tu nombre ya está en los carteles.");
-  m("m_fest_5", "escena", 4, 7, "🎪", "Cartel habitual", "Tocá en 5 festivales", 5, function (s) { return s.totalFestivales; },
+    "🎯 Misión completada: El circuito de la escena. Tu nombre ya está en los carteles de los lugares.");
+  m("m_fest_5", "escena", 4, 7, "🎪", "Cartel habitual", function (s) {
+    return "Tocá en 5 shows en lugares del under. El fotógrafo de undercba ya te reserva lugar en la tapa.";
+  }, 5, function (s) { return s.totalFestivales; },
     { fans: 30000, popularity: 6, _legado: 8 },
-    "🎯 Misión completada: Cartel habitual. Los festivales te reservan fecha sin preguntar.");
-  m("m_fest_8", "escena", 6, 8, "🎪", "Festejar en serio", "Tocá en 8 festivales", 8, function (s) { return s.totalFestivales; },
+    "🎯 Misión completada: Cartel habitual. Los lugares de la escena te reservan fecha sin preguntar.");
+  m("m_fest_8", "escena", 6, 8, "🎪", "Tocar en serio", "Tocá en 8 shows en lugares del under", 8, function (s) { return s.totalFestivales; },
     { fans: 60000, popularity: 7, _legado: 10 },
-    "🎯 Misión completada: Festejar en serio. Ocho festivales y sos de los más pedidos.");
-  m("m_vivo_5", "escena", 3, 6, "🎤", "Vivir el escenario", "Sumá 5 shows entre giras y festivales", 5,
+    "🎯 Misión completada: Tocar en serio. Ocho shows en el under y sos de los más pedidos.");
+  m("m_vivo_5", "escena", 3, 6, "🎤", "Vivir el escenario", "Sumá 5 shows entre giras y fechas del under", 5,
     function (s) { return (s.totalGiras || 0) + (s.totalFestivales || 0); },
     { fans: 15000, popularity: 4, money: 5000 },
     "🎯 Misión completada: Vivir el escenario. Cinco noches que valen oro.");
-  m("m_vivo_10", "escena", 4, 7, "🎤", "Nacido para el vivo", "Sumá 10 shows entre giras y festivales", 10,
+  m("m_vivo_10", "escena", 4, 7, "🎤", "Nacido para el vivo", "Sumá 10 shows entre giras y fechas del under", 10,
     function (s) { return (s.totalGiras || 0) + (s.totalFestivales || 0); },
     { fans: 40000, popularity: 5, money: 10000 },
     "🎯 Misión completada: Nacido para el vivo. Diez shows y el público pide más.");
-  m("m_vivo_15", "escena", 5, 8, "🎤", "El show no para", "Sumá 15 shows entre giras y festivales", 15,
+  m("m_vivo_15", "escena", 5, 8, "🎤", "El show no para", "Sumá 15 shows entre giras y fechas del under", 15,
     function (s) { return (s.totalGiras || 0) + (s.totalFestivales || 0); },
     { fans: 70000, popularity: 6, money: 20000 },
     "🎯 Misión completada: El show no para. Quince shows y el escenario te necesita.");
@@ -248,11 +254,11 @@ Under.MISIONES = (function () {
         { fans: Math.round(g.fans * 0.5), money: Math.round(g.base * 0.3), popularity: g.popularidad },
         "🎯 Misión completada: " + g.nombre + ". Un hito en tu carrera en vivo.");
     });
-    Under.DATA.FESTIVALES.forEach(function (f) {
-      m("m_fest_" + f.id, "escena", f.nivelMin, 8, f.emoji, "Tocar en " + f.nombre, "Tocá en " + f.nombre.toLowerCase(), 1,
-        function (fid) { return function (s) { return (s.festivales || []).filter(function (x) { return x.id === fid; }).length; }; }(f.id),
-        { fans: Math.round(f.fans * 0.5), popularity: f.popularidad, _legado: f.legado },
-        "🎯 Misión completada: Tocaste en " + f.nombre + ". Una noche para el recuerdo.");
+    Under.DATA.LUGARES.forEach(function (l) {
+      m("m_show_" + l.nombre.replace(/[^a-z0-9]/gi, "_").toLowerCase(), "escena", l.nivel, 8, "🎤", "Tocar en " + l.nombre, "Tocá en " + l.nombre.toLowerCase(), 1,
+        function (ln) { return function (s) { return (s.festivales || []).filter(function (x) { return x.id === ln; }).length; }; }(l.nombre),
+        { fans: 2000 * (l.nivel + 1), popularity: 3 + l.nivel, _legado: 2 + l.nivel },
+        "🎯 Misión completada: Tocaste en " + l.nombre + ". Una noche para el recuerdo.");
     });
   })();
 
@@ -796,10 +802,10 @@ Under.MISIONES = (function () {
   m("m2_giras_10", "escena", 6, 8, "🎪", "Una década de ruta", "Hacé 10 giras", 10, function (s) { return s.totalGiras; },
     { fans: 70000, money: 25000, popularity: 5 },
     "🎯 Misión completada: Una década de ruta. La carretera es tu casa.");
-  m("m2_fest_10", "escena", 7, 8, "🎪", "Rey de los festivales", "Tocá en 10 festivales", 10, function (s) { return s.totalFestivales; },
+  m("m2_fest_10", "escena", 7, 8, "🎪", "Rey de la escena", "Tocá en 10 shows en lugares del under", 10, function (s) { return s.totalFestivales; },
     { fans: 80000, popularity: 7, _legado: 10 },
-    "🎯 Misión completada: Rey de los festivales. Todos los carteles te quieren.");
-  m("m2_vivo_20", "escena", 6, 8, "🎤", "Nacido para el escenario", "Sumá 20 shows entre giras y festivales", 20,
+    "🎯 Misión completada: Rey de la escena. Todos los lugares del under te quieren.");
+  m("m2_vivo_20", "escena", 6, 8, "🎤", "Nacido para el escenario", "Sumá 20 shows entre giras y fechas del under", 20,
     function (s) { return (s.totalGiras || 0) + (s.totalFestivales || 0); },
     { fans: 60000, popularity: 6, money: 25000 },
     "🎯 Misión completada: Nacido para el escenario. Veinte noches y pedís más.");

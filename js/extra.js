@@ -92,7 +92,7 @@ Under.EXTRA = {
     return Under.EXTRA._crear("gen_rock", "Una banda de culto te invita", [
       "Una banda legendaria del rock local te ofrece abrir su fecha en un club mítico.",
       "Una banda de culto de tu ciudad te invita a su sala de ensayo para una jam.",
-      "Un festival alternativo de rock te ubica en el escenario chico, el de los de verdad."
+      "Un ciclo del under te ubica en el escenario chico, el de los de verdad."
     ], [
       {
         texto: "Abrir su fecha",

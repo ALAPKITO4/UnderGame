@@ -36,9 +36,7 @@ Under.MEMORIA = {
     { flag: "temaApresurado",   titulo: "Apuraste un tema por el momento",                  tono: "mala",   rep: -1 },
     { flag: "subioEscena",      titulo: "Improvisaste frente a la escena",                  tono: "neutra", rep: 1 },
     { flag: "hizoMerch",        titulo: "Empezaste a vender tu merch",                      tono: "buena",  rep: 1 },
-    { flag: "colaboroMiaNova",  titulo: "Colaboraste con Mía Nova",                         tono: "buena",  rep: 2 },
     { flag: "condicionesDuras", titulo: "Pusiste condiciones duras en una colaboración",    tono: "mala",   rep: -3 },
-    { flag: "rechazoMiaNova",   titulo: "Rechazaste colaborar con Mía Nova",                tono: "neutra", rep: -1 },
     { flag: "independiente",    titulo: "Seguiste independiente",                           tono: "neutra", rep: 2 },
     { flag: "contratoUnDisco",  titulo: "Firmaste un contrato de un solo disco",            tono: "neutra", rep: 1 }
   ],
@@ -186,54 +184,6 @@ Under.MEMORIA = {
         },
         resultado: "Lo reconocés y le decís la verdad: 'No era tu música, era mi control'. Él lo respeta, aunque sin abrir la puerta.",
         log: "Reconoció al productor sin pedir nada."
-      }
-    ]);
-  },
-
-  /* ---------- Mía Nova se acuerda de vos (años 6-10) ----------
-     La artista emergente que querías cobrarle caro (o que
-     rechazaste) ahora es la más grande de tu país. El pasado
-     tiene una segunda vuelta. */
-  crearEventoNova: function (state) {
-    return Under.MEMORIA._crear("mem_nova", "Mía Nova se acuerda de vos", [
-      "Mía Nova, esa artista emergente que te propuso un tema hace años, ahora es la más grande de tu país. En su última entrevista dijo tu nombre y la nota explotó.",
-      "La que quisiste cobrarle caro un feat cuando arrancaba ahora llena estadios. En un programa dijo: 'Me acuerdo perfectamente de él'."
-    ], [
-      {
-        texto: "Responder con respeto y tender la mano",
-        desc: "Cerrar viejas cuentas suma.",
-        efectos: function (s) {
-          Under.MEMORIA._limpiar("mem_nova");
-          s.flags.memNovaUsado = true;
-          Under.MEMORIA.registrar(s, "memNovaPaz", "Cerraste la vieja cuenta con Mía Nova", "buena", 3);
-          return { fans: Under.SYSTEMS.fansEscala(s, 1500), popularity: 2 };
-        },
-        resultado: "Le respondés con un gesto público de respeto. Su público te escucha con otros oídos y la cuenta vieja queda saldada.",
-        log: "Tendió la mano a Mía Nova años después."
-      },
-      {
-        texto: "Contestar con filo",
-        desc: "El orgullo de antes, hoy.",
-        efectos: function (s) {
-          Under.MEMORIA._limpiar("mem_nova");
-          s.flags.memNovaUsado = true;
-          Under.MEMORIA.registrar(s, "memNovaFilo", "Le contestó con filo a Mía Nova", "mala", -3);
-          return { popularity: 3, fans: Under.SYSTEMS.fansEscala(s, 600) };
-        },
-        resultado: "Le contestás filoso. El chisme vende y sumás ruido, pero la escena anota que seguís con la misma espina.",
-        log: "Le contestó con filo a Mía Nova."
-      },
-      {
-        texto: "No responder",
-        desc: "El silencio también es una respuesta.",
-        efectos: function (s) {
-          Under.MEMORIA._limpiar("mem_nova");
-          s.flags.memNovaUsado = true;
-          Under.MEMORIA.registrar(s, "memNovaSilencio", "No respondió cuando Mía Nova lo nombró", "neutra", -1);
-          return { fans: Under.SYSTEMS.fansEscala(s, 200) };
-        },
-        resultado: "No decís nada. Un poco de su público te descubre igual, y el resto lo toma como distancia.",
-        log: "No respondió cuando Mía Nova lo nombró."
       }
     ]);
   },

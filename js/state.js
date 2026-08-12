@@ -122,7 +122,7 @@ Under.STATE = {
       totalEscandalos: 0,
       retirado: false,
       añoRetiro: null,
-      /* Fase 5: plataformas, mercados, festivales, legado y economía */
+      /* Fase 5: plataformas, mercados, shows, legado y economía */
       plataforma: null,
       mercados: [],
       festivales: [],

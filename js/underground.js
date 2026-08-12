@@ -2435,5 +2435,161 @@ Under.UNDER = {
         log: "Declinó el proyecto de Drokerr y Family Racks."
       }
     ]);
+  },
+
+  /* ---------- lil naue (20k+ fans): el puente del under ---------- */
+  crearEventoLilNaue: function (state) {
+    return Under.UNDER._crear("under_lil_naue", "lil naue quiere tu oído", [
+      "lil naue, que ya es nombre en el under, te escribe: «Pasate por mi casa, tengo un beat que necesita tu voz».",
+      "lil naue armó una sesión en su estudio y te convida la mitad: quiere que su sonido y el tuyo se crucen.",
+      "El under habla de vos en los pasillos y lil naue quiere aprovechar el momento: un tema a medias, 50/50."
+    ], [
+      {
+        texto: "Grabar el tema con lil naue",
+        desc: "Su flow callejero + tu sonido.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_lil_naue");
+          var est = { calidad: 4, viral: 0, texto: "colab con lil naue" };
+          var L = Under.MUSIC._calcular(s, "Puente 20 (feat. lil naue)", est);
+          Under.MUSIC._registrar(s, L, est, 0);
+          s.colaboraciones.push({ año: s.año, nombre: L.nombre, partner: "lil naue", tipo: "igual", tier: L.tier, repros: L.repros, fans: L.fans, dinero: L.dinero });
+          s.totalColabs += 1;
+          s.flags.colabEsteAnio = true;
+          if (Under.RELACIONES) Under.RELACIONES.agregar(s, "red_lil_naue", "lil naue", "colega", 30);
+          return { fans: L.fans, popularity: L.popularidad, talent: L.talento, money: L.dinero, _energia: -10, _lanzamiento: L };
+        },
+        resultado: function (s, efectos) {
+          var L = efectos._lanzamiento;
+          return "El tema de los dos suena en los parlantes del under antes que en cualquier lado.\n\n" + Under.MUSIC.TIER_FLAVOR[L.tier] +
+            "\n\n" + L.tierIcono + " " + L.tierNombre + " · " + Under.UI.fmtExacto(L.repros) + " reproducciones.";
+        },
+        log: "Colaboró con lil naue."
+      },
+      {
+        texto: "Aceptar una fecha en su circuito",
+        desc: "Sin grabar: su público te ve en vivo.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_lil_naue");
+          Under.MISIONES.sumar(s, "toques", 1);
+          return { money: Under.SYSTEMS.efectivoEscala(s, 400), fans: Under.SYSTEMS.fansEscala(s, 1800), popularity: 3, _energia: -12 };
+        },
+        resultado: "Compartís fecha con lil naue y su gente queda con tu nombre en la boca. El under suma un cruce más.",
+        log: "Compartió fecha con lil naue."
+      },
+      {
+        texto: "Declinar",
+        desc: "Todavía no, aunque la puerta queda abierta.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_lil_naue");
+          return {};
+        },
+        resultado: "Le decís que no por ahora. lil naue asiente: en el under los tiempos se respetan.",
+        log: "Declinó la propuesta de lil naue."
+      }
+    ]);
+  },
+
+  /* ---------- cero (50k+ fans): el top del under ---------- */
+  crearEventoCero: function (state) {
+    return Under.UNDER._crear("under_cero", "cero te abre su círculo", [
+      "cero es de lo más arriba que tiene el under: poca prensa, mucho nombre. Y te busca a vos.",
+      "cero rara vez labura con alguien. Que te llame es un mensaje: «me gusta cómo se mueve tu sonido».",
+      "En el under todos hablan de cero en voz baja. Ahora te escribe a vos para una sesión."
+    ], [
+      {
+        texto: "Grabar con cero",
+        desc: "Un top del under te elige. Eso se paga.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_cero");
+          var est = { calidad: 6, viral: 0, texto: "colab con cero" };
+          var L = Under.MUSIC._calcular(s, "Círculo (feat. cero)", est);
+          Under.MUSIC._registrar(s, L, est, 0);
+          s.colaboraciones.push({ año: s.año, nombre: L.nombre, partner: "cero", tipo: "igual", tier: L.tier, repros: L.repros, fans: L.fans, dinero: L.dinero });
+          s.totalColabs += 1;
+          s.flags.colabEsteAnio = true;
+          if (Under.RELACIONES) Under.RELACIONES.agregar(s, "red_cero", "cero", "culto", 35);
+          return { fans: L.fans, popularity: L.popularidad, talent: L.talento, money: L.dinero, _energia: -10, _lanzamiento: L };
+        },
+        resultado: function (s, efectos) {
+          var L = efectos._lanzamiento;
+          return "La sesión con cero es de las que se cuentan. El tema vuela por el under entero.\n\n" + Under.MUSIC.TIER_FLAVOR[L.tier] +
+            "\n\n" + L.tierIcono + " " + L.tierNombre + " · " + Under.UI.fmtExacto(L.repros) + " reproducciones.";
+        },
+        log: "Colaboró con cero."
+      },
+      {
+        texto: "Pedir una fecha juntos",
+        desc: "Su círculo + tu público, en el mismo boliche.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_cero");
+          Under.MISIONES.sumar(s, "toques", 1);
+          return { money: Under.SYSTEMS.efectivoEscala(s, 800), fans: Under.SYSTEMS.fansEscala(s, 3000), popularity: 4, _energia: -12 };
+        },
+        resultado: "Armás una fecha con cero y el boliche queda chico. La escena entera habla de esa noche.",
+        log: "Hizo una fecha con cero."
+      },
+      {
+        texto: "No entrar a su círculo",
+        desc: "cero se mueve raro y preferís distancia.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_cero");
+          return { talent: 1 };
+        },
+        resultado: "Le das las gracias y seguís tu rumbo. cero respeta la distancia: son códigos.",
+        log: "Declinó la propuesta de cero."
+      }
+    ]);
+  },
+
+  /* ---------- zell (200k+ fans): el mejor artista del under ---------- */
+  crearEventoZell: function (state) {
+    return Under.UNDER._crear("under_zell", "zell te convoca", [
+      "zell es, para la escena, el mejor artista del under. Un llamado suyo no es una propuesta: es una carta de presentación.",
+      "zell viene de tocar en los lugares más chicos y llenarlos a todos. Quiere hacer algo con vos: un tema, un vivo, algo que quede.",
+      "El que manda en el under bajo tierra es zell, y te pide una sesión. La escena va a mirar qué hacés."
+    ], [
+      {
+        texto: "Grabar el tema con zell",
+        desc: "El mejor del under poniendo su nombre al lado del tuyo.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_zell");
+          var est = { calidad: 8, viral: 1, texto: "colab con zell" };
+          var L = Under.MUSIC._calcular(s, "Zell (feat. tu nombre)", est);
+          Under.MUSIC._registrar(s, L, est, 0);
+          s.colaboraciones.push({ año: s.año, nombre: L.nombre, partner: "zell", tipo: "estrella", tier: L.tier, repros: L.repros, fans: L.fans, dinero: L.dinero });
+          s.totalColabs += 1;
+          s.flags.colabEsteAnio = true;
+          if (Under.RELACIONES) Under.RELACIONES.agregar(s, "red_zell", "zell", "estrella", 40);
+          return { fans: L.fans, popularity: L.popularidad, talent: L.talento, money: L.dinero, _energia: -10, _lanzamiento: L };
+        },
+        resultado: function (s, efectos) {
+          var L = efectos._lanzamiento;
+          return "zell sale del caparazón para grabar con vos. El tema se corre de boca en boca antes de publicarse.\n\n" + Under.MUSIC.TIER_FLAVOR[L.tier] +
+            "\n\n" + L.tierIcono + " " + L.tierNombre + " · " + Under.UI.fmtExacto(L.repros) + " reproducciones.";
+        },
+        log: "Colaboró con zell, el mejor del under."
+      },
+      {
+        texto: "Hacer un vivo juntos",
+        desc: "Un show que la escena va a contar años.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_zell");
+          Under.MISIONES.sumar(s, "toques", 1);
+          return { money: Under.SYSTEMS.efectivoEscala(s, 1200), fans: Under.SYSTEMS.fansEscala(s, 5000), popularity: 5, _energia: -14, _legado: 2 };
+        },
+        resultado: "Hacen un vivo de los que se cuentan por década. Hasta el que no estaba, dice que estuvo.",
+        log: "Hizo un vivo con zell."
+      },
+      {
+        texto: "Declinar con respeto",
+        desc: "zell entiende que los caminos a veces no se cruzan.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_zell");
+          return { talent: 1, popularity: -1 };
+        },
+        resultado: "Le decís que no con respeto. zell asiente y la escena anota que tuviste coraje para decir que no.",
+        log: "Declinó la propuesta de zell."
+      }
+    ]);
   }
 };

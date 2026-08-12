@@ -202,7 +202,7 @@ function jugar(gen, per) {
          "under_family_cypher", "under_kiwa", "under_marti", "under_club_paraguay", "under_990",
          "under_undersc", "under_la_sobre", "under_pascu", "main_ivinn", "main_pulmon", "main_drokerr",
          "merch_barrio",
-         "mem_productor", "mem_nova", "mem_escena",
+         "mem_productor", "mem_escena",
          "cat_revival", "cat_onehit",
          "ctx_reputacion_alta", "ctx_reputacion_baja", "ctx_momentum_alto",
          "ctx_momentum_bajo", "ctx_legado", "ctx_hype",
@@ -621,9 +621,9 @@ function jugar(gen, per) {
       "Juego " + totalGames + ": mercado con id desconocido (" + m.id + ")");
   });
   s.festivales.forEach(function (f) {
-    assert(Under.DATA.FESTIVALES.some(function (x) { return x.id === f.id; }),
-      "Juego " + totalGames + ": festival con id desconocido (" + f.id + ")");
-    assert(typeof f.neto === "number" && !isNaN(f.neto), "Juego " + totalGames + ": festival sin neto numérico");
+    assert(Under.DATA.LUGARES.some(function (x) { return x.nombre === f.id; }),
+      "Juego " + totalGames + ": show con lugar desconocido (" + f.id + ")");
+    assert(typeof f.neto === "number" && !isNaN(f.neto), "Juego " + totalGames + ": show sin neto numérico");
   });
   s.deudas.forEach(function (d) {
     assert(typeof d.cuota === "number" && d.cuota > 0, "Juego " + totalGames + ": deuda sin cuota válida");
@@ -776,7 +776,7 @@ console.log("Premios → nominaciones: " + statsPremios.nominaciones +
   " · ganados: " + statsPremios.ganados + " · perdidos: " + statsPremios.perdidos);
 console.log("Fase 4 acumulado → proyectos: " + statsF4.albums + " · escándalos: " + statsF4.escandalos +
   " · inversiones: " + statsF4.inversiones + " · miembros de equipo: " + statsF4.equipo);
-console.log("Fase 5 acumulado → festivales: " + statsF5.festivales + " · mercados: " + statsF5.mercados +
+console.log("Fase 5 acumulado → shows en lugares del under: " + statsF5.festivales + " · mercados: " + statsF5.mercados +
   " · reinvenciones: " + statsF5.reinvenciones + " · documentales: " + statsF5.documentales +
   " · créditos: " + statsF5.creditos + " · venta de catálogo: " + statsF5.catologos);
 var promedioNivel = statsF6.niveles.reduce(function (a, b) { return a + b; }, 0) / statsF6.niveles.length;
@@ -799,7 +799,7 @@ assert(statsF4.escandalos >= 1, "Ninguna partida sufrió un escándalo");
 assert(statsF4.inversiones >= 1, "Ninguna partida invirtió");
 assert(statsF4.equipo >= 1, "Ninguna partida contrató equipo");
 
-assert(statsF5.festivales >= 1, "Ninguna partida tocó en un festival");
+assert(statsF5.festivales >= 1, "Ninguna partida tocó en un lugar del under");
 assert(statsF5.mercados >= 1, "Ninguna partida conquistó un mercado");
 assert(statsF5.reinvenciones >= 1, "Ninguna partida se reinventó");
 assert(statsF5.documentales >= 1, "Ninguna partida hizo un documental");

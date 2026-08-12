@@ -97,7 +97,7 @@ Under.PREMIOS = {
       },
       resultado: function (s, efectos) {
         if (efectos._premio && efectos._premio.ganado) {
-          return "Viajás, te sentás en la fila de nominados y aguantás la respiración.\n\nCuando anuncian tu nombre, la sala estalla.\n\nGanás " + premio.nombre + ".";
+          return "Viajás, te sentás en la fila de nominados y aguantás la respiración.\n\nCuando anuncian tu nombre, la sala estalla. En la mesa de la escena, " + Under.DATA.escena({ grupo: "family racks" }).nombre + " y " + Under.DATA.publico(1) + " aplauden de pie.\n\nGanás " + premio.nombre + ".";
         }
         return "La noche se alarga y, cuando anuncian la categoría, el nombre que suena no es el tuyo.\n\nTe felicitan, te sacan una foto de consuelo y prometés volver. La nominación ya es un paso: la industria te anotó.";
       },

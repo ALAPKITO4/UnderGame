@@ -55,7 +55,8 @@ Under.GIRAS = {
       resultado: function (s, efectos) {
         return "La " + gira.nombre + " es un éxito.\n\n" +
           "Recaudaste " + Under.UI.fmtExacto(efectos.money) + " de ganancia y sumaste " +
-          Under.UI.fmtExacto(efectos.fans) + " fans nuevos.\n\nLa escena habla de vos.";
+          Under.UI.fmtExacto(efectos.fans) + " fans nuevos.\n\n" +
+          "Entre el público están " + Under.DATA.publico(2) + ", y el fotógrafo de undercba te dedica una postal de la gira.";
       },
       log: "Hizo la " + gira.nombre + "."
     });
