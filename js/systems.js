@@ -28,7 +28,7 @@ Under.SYSTEMS = {
     viral: function (state) {
       var prob = 0.25 + state.stats.popularity / 200;
       if (Math.random() < prob) {
-        return { fans: Under.SYSTEMS.fansEscala(state, 5000), popularity: 12, money: 300 };
+        return { fans: Under.SYSTEMS.fansEscala(state, 5000), popularity: 12, money: 300, _hype: 15 };
       }
       return { fans: Under.SYSTEMS.fansEscala(state, 300), popularity: 3 };
     }
@@ -40,6 +40,10 @@ Under.SYSTEMS = {
      tierra, la escena siempre te trae algo. */
   decisionesParaAnio: function (state) {
     var base = 2;
+    /* El under es un hervidero: mientras no saliste de la escena
+       bajo tierra, cada año te llueven toques, radios, cyphers y
+       apuestas. Ahí ocurren MÁS cosas por año. */
+    if (Under.STATE.nivelCarrera(state).nivel <= 3) base += 1;
     if (state.stats.popularity >= 60) base += 1;
     if (state.stats.popularity >= 85) base += 1;
     return Under.STATE.clamp(base, 2, 4);
@@ -73,12 +77,18 @@ Under.SYSTEMS = {
   },
 
   seleccionarEvento: function (state) {
-    /* El lanzamiento se ofrece sí o sí una vez por año, antes que
-       cualquier otro evento, para que la carrera siempre tenga música. */
-    if (!state.flags.lanzamientoEsteAnio) {
-      state.flags.lanzamientoEsteAnio = true;
-      return Under.DATA.buscarEvento("lanzamiento", state);
+    /* Hook de cobertura para el smoke test: agenda un evento exacto
+       una vez (p. ej. el documental). Se consume en el flujo normal,
+       así el generador limpia su pendiente al resolver la opción. */
+    if (Under.SYSTEMS._eventoForzado) {
+      var forzado = Under.SYSTEMS._eventoForzado;
+      Under.SYSTEMS._eventoForzado = null;
+      var evForzado = Under.DATA.buscarEvento(forzado, state);
+      if (evForzado) return evForzado;
     }
+    /* Desde el año 2 la música sale sola (Under.MUSIC.lanzarAutomatico
+       se ejecuta en iniciarAnio). Las decisiones de cada año son los
+       otros eventos de la escena: giras, sellos, festivales, crisis… */
     var disponibles = Under.SYSTEMS.eventosDisponibles(state);
     if (disponibles.length > 0) {
       disponibles.sort(function (a, b) {
@@ -91,7 +101,9 @@ Under.SYSTEMS = {
 
   /* Pools de plantillas + eventos dinámicos (lanzamientos, giras,
      colaboraciones, premios, sellos). peso = cuántas veces entra
-     al pozo. Los dinámicos respetan su condición de disponibilidad. */
+     al pozo (puede ser un número o una función del estado, para
+     que el contexto módule qué tan probable es cada evento).
+     Los dinámicos respetan su condición de disponibilidad. */
   seleccionarTemplate: function (state) {
     var pool = [];
     for (var i = 0; i < Under.DATA.TEMPLATES.length; i++) {
@@ -99,7 +111,11 @@ Under.SYSTEMS = {
     }
     Under.DATA.DINAMICOS.forEach(function (d) {
       if (d.disponible && !d.disponible(state)) return;
-      for (var w = 0; w < d.peso; w++) pool.push(d.id);
+      /* Peso dinámico (PRIORIDAD 6): si el peso es una función,
+         el contexto del momento decide qué tan probable es. */
+      var peso = typeof d.peso === "function" ? d.peso(state) : d.peso;
+      peso = Math.max(0, Math.round(peso || 0));
+      for (var w = 0; w < peso; w++) pool.push(d.id);
     });
 
     var ultimo = state.ultimoTemplate;
@@ -138,6 +154,17 @@ Under.SYSTEMS = {
         state.legado = Math.max(0, state.legado + efectos[k]);
         continue;
       }
+      /* El público (PRIORIDAD 3): el hype es interno y se apaga
+         solo; los haters se suman (y se regulan) solos. */
+      if (k === "_hype") {
+        state.hype = Under.STATE.clamp(state.hype + efectos[k], 0, 100);
+        if (state.hype >= 45) state.flags.hypeVivido = true;
+        continue;
+      }
+      if (k === "_haters") {
+        if (Under.PUBLICO) Under.PUBLICO.agregarHaters(state, efectos[k]);
+        continue;
+      }
       if (!(k in stats)) continue;
       stats[k] += efectos[k];
       if (k === "fans" || k === "money") {
@@ -153,29 +180,112 @@ Under.SYSTEMS = {
     return x || "";
   },
 
+  /* ---------- Peso real de cada decisión ----------
+     Elegir mal duele de verdad y elegir bien se nota:
+     - Los fans ganados o perdidos escalan con el nivel de carrera
+       (un error a nivel alto te cuesta una multitud).
+     - Todo golpe deja haters: perder popularidad o espantar fans
+       crea gente que te mira mal.
+     - Los éxitos grandes encienden el hype; las caídas lo apagan.
+     Esto corre sobre TODAS las decisiones (estáticas o dinámicas),
+     sin tocar la narrativa original de cada opción. */
+  consecuencias: function (state, efectos) {
+    var nivel = Under.STATE.nivelCarrera(state).nivel;
+    var f = 1 + nivel * 0.25;
+    var res = {};
+    for (var k in efectos) {
+      var v = efectos[k];
+      if (k === "fans" || k === "money") v = Math.round(v * f);
+      else if (k === "_haters") v = Math.round(v * f);
+      res[k] = v;
+    }
+
+    /* Las consecuencias visibles: los golpes generan odio, los
+       momentos grandes generan ruido. */
+    if (res.fans && res.fans < 0) {
+      res._haters = (res._haters || 0) + Math.round(-res.fans * 0.12);
+    }
+    if (res.popularity && res.popularity < 0) {
+      res._haters = (res._haters || 0) + Math.round(-res.popularity * 3);
+      res._hype = Math.max((res._hype || 0) - 2, -10);
+    }
+    if (res.money && res.money < 0) {
+      /* Perder plata también deja una mala espina, no tan fuerte. */
+      res._haters = (res._haters || 0) + Math.round(Math.min(6, -res.money / 800));
+    }
+    if (res.fans && res.fans >= 1500) {
+      res._hype = (res._hype || 0) + Math.min(8, 2 + Math.round(res.fans / 2500));
+    }
+    return res;
+  },
+
   /* ---------- Ejecutar una decisión ---------- */
   ejecutarDecision: function (state, evento, opcion) {
     var antes = {};
     for (var k in state.stats) antes[k] = state.stats[k];
 
-    var efectos = Under.SYSTEMS.resolverEfecto(state, opcion.efectos);
-    if (opcion.especial) {
-      var especial = Under.SYSTEMS.resolverEspecial(state, opcion.especial);
+    /* Opciones con riesgo real: si falla la tirada, pasa lo que
+       dice riesgoEfectos/riesgoResultado en vez del resultado
+       normal. Así las apuestas pueden salir muy caras. */
+    var opcionReal = opcion;
+    if (opcion.riesgo && Math.random() < opcion.riesgo) {
+      opcionReal = {
+        efectos: opcion.riesgoEfectos || {},
+        resultado: opcion.riesgoResultado || opcion.resultado,
+        log: opcion.riesgoLog || opcion.log,
+        flags: opcion.riesgoFlags || opcion.flags
+      };
+    }
+
+    var efectos = Under.SYSTEMS.resolverEfecto(state, opcionReal.efectos);
+    if (opcionReal.especial) {
+      var especial = Under.SYSTEMS.resolverEspecial(state, opcionReal.especial);
       for (var k2 in especial) {
         efectos[k2] = (efectos[k2] || 0) + especial[k2];
       }
     }
 
-    Under.SYSTEMS.aplicarEfectos(state, efectos);
+    /* Aplico las consecuencias con peso real (escala + haters/hype).
+       La narrativa se construye con los efectos originales para no
+       tocar los textos de cada evento. */
+    var aplicados = Under.SYSTEMS.consecuencias(state, efectos);
+    Under.SYSTEMS.aplicarEfectos(state, aplicados);
 
-    if (opcion.flags) {
-      for (var k3 in opcion.flags) state.flags[k3] = opcion.flags[k3];
+    /* ---- Progresión anual (PRIORIDAD 1) ----
+       Cada decisión suma madurez artística. Y los movimientos de
+       popularidad cargan o drenan la inercia de la fama: un gran
+       salto te deja "en llamas" (el próximo lanzamiento lo nota),
+       una caída o un año quieto te apagan. */
+    /* Carreras por género (PRIORIDAD 5): las escenas de culto
+       (rap/rock) te forman más con cada movimiento del under. */
+    var expGanada = Under.DATA.CONFIG.EXPERIENCIA_POR_DECISION;
+    if (Under.GENEROS && evento && evento.id && evento.id.indexOf("under_") === 0) {
+      expGanada *= Under.GENEROS.escena(state);
+    }
+    state.experiencia = Under.STATE.clamp(state.experiencia + expGanada, 0, 100);
+    var deltaPop = state.stats.popularity - antes.popularity;
+    if (deltaPop !== 0) {
+      state.momentum = Under.STATE.clamp(state.momentum + deltaPop * 2.5, 0, 100);
+    }
+    /* Un error grande también lastima el momento: la inercia a favor
+       se frena y cuesta recuperarla. */
+    var deltaFans = state.stats.fans - antes.fans;
+    if (deltaFans < 0) {
+      state.momentum = Under.STATE.clamp(state.momentum + deltaFans / 500, 0, 100);
     }
 
-    if (opcion.log) {
+    if (opcionReal.flags) {
+      for (var k3 in opcionReal.flags) state.flags[k3] = opcionReal.flags[k3];
+    }
+
+    /* Memoria de decisiones (PRIORIDAD 2): las decisiones que
+       activan flags de memoria se registran y ajustan la reputación. */
+    if (Under.MEMORIA) Under.MEMORIA._decisión(state, opcion);
+
+    if (opcionReal.log) {
       state.historial.push({
         año: state.año,
-        texto: typeof opcion.log === "function" ? opcion.log(state, efectos) : opcion.log
+        texto: typeof opcionReal.log === "function" ? opcionReal.log(state, efectos) : opcionReal.log
       });
     }
 
@@ -200,11 +310,12 @@ Under.SYSTEMS = {
 
     Under.SYSTEMS.chequearSalidaUnderground(state);
 
-    var resultado = Under.SYSTEMS.resolverTexto(state, opcion.resultado, efectos);
+    var resultado = Under.SYSTEMS.resolverTexto(state, opcionReal.resultado, efectos);
 
     return {
       antes: antes,
       efectos: efectos,
+      aplicados: aplicados,
       resultado: resultado,
       logros: Under.SYSTEMS.chequearLogros(state)
     };
@@ -251,8 +362,9 @@ Under.SYSTEMS = {
       momentos: []
     };
     for (var k in state.stats) state.planAnio.inicioStats[k] = state.stats[k];
-    /* El lanzamiento es el corazón del juego: se garantiza una vez
-       por año como primera decisión (el jugador puede rechazarlo). */
+    /* La música ya no es una decisión: el artista publica un tema
+       por año solo. Desde el segundo año (el primero lo cubre la
+       decisión del primer tema). */
     state.flags.lanzamientoEsteAnio = false;
     /* Los sistemas de Fase 3 se ofrecen una vez por año */
     state.flags.giraEsteAnio = false;
@@ -276,6 +388,12 @@ Under.SYSTEMS = {
        se enfría naturalmente. Si el fuego se apaga, el rival sigue
        su camino y la escena puede traer uno nuevo. */
     state.flags.rivalEsteAnio = false;
+    /* Canciones y éxito (PRIORIDAD 4): un resurgimiento del
+       catálogo como mucho una vez por año. */
+    state.flags.revivalEsteAnio = false;
+    /* Memoria de decisiones: el balance de la escena se revisa
+       como mucho una vez por año. */
+    state.flags.memEscenaEsteAnio = false;
     if (state.rivales && state.rivales.length) {
       for (var ri = state.rivales.length - 1; ri >= 0; ri--) {
         var rv = state.rivales[ri];
@@ -288,16 +406,48 @@ Under.SYSTEMS = {
       }
     }
     state.eventoActualId = null;
+
+    /* ---- Progresión anual (PRIORIDAD 1) ----
+       La madurez crece con cada año que pasás en la música.
+       La inercia de la fama se desinfla sola: si el momento se
+       enfría y no lo alimentás con movimiento, tu nombre pierde
+       temperatura (la gente empieza a olvidarte). */
+    state.experiencia = Under.STATE.clamp(state.experiencia + Under.DATA.CONFIG.EXPERIENCIA_POR_ANIO, 0, 100);
+    state.momentum = Under.STATE.clamp(state.momentum - Under.DATA.CONFIG.MOMENTUM_DECAY, 0, 100);
+    if (state.año > 1 && state.momentum < Under.DATA.CONFIG.MOMENTUM_FRIO && state.stats.popularity > 2) {
+      state.stats.popularity = Under.STATE.clamp(state.stats.popularity - 1, 0, 100);
+      state.planAnio.momentos.push("Tu nombre se enfrió: sin movimiento constante, la gente te empieza a olvidar.");
+    }
+
+    /* Misiones: cada año se rotan las que llevan mucho clavadas
+       para que siempre aparezcan las que todavía no salieron. */
+    if (Under.MISIONES && Under.MISIONES.rotar) Under.MISIONES.rotar(state);
+
+    /* La música sale sola. Si el tema es un hit, la UI salta la
+       animación de oyentes al arrancar el año. */
+    if (Under.MUSIC && state.año >= 2) Under.MUSIC.lanzarAutomatico(state);
+
     return state.planAnio;
   },
 
   cerrarAnio: function (state) {
     var plan = state.planAnio;
 
+    /* El público (PRIORIDAD 3): el hype se apaga solo, la base
+       de fans se afianza y los casuales huyen si el ruido murió.
+       Se procesa antes del streaming para que la fidelidad de la
+       base se refleje en lo que el catálogo genera. */
+    if (Under.PUBLICO) Under.PUBLICO.cerrarAnio(state);
+
+    /* Canciones y éxito (PRIORIDAD 4): la discografía envejece y
+       los clásicos siguen sumando oídos solos. */
+    if (Under.CANCIONES) Under.CANCIONES.cerrarAnio(state);
+
     /* Fase 5: el streaming reemplaza al crecimiento orgánico pasivo.
        Tu catálogo se reproduce solo cada año: cuánto (streams) y a
        cuánto (dinero) lo definen tus plataformas, mercados y si
-       vendiste tus derechos. */
+       vendiste tus derechos. Una base fiel paga mejor por oído y
+       los haters hacen que cada fan nuevo cueste más caro. */
     if (state.stats.popularity > 15) {
       var plat = state.plataforma ? Under.DATA.PLATAFORMAS.filter(function (p) { return p.id === state.plataforma.id; })[0] : null;
       var streamsMult = plat ? plat.streamsMult : 1;
@@ -306,8 +456,19 @@ Under.SYSTEMS = {
       var mercadosBoost = 1 + state.mercados.length * 0.12;
 
       var catalogo = Math.max(state.totalReproducciones, state.stats.fans * 15);
-      var streams = Math.round(catalogo * 0.25 * streamsMult * (0.8 + Math.random() * 0.4));
-      var ingreso = Math.round(streams * Under.DATA.CONFIG.REGALIA * dineroMult * mercadosBoost);
+      /* La inercia también empuja el catálogo: un artista en llamas
+         se sigue reproduciendo más aunque no saque nada nuevo.
+         Y la novedad importa: si dejaste de sacar música, los temas
+         viejos rinden menos (los clásicos sostienen el valor). */
+      var impulso = 1 + state.momentum / 300;
+      var novedad = Under.CANCIONES ? Under.CANCIONES.factorNovedad(state) : 1;
+      var streams = Math.round(catalogo * 0.25 * streamsMult * impulso * novedad * (0.8 + Math.random() * 0.4));
+      var fidelidad = Under.PUBLICO ? Under.PUBLICO.fidelidad(state) : 1;
+      var haterF = Under.PUBLICO ? Under.PUBLICO.haterFactor(state) : 1;
+      /* Carreras por género (PRIORIDAD 5): la escena fiel paga
+         mejor por oído. Rap/rock rinden más por stream. */
+      var genIngreso = Under.GENEROS ? Under.GENEROS.ingreso(state) : 1;
+      var ingreso = Math.round(streams * Under.DATA.CONFIG.REGALIA * dineroMult * mercadosBoost * fidelidad * haterF * genIngreso);
 
       state.stats.fans += Math.round(streams * 0.01);
       state.stats.money += ingreso;
@@ -369,6 +530,22 @@ Under.SYSTEMS = {
     /* Misiones: los hitos que crecen solos (fans, discografía) */
     if (Under.MISIONES) Under.MISIONES.chequear(state);
 
+    /* Memoria de decisiones (PRIORIDAD 2): la reputación deriva
+       hacia el perfil construido y las viejas cuentas se cobran. */
+    if (Under.MEMORIA) Under.MEMORIA.cerrarAnio(state);
+
+    /* Red de contactos (PRIORIDAD 7): los vínculos se enfrían si
+       se descuidan y una red fuerte trabaja por vos. */
+    if (Under.RELACIONES) Under.RELACIONES.cerrarAnio(state);
+
+    /* Contratos y economía (PRIORIDAD 8): si el contrato venció
+       y no se renegoció, quedás libre. */
+    if (Under.CONTRATOS) Under.CONTRATOS.cerrarAnio(state);
+
+    /* Crisis, recuperación y evolución (PRIORIDAD 9): el estado
+       de la carrera deja marca en el legado y en la historia. */
+    if (Under.CRISIS) Under.CRISIS.cerrarAnio(state);
+
     /* Fase 5: si quebraste pero volvés a tener plata, la historia es de recuperación */
     if (state.quiebra && state.stats.money >= 10000) {
       state.flags.superoQuiebra = true;
@@ -381,13 +558,17 @@ Under.SYSTEMS = {
     for (var i = 0; i < plan.momentos.length; i++) {
       state.historial.push({ año: state.año, texto: plan.momentos[i] });
     }
-    /* Gráfico de trayectoria: un punto por año terminado */
+    /* Gráfico de trayectoria: un punto por año terminado.
+       Se guardan también madurez y momento para análisis futuro. */
     state.trayectoria.push({
       año: state.año,
       popularity: Math.round(state.stats.popularity),
       fans: state.stats.fans,
       money: state.stats.money,
-      nivel: Under.STATE.nivelCarrera(state).nivel
+      nivel: Under.STATE.nivelCarrera(state).nivel,
+      experiencia: Math.round(state.experiencia),
+      momentum: Math.round(state.momentum),
+      hype: Math.round(state.hype)
     });
     state.planAnio = null;
     state.eventoActualId = null;

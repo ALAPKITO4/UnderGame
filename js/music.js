@@ -56,6 +56,10 @@ Under.MUSIC = {
        + la estrategia (calidad y viral) + ruido acotado.
        El piso es bajo: los primeros temas casi siempre fallan. */
     var base = 18 + t * 0.34 + p * 0.13 + nivel * 2 + est.calidad * 0.8 + est.viral * 0.6 - bajo;
+    /* Progresión anual (PRIORIDAD 1): la madurez y el momento
+       cuentan. Un veterano lee mejor su música y su momento; el
+       mismo tema pega distinto según la etapa de la carrera. */
+    base += state.experiencia * 0.06 + state.momentum * 0.04;
     base += Math.random() * 26 - 10;
 
     var tier;
@@ -77,16 +81,28 @@ Under.MUSIC = {
     var distMult = sello ? sello.distribucion : 1;
     var retencion = sello ? sello.retencion : 1;
 
-    var multRepros = 1 + nivel * 0.5 + p / 250;
-    var repros = Math.round(data.repros * multRepros * distMult * (0.75 + Math.random() * 0.5));
+    var multRepros = 1 + nivel * 0.5 + p / 250 + state.momentum / 300;
+    /* Carreras por género (PRIORIDAD 5): cada escena convierte
+       oídos distinto. Urban/pop multiplican el alcance comercial;
+       rap/rock convierten más lento pero la crítica los juzga
+       con otra vara (más abajo). */
+    var genComercial = Under.GENEROS ? Under.GENEROS.comercial(state) : 1;
+    var repros = Math.round(data.repros * multRepros * distMult * genComercial * (0.75 + Math.random() * 0.5));
     var multFans = 1 + nivel * 0.15;
-    var fans = Math.round(data.fans * multFans * (0.8 + Math.random() * 0.4));
+    /* El público (PRIORIDAD 3): los haters encarecen cada oído
+       nuevo. El odio no frena los streams del todo, pero sí
+       convierte mucho peor. */
+    var haterF = Under.PUBLICO ? Under.PUBLICO.haterFactor(state) : 1;
+    var fans = Math.round(data.fans * multFans * (0.8 + Math.random() * 0.4) * haterF * genComercial);
     /* El manager negocia mejor: +10% de la plata */
     var bonusManager = (Under.EQUIPO && Under.EQUIPO.tiene(state, "manager")) ? 1.1 : 1;
     var dinero = Math.round(repros * Under.DATA.CONFIG.REGALIA * retencion * bonusManager);
 
-    /* La crítica: responde al talento y a la apuesta artística */
-    var critica = Under.STATE.clamp(2 + t * 0.045 + (tier === "cult" ? 2.5 : 0) + Math.random() * 1.1, 1, 5);
+    /* La crítica: responde al talento y a la apuesta artística.
+       El género (PRIORIDAD 5) le pone su vara: la escena juzga
+       a un rapero o a un rockero distinto que a un pop. */
+    var genCritica = Under.GENEROS ? Under.GENEROS.criticaBonus(state) : 0;
+    var critica = Under.STATE.clamp(2 + t * 0.045 + (tier === "cult" ? 2.5 : 0) + genCritica + Math.random() * 1.1, 1, 5);
     var talentoGanado = data.talento + (critica >= 4.5 ? 1 : 0);
 
     return {
@@ -109,6 +125,13 @@ Under.MUSIC = {
   _registrar: function (state, L, est, costo) {
     state.lanzamientos += 1;
     state.totalReproducciones += L.repros;
+    /* El público (PRIORIDAD 3): el resultado se mide contra lo que
+       el público esperaba (hype, reputación y casuales) y queda en
+       el historial reciente que alimenta la próxima expectativa. */
+    if (Under.PUBLICO) {
+      Under.PUBLICO.aplicarHypeLanzamiento(state, L);
+      Under.PUBLICO.registrarTier(state, L.tier);
+    }
     state.discografia.push({
       año: state.año,
       nombre: L.nombre,
@@ -132,6 +155,53 @@ Under.MUSIC = {
         " — " + Under.UI.fmtExacto(L.repros) + " reproducciones" +
         (L.selloNombre ? " vía " + L.selloNombre : "") + "."
     });
+  },
+
+  /* ---------- Lanzamiento automático ----------
+     Desde el año 2 la música sale sola: el artista publica un tema
+     por año sin que el jugador tenga que decidirlo. El jugador lo
+     ve en el historial y, si el tema explota (hit/viral/global),
+     la UI salta la animación de oyentes. */
+  lanzarAutomatico: function (state) {
+    var nombre = Under.MUSIC._elegirNombre(state);
+
+    /* Elige la mejor estrategia que puede pagar (calidad + viral),
+       sin gastarse más del 60% de lo que tiene. */
+    var dinero = state.stats.money;
+    var mejor = null;
+    for (var i = 0; i < Under.DATA.ESTRATEGIAS.length; i++) {
+      var e = Under.DATA.ESTRATEGIAS[i];
+      var costo = e.costo ? Under.SYSTEMS.efectivoEscala(state, e.costo) : 0;
+      if (costo > dinero * 0.6) continue;
+      var score = e.calidad * 1.4 + e.viral;
+      if (!mejor || score > mejor.score) mejor = { e: e, costo: costo, score: score };
+    }
+    var est = mejor ? mejor.e : Under.DATA.ESTRATEGIAS[0];
+    var costo = mejor ? mejor.costo : 0;
+
+    var L = Under.MUSIC._calcular(state, nombre, est);
+    Under.MUSIC._registrar(state, L, est, costo);
+    state.stats.money = Math.max(0, state.stats.money + L.dinero - costo);
+    state.energia = Under.STATE.clamp(state.energia - 6, 0, 100);
+
+    var esHit = (L.tier === "hit" || L.tier === "viral" || L.tier === "global");
+    state.ultimoLanzamiento = {
+      año: state.año,
+      nombre: L.nombre,
+      tier: L.tier,
+      tierNombre: L.tierNombre,
+      tierIcono: L.tierIcono,
+      repros: L.repros,
+      fans: L.fans,
+      dinero: L.dinero,
+      critica: L.critica,
+      estrategia: est.texto,
+      esHit: esHit
+    };
+    state.flags.lanzamientoEsteAnio = true;
+
+    if (Under.MISIONES) Under.MISIONES.chequear(state);
+    return state.ultimoLanzamiento;
   },
 
   /* ---------- Construye el evento de lanzamiento ---------- */

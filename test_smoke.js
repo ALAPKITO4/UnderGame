@@ -41,13 +41,13 @@ global.document = {
 var fs = require("fs");
 var path = require("path");
 var root = __dirname;
- ["js/data.js", "js/state.js", "js/systems.js", "js/music.js",
+ ["js/data.js", "js/state.js", "js/publico.js", "js/systems.js", "js/music.js",
   "js/sello.js", "js/giras.js", "js/colabs.js", "js/premios.js",
   "js/albumes.js", "js/escandalos.js", "js/equipo.js", "js/vida.js",
   "js/inversiones.js", "js/retiro.js",
   "js/plataformas.js", "js/mercados.js", "js/festivales.js", "js/legado.js", "js/economia.js",
   "js/underground.js", "js/grande.js", "js/rivales.js",
-  "js/misiones.js", "js/extra.js",
+  "js/misiones.js", "js/extra.js", "js/memoria.js", "js/canciones.js", "js/generos.js", "js/contexto.js", "js/relaciones.js", "js/contratos.js", "js/crisis.js", "js/biografia.js",
   "js/ui.js", "js/main.js"].forEach(function (f) {
   eval(fs.readFileSync(path.join(root, f), "utf8"));
 });
@@ -59,6 +59,7 @@ var statsF3 = { giras: 0, colabs: 0, premios: 0, sellos: 0, giraMundial: 0 };
 var statsPremios = { nominaciones: 0, ganados: 0, perdidos: 0 };
 var statsF4 = { albums: 0, escandalos: 0, inversiones: 0, equipo: 0 };
 var statsF5 = { festivales: 0, mercados: 0, reinvenciones: 0, creditos: 0, catologos: 0, documentales: 0 };
+var statsF8 = { renegociaciones: 0, clausulas: 0 };
 var statsF6 = { salio: 0, niveles: [], underEventos: 0 };
 var statsRivales = { encontrados: 0, duelos: 0, reconciliados: 0, colabs: 0 };
 var statsMisiones = { completadas: 0 };
@@ -96,9 +97,24 @@ function jugar(gen, per) {
   var dash = appEl.innerHTML;
   assert(dash.indexOf("stats-grid") !== -1, "Juego " + totalGames + ": sin stats-grid en dashboard");
   assert(dash.indexOf("secondary-stats") === -1, "Juego " + totalGames + ": quedaron stats secundarias");
+  /* La decisión se ve arriba, sin bajar la página */
+  var idxEvento = dash.indexOf('class="card evento"');
+  var idxStats = dash.indexOf("stats-grid");
+  if (idxEvento !== -1 && idxStats !== -1) {
+    assert(idxEvento < idxStats,
+      "Juego " + totalGames + ": la decisión debería mostrarse antes que las stats");
+  }
 
-  var huboLanzamiento = false;
-  var vistosLanzamiento = 0;
+  /* La música sale sola (Under.MUSIC.lanzarAutomatico desde el año 2),
+     así que ya no es un evento que se ofrezca como decisión. */
+  /* Cobertura determinista del documental: depende del azar del
+     pool y con la lista de eventos grandes puede no salir nunca.
+     Cuando la carrera califica (año 6+, nivel 5+), se agenda el
+     evento una vez a través del hook _eventoForzado (que el flujo
+     normal consume sin dejar pendientes colgados). */
+  var docForzado = false;
+  var creditoForzado = false;
+  var evolucionForzada = false;
 
   while (Under.MAIN.fase !== "final" && safety < 6000) {
     safety++;
@@ -115,29 +131,40 @@ function jugar(gen, per) {
       m.continuarResultado();
       continue;
     }
+    if (m.overlay === "hit") {
+      /* El lanzamiento automático explotó: se salta la animación */
+      m.continuarHit();
+      continue;
+    }
 
     var s = m.estado;
+    if (!docForzado && !s.flags.tuvoDocumental && s.año >= 6 && Under.STATE.nivelCarrera(s).nivel >= 5) {
+      Under.SYSTEMS._eventoForzado = "documental";
+      docForzado = true;
+    }
+    /* El crédito (peso 1) también puede no salir nunca en el pool;
+       cuando hay un crédito ofrecible, se agenda una vez. */
+    if (!creditoForzado && !s.flags.tuvoCredito && !!Under.ECONOMIA._creditoOfrecible(s)) {
+      Under.SYSTEMS._eventoForzado = "credito";
+      creditoForzado = true;
+    }
+    /* La evolución (peso 1) tampoco puede depender del azar del
+       pool; se agenda una vez cuando hay derecho a reinventarse. */
+    if (!evolucionForzada && !s.flags.evolucionEsteAnio && (!s.ultimaReinvencion || s.año - s.ultimaReinvencion >= 3)) {
+      Under.SYSTEMS._eventoForzado = "evolucion";
+      evolucionForzada = true;
+    }
     var ev = s.eventoActualId ? Under.DATA.buscarEvento(s.eventoActualId, s) : null;
     if (!ev || !ev.opciones) {
       failures.push("Juego " + totalGames + ": sin evento disponible (fase=" + m.fase + " overlay=" + m.overlay + ")");
       break;
     }
 
-    if (ev.id === "lanzamiento") {
-      huboLanzamiento = true;
-      vistosLanzamiento++;
-      /* El evento lanzamiento debe mostrar costo en las opciones y una salida */
-      var html = appEl.innerHTML;
-      assert(html.indexOf("gratis") !== -1, "Juego " + totalGames + ": lanzamiento sin opción gratis");
-    }
-
     /* Fase 4: el dashboard quedó limpio (sin logros ni discografía) */
-    if (huboLanzamiento) {
-      assert(appEl.innerHTML.indexOf("discografia") === -1,
-        "Juego " + totalGames + ": la discografía estorba el dashboard");
-      assert(appEl.innerHTML.indexOf("logros-row") === -1,
-        "Juego " + totalGames + ": los logros estorban el dashboard");
-    }
+    assert(appEl.innerHTML.indexOf("discografia") === -1,
+      "Juego " + totalGames + ": la discografía estorba el dashboard");
+    assert(appEl.innerHTML.indexOf("logros-row") === -1,
+      "Juego " + totalGames + ": los logros estorban el dashboard");
 
     var choices = [];
     for (var i = 0; i < ev.opciones.length; i++) {
@@ -164,9 +191,18 @@ function jugar(gen, per) {
          "under_feria", "under_escuela", "under_fiesta", "under_banda", "under_manifiesto",
          "grande_docuserie", "grande_banda", "grande_teatro", "grande_viral", "grande_verano",
          "gen_rap", "gen_rock", "gen_pop", "gen_urban",
+         "gen2_rap", "gen2_rock", "gen2_pop", "gen2_urban",
          "extra_serie", "extra_videojuego", "extra_publicidad", "extra_reality",
          "fan_club", "fan_hater", "fan_tatuaje",
          "under_casa", "under_plaza", "under_video", "under_fanzine", "under_estudio",
+         "under_ensayo", "under_resena", "under_equipo",
+         "mem_productor", "mem_nova", "mem_escena",
+         "cat_revival", "cat_onehit",
+         "ctx_reputacion_alta", "ctx_reputacion_baja", "ctx_momentum_alto",
+         "ctx_momentum_bajo", "ctx_legado", "ctx_hype",
+         "rel_productor", "rel_colega", "rel_aliado",
+         "ctr_renegociar", "ctr_clausulas",
+         "cris_fondo", "cris_rebote", "cris_evolucion",
          "tpl_colab_chica", "tpl_tema_radio"].indexOf(ev.id) !== -1) {
       idx = choices[0];
     }
@@ -186,8 +222,10 @@ function jugar(gen, per) {
     return;
   }
 
-  assert(vistosLanzamiento >= 1,
-    "Juego " + totalGames + ": nunca se ofreció un lanzamiento");
+  /* La música automática registró el último lanzamiento del año */
+  assert(!!s.ultimoLanzamiento && typeof s.ultimoLanzamiento.nombre === "string" &&
+    s.ultimoLanzamiento.nombre.length > 0,
+    "Juego " + totalGames + ": nunca se registró un lanzamiento automático");
 
   var stats = s.stats;
   assert(!isNaN(stats.popularity) && !isNaN(stats.talent) && !isNaN(stats.fans) && !isNaN(stats.money),
@@ -224,14 +262,119 @@ function jugar(gen, per) {
     "Juego " + totalGames + ": nivelCarrera roto tras recargar");
   assert(Under.STATE.eraActual(reload).id, "Juego " + totalGames + ": eraActual roto tras recargar");
 
+  /* Progresión anual (PRIORIDAD 1): experiencia, momento y etapa
+     sobreviven a la recarga y se mantienen en rango. */
+  assert(typeof reload.experiencia === "number" && reload.experiencia >= 0 && reload.experiencia <= 100,
+    "Juego " + totalGames + ": experiencia inválida tras recargar (" + reload.experiencia + ")");
+  assert(typeof reload.momentum === "number" && reload.momentum >= 0 && reload.momentum <= 100,
+    "Juego " + totalGames + ": momentum inválido tras recargar (" + reload.momentum + ")");
+  assert(!!Under.STATE.etapaActual(reload).nombre,
+    "Juego " + totalGames + ": etapaActual roto tras recargar");
+  s.trayectoria.forEach(function (t) {
+    assert(typeof t.experiencia === "number" && !isNaN(t.experiencia) &&
+      typeof t.momentum === "number" && !isNaN(t.momentum),
+      "Juego " + totalGames + ": punto de trayectoria sin progresión");
+  });
+
+  /* El público (PRIORIDAD 3): hype en rango, haters, base
+     segmentada y expectativas coherentes tras recargar. */
+  assert(typeof reload.hype === "number" && reload.hype >= 0 && reload.hype <= 100,
+    "Juego " + totalGames + ": hype inválido tras recargar (" + reload.hype + ")");
+  assert(Array.isArray(reload.ultimosTiers) && reload.ultimosTiers.every(function (t) { return Under.DATA.TIERS[t]; }),
+    "Juego " + totalGames + ": ultimosTiers inválido tras recargar");
+  assert(typeof reload.haters === "number" && reload.haters >= 0,
+    "Juego " + totalGames + ": haters inválido (" + reload.haters + ")");
+  assert(typeof reload.fansFieles === "number" && reload.fansFieles >= 0,
+    "Juego " + totalGames + ": fansFieles inválido (" + reload.fansFieles + ")");
+  assert(typeof reload.fansHardcore === "number" && reload.fansHardcore >= 0,
+    "Juego " + totalGames + ": fansHardcore inválido (" + reload.fansHardcore + ")");
+  assert((reload.fansFieles || 0) + (reload.fansHardcore || 0) <= reload.stats.fans,
+    "Juego " + totalGames + ": la base segmentada supera los fans totales");
+  assert(typeof Under.PUBLICO.expectativa(reload) === "number" && !isNaN(Under.PUBLICO.expectativa(reload)),
+    "Juego " + totalGames + ": expectativa rota tras recargar");
+  assert(Under.PUBLICO.fidelidad(reload) >= 1 && Under.PUBLICO.haterFactor(reload) >= 0.6,
+    "Juego " + totalGames + ": fidelidad/haterFactor fuera de rango");
+  s.trayectoria.forEach(function (t) {
+    assert(typeof t.hype === "number" && !isNaN(t.hype),
+      "Juego " + totalGames + ": punto de trayectoria sin hype");
+  });
+
+  /* Canciones y éxito (PRIORIDAD 4): el catálogo tiene vida.
+     Cada tema tiene un destino válido (o todavía sin definir),
+     el factor de novedad se mantiene en rango y el total de
+     reproducciones sigue siendo la suma exacta de la discografía
+     (los clásicos crecen y los resurgimientos suman por ambos lados). */
+  assert(typeof Under.CANCIONES.factorNovedad(reload) === "number" &&
+    Under.CANCIONES.factorNovedad(reload) >= 0.5 && Under.CANCIONES.factorNovedad(reload) <= 1,
+    "Juego " + totalGames + ": factorNovedad fuera de rango");
+  s.discografia.forEach(function (d) {
+    if (d.tipo !== undefined) {
+      assert(d.tipo === "clasico" || d.tipo === "efimero" || d.tipo === "comun",
+        "Juego " + totalGames + ": destino de tema inválido (" + d.tipo + ")");
+    }
+    if (d.resurgio !== undefined) {
+      assert(typeof d.resurgio === "number" && d.resurgio >= 1,
+        "Juego " + totalGames + ": resurgio inválido (" + d.resurgio + ")");
+    }
+    assert(typeof d.repros === "number" && d.repros >= 0,
+      "Juego " + totalGames + ": tema con reproducciones inválidas");
+  });
+
+  /* Memoria de decisiones (PRIORIDAD 2): recuerdos con estructura
+     coherente, reputación en rango y que sobreviven a la recarga. */
+  assert(Array.isArray(s.memorias), "Juego " + totalGames + ": memorias no inicializadas");
+  s.memorias.forEach(function (mem) {
+    assert(typeof mem.id === "string" && mem.id.length > 0, "Juego " + totalGames + ": memoria sin id");
+    assert(typeof mem.titulo === "string" && mem.titulo.length > 0, "Juego " + totalGames + ": memoria sin título");
+    assert(typeof mem.tono === "string", "Juego " + totalGames + ": memoria sin tono");
+    assert(typeof mem.año === "number" && mem.año >= 1, "Juego " + totalGames + ": memoria sin año");
+  });
+  assert(typeof s.reputacion === "number" && s.reputacion >= 0 && s.reputacion <= 100,
+    "Juego " + totalGames + ": reputacion inválida (" + s.reputacion + ")");
+  s.memorias.forEach(function (mem) {
+    assert(Under.MEMORIA.recuerda(reload, mem.id),
+      "Juego " + totalGames + ": recuerda() falla tras recargar (" + mem.id + ")");
+  });
+
   /* Misiones: estructura coherente y que sobrevive a la recarga */
   assert(typeof s.misiones === "object" && typeof s.contadores === "object",
     "Juego " + totalGames + ": misiones/contadores no inicializados");
-  Under.MISIONES.DEFS.forEach(function (def) {
-    assert(!!s.misiones[def.id], "Juego " + totalGames + ": falta la misión " + def.id + " en el estado");
-  });
-  assert(Array.isArray(Under.MISIONES._activas(reload)),
+  assert(typeof s.misionesUsadas === "object",
+    "Juego " + totalGames + ": misionesUsadas no inicializado (migración rota)");
+  var activas = Under.MISIONES._activas(s);
+  assert(Array.isArray(activas),
     "Juego " + totalGames + ": _activas roto tras recargar");
+  var capPorSec = {};
+  activas.forEach(function (def) {
+    assert(!!Under.MISIONES._def(def.id),
+      "Juego " + totalGames + ": _activas devuelve una misión desconocida (" + def.id + ")");
+    var sec = def.seccion;
+    capPorSec[sec] = (capPorSec[sec] || 0) + 1;
+  });
+  Object.keys(Under.MISIONES.SECCIONES).forEach(function (sec) {
+    var cap = Under.MISIONES.SECCIONES[sec].cap || 1;
+    assert((capPorSec[sec] || 0) <= cap,
+      "Juego " + totalGames + ": la sección " + sec + " supera su cap de activas (" + (capPorSec[sec] || 0) + " > " + cap + ")");
+  });
+  /* Misiones por sección: mínimo 5 por sección, ids únicos y datos coherentes */
+  var secCounts = {};
+  var idsMisiones = {};
+  Under.MISIONES.DEFS.forEach(function (def) {
+    assert(typeof def.seccion === "string" && def.seccion.length > 0,
+      "Juego " + totalGames + ": misión sin sección (" + def.id + ")");
+    assert(!idsMisiones[def.id],
+      "Juego " + totalGames + ": id de misión duplicado (" + def.id + ")");
+    idsMisiones[def.id] = true;
+    assert(typeof def.meta === "number" && def.meta > 0,
+      "Juego " + totalGames + ": misión sin meta válida (" + def.id + ")");
+    secCounts[def.seccion] = (secCounts[def.seccion] || 0) + 1;
+  });
+  Object.keys(Under.MISIONES.SECCIONES).forEach(function (sec) {
+    assert((secCounts[sec] || 0) >= 5,
+      "Juego " + totalGames + ": la sección " + sec + " tiene menos de 5 misiones (" + (secCounts[sec] || 0) + ")");
+  });
+  assert(Under.MISIONES.DEFS.length >= 200,
+    "Juego " + totalGames + ": el pool de misiones no llega a 200 (" + Under.MISIONES.DEFS.length + ")");
   var completadas = Under.MISIONES.DEFS.filter(function (def) {
     return s.misiones[def.id] && s.misiones[def.id].completada;
   }).length;
@@ -317,6 +460,41 @@ function jugar(gen, per) {
   var pendExtra = Object.keys(Under.EXTRA._pendientes);
   assert(pendExtra.every(function (id) { return Under.EXTRA._pendientes[id] === null; }),
     "Juego " + totalGames + ": quedó un evento extra pendiente sin resolver (" + pendExtra.join(", ") + ")");
+  var pendMem = Object.keys(Under.MEMORIA._pendientes);
+  assert(pendMem.every(function (id) { return Under.MEMORIA._pendientes[id] === null; }),
+    "Juego " + totalGames + ": quedó un evento de memoria pendiente sin resolver (" + pendMem.join(", ") + ")");
+  var pendCan = Object.keys(Under.CANCIONES._pendientes);
+  assert(pendCan.every(function (id) { return Under.CANCIONES._pendientes[id] === null; }),
+    "Juego " + totalGames + ": quedó un evento de canciones pendiente sin resolver (" + pendCan.join(", ") + ")");
+  var pendGen = Object.keys(Under.GENEROS._pendientes);
+  assert(pendGen.every(function (id) { return Under.GENEROS._pendientes[id] === null; }),
+    "Juego " + totalGames + ": quedó un evento de género pendiente sin resolver (" + pendGen.join(", ") + ")");
+
+  /* Carreras por género (PRIORIDAD 5): el perfil del género es
+     coherente, la identidad responde y sobrevive a la recarga. */
+  assert(Under.GENEROS.criticaBonus(reload) >= -1 && Under.GENEROS.criticaBonus(reload) <= 1,
+    "Juego " + totalGames + ": criticaBonus del género fuera de rango");
+  assert(Under.GENEROS.comercial(reload) >= 0.8 && Under.GENEROS.comercial(reload) <= 1.3,
+    "Juego " + totalGames + ": comercial del género fuera de rango");
+  assert(Under.GENEROS.escena(reload) >= 0.8 && Under.GENEROS.escena(reload) <= 1.3,
+    "Juego " + totalGames + ": escena del género fuera de rango");
+  assert(Under.GENEROS.fidelidad(reload) >= 0.8 && Under.GENEROS.fidelidad(reload) <= 1.3,
+    "Juego " + totalGames + ": fidelidad del género fuera de rango");
+  var ident = Under.GENEROS.identidad(reload);
+  assert(!!ident.icono && !!ident.texto, "Juego " + totalGames + ": identidad de género rota tras recargar");
+
+  /* Eventos de contexto (PRIORIDAD 6): los pesos dinámicos son
+     numéricos y no dejan pendientes colgados. */
+  Under.DATA.DINAMICOS.forEach(function (d) {
+    if (typeof d.peso === "function") {
+      var p = d.peso(reload);
+      assert(typeof p === "number" && !isNaN(p) && p >= 0 && p <= 10,
+        "Juego " + totalGames + ": peso dinámico inválido en " + d.id + " (" + p + ")");
+    }
+  });
+  var pendCtx = Object.keys(Under.CONTEXTO._pendientes);
+  assert(pendCtx.every(function (id) { return Under.CONTEXTO._pendientes[id] === null; }),
+    "Juego " + totalGames + ": quedó un evento de contexto pendiente sin resolver (" + pendCtx.join(", ") + ")");
 
   /* ---- Fase 3: consistencia de giras, colabs, premios y sello ---- */
   assert(s.totalGiras === s.giras.length,
@@ -347,6 +525,8 @@ function jugar(gen, per) {
     assert(!!Under.DATA.SELLOS[s.sello.tipo], "Juego " + totalGames + ": sello con tipo inválido");
     assert(typeof s.sello.retencion === "number" && typeof s.sello.distribucion === "number",
       "Juego " + totalGames + ": sello sin retención/distribución");
+    assert(typeof s.sello.vencimiento === "number" && s.sello.vencimiento >= s.sello.año,
+      "Juego " + totalGames + ": sello sin vencimiento válido");
   }
 
   /* ---- Fase 4: proyectos, escándalos, equipo, inversiones y vida ---- */
@@ -379,12 +559,32 @@ function jugar(gen, per) {
       "Juego " + totalGames + ": equipo con id desconocido (" + e2.id + ")");
   });
 
+  /* ---- Prioridad 7: la red de contactos queda consistente ---- */
+  assert(Array.isArray(s.red), "Juego " + totalGames + ": sin red de contactos");
+  s.red.forEach(function (c) {
+    assert(typeof c.id === "string" && c.id.length > 0, "Juego " + totalGames + ": contacto sin id");
+    assert(typeof c.nombre === "string" && c.nombre.length > 0, "Juego " + totalGames + ": contacto sin nombre");
+    assert(c.vinculo >= 0 && c.vinculo <= 100, "Juego " + totalGames + ": vínculo fuera de rango (" + c.vinculo + ")");
+    assert(typeof c.activo === "boolean", "Juego " + totalGames + ": contacto sin estado activo");
+  });
+
   /* La pantalla final muestra el resumen completo (logros y discografía) */
   var finalHtml = appEl.innerHTML;
   assert(finalHtml.indexOf("Discografía") !== -1,
     "Juego " + totalGames + ": la pantalla final no muestra la discografía completa");
   assert(finalHtml.indexOf("logros-row") !== -1,
     "Juego " + totalGames + ": la pantalla final no muestra los logros");
+
+  /* Prioridad 10: la biografía y el legado final se muestran */
+  assert(finalHtml.indexOf("bio-card") !== -1,
+    "Juego " + totalGames + ": la pantalla final no muestra la biografía");
+  assert(finalHtml.indexOf("Legado:") !== -1,
+    "Juego " + totalGames + ": la pantalla final no muestra el legado");
+  var bio = Under.BIOGRAFIA.generar(s);
+  assert(!!bio.rango && !!bio.rango.nombre && !!bio.parrafo,
+    "Juego " + totalGames + ": la biografía generada está incompleta");
+  assert(typeof bio.parrafo === "string" && bio.parrafo.length > 40,
+    "Juego " + totalGames + ": la biografía es demasiado corta");
 
   statsF3.giras += s.totalGiras;
   statsF3.colabs += s.totalColabs;
@@ -430,6 +630,10 @@ function jugar(gen, per) {
   statsF5.creditos += s.flags.tuvoCredito ? 1 : 0;
   statsF5.catologos += s.flags.tuvoVentaCatalogo ? 1 : 0;
   statsF5.documentales += s.documentales;
+
+  /* Prioridad 8: contratos y economía */
+  statsF8.renegociaciones += s.flags.tuvoRenegociacion ? 1 : 0;
+  statsF8.clausulas += s.flags.tuvoClausula ? 1 : 0;
 
   /* Fase 6: ¿cuántas partidas logran salir del underground? */
   statsF6.salio += s.flags.salioDelUnderground ? 1 : 0;
@@ -480,7 +684,58 @@ function jugarRetiro() {
   assert(s.añoRetiro !== null && s.añoRetiro >= 1, "Retiro: sin año de retiro");
   assert(!!s.resultadoFinal && !!s.resultadoFinal.tipo, "Retiro: sin resultadoFinal.tipo");
   assert(Under.MAIN.fase === "final", "Retiro: no llegó a la pantalla final");
+
   console.log("Retiro OK → " + s.resultadoFinal.titulo + " (año " + s.añoRetiro + ")");
+}
+
+/* ---- Crisis y recuperación: una carrera que toca fondo y vuelve.
+   El estado de la carrera (PRIORIDAD 9) depende de condiciones que
+   una partida exitosa no alcanza sola, así que se fuerza una baja
+   de momentum para cubrir el fondo, el rebote y la evolución. ---- */
+function jugarCrisis() {
+  sembrar();
+  Under.MAIN.nuevaCarrera();
+  Under.MAIN.form = { nombre: "CrisisTest", ciudad: "Medellín, Colombia", genero: "rap", personalidad: "artistico" };
+  Under.MAIN.empezar();
+  var safety = 0;
+  var bajoForzado = false;
+
+  while (Under.MAIN.fase !== "final" && safety < 3000) {
+    safety++;
+    var m = Under.MAIN;
+    if (m.overlay === "resultado") { m.continuarResultado(); continue; }
+
+    var s = m.estado;
+    /* Años 3 a 5: se mantiene el fondo para que la crisis ocurra,
+       se cuente por año y dé lugar al rebote. El under ahora da
+       más decisiones por año y sin esto la carrera escaparía sola. */
+    if (s.año >= 3 && s.año <= 5) {
+      s.momentum = Math.min(s.momentum, 15);
+      s.stats.popularity = Under.STATE.clamp(s.stats.popularity, 0, 35);
+    }
+    /* Año 3: se fuerza el fondo para que la crisis pueda ocurrir */
+    if (!bajoForzado && s.año >= 3) {
+      Under.SYSTEMS._eventoForzado = "cris_fondo";
+      bajoForzado = true;
+    }
+
+    var ev = s.eventoActualId ? Under.DATA.buscarEvento(s.eventoActualId, s) : null;
+    if (!ev || !ev.opciones) break;
+    var choices = [];
+    for (var i = 0; i < ev.opciones.length; i++) {
+      var o = ev.opciones[i];
+      if (o.soloSi && !o.soloSi(s)) continue;
+      choices.push(i);
+    }
+    if (choices.length === 0) break;
+    m.elegir(choices[Math.floor(Math.random() * choices.length)]);
+  }
+
+  var s2 = Under.MAIN.estado;
+  assert(s2.flags.estuvoEnCrisis === true, "Crisis: nunca tocó fondo");
+  assert(s2.aniosEnCrisis >= 1, "Crisis: sin conteo de años en crisis");
+  console.log("Crisis OK → años en crisis: " + s2.aniosEnCrisis +
+    " · superó la crisis: " + (s2.flags.superoCrisis ? "sí" : "no"));
 }
 
 /* ---- Hook de test: fuerzo una nominación perdida para cubrir de
@@ -502,6 +757,7 @@ var combinaciones = [
 ];
 combinaciones.forEach(function (c) { jugar(c[0], c[1]); });
 jugarRetiro();
+jugarCrisis();
 
 /* ---- Resultado ---- */
 console.log("Partidas completadas: " + totalGames);
@@ -542,6 +798,10 @@ assert(statsF5.documentales >= 1, "Ninguna partida hizo un documental");
 assert(statsF5.creditos >= 1, "Ninguna partida pidió un crédito");
 assert(statsRivales.encontrados >= 1, "Ninguna partida encontró un rival");
 assert(statsMisiones.completadas >= 1, "Ninguna partida completó una misión");
+
+/* Prioridad 8: la renegociación y las cláusulas tienen cobertura */
+assert(statsF8.renegociaciones + statsF8.clausulas >= 1,
+  "Ninguna partida vivió una renegociación o una cláusula");
 
 if (failures.length === 0) {
   console.log("SMOKE TEST OK ✔");

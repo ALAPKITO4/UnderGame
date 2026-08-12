@@ -70,13 +70,19 @@ Under.UNDER = {
       {
         texto: "Exigir que paguen más",
         desc: "Un riesgo: puede salir bien… o dejar una puerta cerrada.",
+        riesgo: 0.5,
         efectos: function (s) {
           Under.UNDER._limpiar("under_ciudad");
-          if (Math.random() < 0.5) return { money: Under.SYSTEMS.efectivoEscala(s, 260), popularity: -1, _energia: -10 };
+          return { money: Under.SYSTEMS.efectivoEscala(s, 260), popularity: -1, _energia: -10 };
+        },
+        resultado: "Pedís más plata y te la dan. El dueño queda seco, pero te anota para la próxima.",
+        log: "Negoció y consiguió un mejor caché en un toque de bar.",
+        riesgoEfectos: function (s) {
+          Under.UNDER._limpiar("under_ciudad");
           return { money: Under.SYSTEMS.efectivoEscala(s, 80), popularity: -2, _energia: -10 };
         },
-        resultado: "Pedís más plata. A veces te la dan, a veces el dueño te descarta del circuito.",
-        log: "Negoció el caché de un toque de bar."
+        riesgoResultado: "Pedís más y el dueño te descarta del circuito. Esa puerta se cerró.",
+        riesgoLog: "Exigió más caché y lo descartaron del bar."
       }
     ]);
   },
@@ -135,6 +141,7 @@ Under.UNDER = {
         desc: "Un video juntos: su público te descubre.",
         efectos: function (s) {
           Under.UNDER._limpiar("under_influencer");
+          Under.MISIONES.sumar(s, "contenido", 1);
           return { fans: Under.SYSTEMS.fansEscala(s, 500), popularity: 2, _energia: -5 };
         },
         resultado: "El contenido sale y su gente se pasa a la tuya. Cada creador que te nombró, suma.",
@@ -173,15 +180,19 @@ Under.UNDER = {
       {
         texto: "Responder con un tema",
         desc: "Una diss track: puede hacerte leyenda… o quemarte.",
+        riesgo: 0.5,
         efectos: function (s) {
           Under.UNDER._limpiar("under_rival");
-          if (Math.random() < 0.5) {
-            return { talent: 1, popularity: 5, fans: Under.SYSTEMS.fansEscala(s, 700), _energia: -8 };
-          }
+          return { talent: 1, popularity: 5, fans: Under.SYSTEMS.fansEscala(s, 700), _energia: -8 };
+        },
+        resultado: "La diss es letal. La escena la repite por todos lados y tu nombre gana una plaza.",
+        log: "Respondió con un tema contundente a su rival.",
+        riesgoEfectos: function (s) {
+          Under.UNDER._limpiar("under_rival");
           return { popularity: -3, fans: -Under.SYSTEMS.fansEscala(s, 150), _energia: -8 };
         },
-        resultado: "Respondés con un tema cargado. La escena se divide: unos te aplauden, otros te descartan.",
-        log: "Respondió con un tema a su rival."
+        riesgoResultado: "La diss te sale floja. Te la devuelven al toque y la escena se ríe de los dos.",
+        riesgoLog: "Su diss track le salió mal y perdió crédito."
       },
       {
         texto: "Responder con altura",
@@ -216,16 +227,20 @@ Under.UNDER = {
       {
         texto: "Batallar",
         desc: "Todo o nada: puede relanzarte la noche… o dejarte en ridículo.",
+        riesgo: 0.5,
         efectos: function (s) {
           Under.UNDER._limpiar("under_freestyle");
-          if (Math.random() < 0.5) {
-            Under.MISIONES.sumar(s, "freestyle", 1);
-            return { talent: 2, popularity: 5, fans: Under.SYSTEMS.fansEscala(s, 400), _energia: -10 };
-          }
+          Under.MISIONES.sumar(s, "freestyle", 1);
+          return { talent: 2, popularity: 5, fans: Under.SYSTEMS.fansEscala(s, 400), _energia: -10 };
+        },
+        resultado: "Batallás y la rompés. La plaza estalla y te anotan como el que no se achica.",
+        log: "Ganó una batalla de freestyle.",
+        riesgoEfectos: function (s) {
+          Under.UNDER._limpiar("under_freestyle");
           return { popularity: -2, fans: -Under.SYSTEMS.fansEscala(s, 100), _energia: -10 };
         },
-        resultado: "Batallás. Cuando estás arriba, sos fuego; cuando no, la plaza lo sabe igual.",
-        log: "Participó de una batalla de freestyle."
+        riesgoResultado: "Batallás y te quedás en blanco. La plaza lo vio todo, y el video corre por los grupos.",
+        riesgoLog: "Perdió una batalla de freestyle."
       },
       {
         texto: "Tirar una barra y retirarte",
@@ -261,6 +276,7 @@ Under.UNDER = {
         desc: "Tu verso queda grabado con los de la escena.",
         efectos: function (s) {
           Under.UNDER._limpiar("under_cypher");
+          Under.MISIONES.sumar(s, "cypher", 1);
           return { talent: 2, fans: Under.SYSTEMS.fansEscala(s, 500), popularity: 3, _energia: -8 };
         },
         resultado: "Tu parte del cypher es la más repetida. La escena te suma a su círculo.",
@@ -301,6 +317,7 @@ Under.UNDER = {
         desc: "Su público te ve por primera vez. Una paliza, pero enorme.",
         efectos: function (s) {
           Under.UNDER._limpiar("under_telonero");
+          Under.MISIONES.sumar(s, "telonero", 1);
           return { money: Under.SYSTEMS.efectivoEscala(s, 100), fans: Under.SYSTEMS.fansEscala(s, 900), popularity: 4, _energia: -15 };
         },
         resultado: "Abrís su show y su gente te recibe mejor de lo que esperabas. Salís del escenario con una fecha más en la lista.",
@@ -420,6 +437,7 @@ Under.UNDER = {
         desc: "Dejás que sea de ellos. Eso construye una base real.",
         efectos: function (s) {
           Under.UNDER._limpiar("under_zona");
+          Under.MISIONES.sumar(s, "barrio", 1);
           return { fans: Under.SYSTEMS.fansEscala(s, 800), popularity: 3 };
         },
         resultado: "Lo abrazás y hasta subís un video bailando el paso. La zona te hace suyo para siempre.",
@@ -501,6 +519,7 @@ Under.UNDER = {
         desc: "Sumar voces suma oídos.",
         efectos: function (s) {
           Under.UNDER._limpiar("under_colega");
+          Under.MISIONES.sumar(s, "colega", 1);
           return { talent: 1, fans: Under.SYSTEMS.fansEscala(s, 400), popularity: 2, _energia: -8 };
         },
         resultado: "El tema sale y la escena lo repite. Tu nombre suena al lado del de otro, y eso se nota.",
@@ -541,6 +560,7 @@ Under.UNDER = {
         desc: "Los consejos de los viejos pesan.",
         efectos: function (s) {
           Under.UNDER._limpiar("under_referente");
+          Under.MISIONES.sumar(s, "referente", 1);
           return { talent: 2, popularity: 2, fans: Under.SYSTEMS.fansEscala(s, 200) };
         },
         resultado: "Escuchás cada palabra. Algunas duelen, pero la mayoría sirven. El referente te anota en su radar.",
@@ -549,24 +569,36 @@ Under.UNDER = {
       {
         texto: "Discutir tu punto",
         desc: "Tu música, tu criterio.",
+        riesgo: 0.5,
         efectos: function (s) {
           Under.UNDER._limpiar("under_referente");
-          if (Math.random() < 0.5) return { talent: 2, popularity: 3 };
+          return { talent: 2, popularity: 3 };
+        },
+        resultado: "Defendés tu sonido con argumentos y el referente te termina respetando más.",
+        log: "Defendió su sonido y ganó el respeto de un referente.",
+        riesgoEfectos: function (s) {
+          Under.UNDER._limpiar("under_referente");
           return { popularity: -2 };
         },
-        resultado: "Defendés tu sonido con argumentos. A veces convence, a veces queda como el nuevo insolente.",
-        log: "Discutió su punto con un referente."
+        riesgoResultado: "Te enredás en el debate y quedás como el nuevo insolente de la escena.",
+        riesgoLog: "Discutió con un referente y quedó mal parado."
       },
       {
         texto: "Pedirle una colaboración",
         desc: "Aprovechar el momento, aunque sea atrevido.",
+        riesgo: 0.4,
         efectos: function (s) {
           Under.UNDER._limpiar("under_referente");
-          if (Math.random() < 0.4) return { fans: Under.SYSTEMS.fansEscala(s, 1500), popularity: 5, talent: 1 };
+          return { fans: Under.SYSTEMS.fansEscala(s, 1500), popularity: 5, talent: 1 };
+        },
+        resultado: "Te dice que sí. Tu nombre explota en la escena de la mano del veterano.",
+        log: "Consiguió una colaboración con un referente.",
+        riesgoEfectos: function (s) {
+          Under.UNDER._limpiar("under_referente");
           return { popularity: -1 };
         },
-        resultado: "Le pedís grabar algo juntos. A veces te dice que sí y tu nombre explota en la escena; a veces te mira y cambia de tema.",
-        log: "Le pidió una colaboración a un referente."
+        riesgoResultado: "Te mira y cambia de tema. Queda claro que pediste demasiado, demasiado pronto.",
+        riesgoLog: "Le pidió una colaboración a un referente y le negaron."
       }
     ]);
   },
@@ -581,13 +613,19 @@ Under.UNDER = {
       {
         texto: "Forzar la escritura",
         desc: "Escribís mal, pero escribís.",
+        riesgo: 0.5,
         efectos: function (s) {
           Under.UNDER._limpiar("under_bloqueo");
-          if (Math.random() < 0.5) return { talent: 2, _energia: -10 };
+          return { talent: 2, _energia: -10 };
+        },
+        resultado: "Forzás la escritura y entre la basura aparece una línea que vale la pena.",
+        log: "Forzó la escritura y destrabó el bloqueo.",
+        riesgoEfectos: function (s) {
+          Under.UNDER._limpiar("under_bloqueo");
           return { talent: -1, _energia: -10 };
         },
-        resultado: "Forzás la escritura hasta que algo sale. La mayoría es basura, pero una línea vale la pena.",
-        log: "Forzó la escritura durante un bloqueo."
+        riesgoResultado: "Forzás la escritura y todo sale peor. Te alejás del teclado con más bronca que antes.",
+        riesgoLog: "Forzó la escritura y salió con menos chispa."
       },
       {
         texto: "Cambiar el entorno",
@@ -664,6 +702,7 @@ Under.UNDER = {
         desc: "Poca plata, pero contacto cara a cara.",
         efectos: function (s) {
           Under.UNDER._limpiar("under_feria");
+          Under.MISIONES.sumar(s, "feria", 1);
           return { money: Under.SYSTEMS.efectivoEscala(s, 180), fans: Under.SYSTEMS.fansEscala(s, 200), _energia: -8 };
         },
         resultado: "Vendés algunas maquetas y te llevás charlas que valen más que la plata.",
@@ -704,6 +743,7 @@ Under.UNDER = {
         desc: "Enseñar también te forma a vos.",
         efectos: function (s) {
           Under.UNDER._limpiar("under_escuela");
+          Under.MISIONES.sumar(s, "taller", 1);
           return { talent: 2, _relaciones: 4, fans: Under.SYSTEMS.fansEscala(s, 250), _energia: -8 };
         },
         resultado: "El taller se llena y los pibes salen escribiendo cosas que te sorprenden. La zona te quiere un poco más.",
@@ -752,13 +792,20 @@ Under.UNDER = {
       {
         texto: "Pedir más plata",
         desc: "Un riesgo: puede salir bien… o no.",
+        riesgo: 0.5,
         efectos: function (s) {
           Under.UNDER._limpiar("under_fiesta");
-          if (Math.random() < 0.5) return { money: Under.SYSTEMS.efectivoEscala(s, 600), _energia: -12 };
+          Under.MISIONES.sumar(s, "fiesta", 1);
+          return { money: Under.SYSTEMS.efectivoEscala(s, 600), _energia: -12 };
+        },
+        resultado: "Pedís más y ceden. La noche sale redonda y el bolsillo lo nota.",
+        log: "Negoció y consiguió mejor caché en una fiesta privada.",
+        riesgoEfectos: function (s) {
+          Under.UNDER._limpiar("under_fiesta");
           return { money: Under.SYSTEMS.efectivoEscala(s, 150), popularity: -1, _energia: -12 };
         },
-        resultado: "Pedís más. A veces ceden y sale redondo; a veces te descartan y quedás en el molde.",
-        log: "Negoció el caché de una fiesta privada."
+        riesgoResultado: "Pedís más y te descartan. La fiesta busca a otro y quedás en el molde.",
+        riesgoLog: "Exigió más plata en una fiesta y lo descartaron."
       },
       {
         texto: "Dejarla pasar",
@@ -785,6 +832,7 @@ Under.UNDER = {
         desc: "Otra escuela: tocar para otro también enseña.",
         efectos: function (s) {
           Under.UNDER._limpiar("under_banda");
+          Under.MISIONES.sumar(s, "banda", 1);
           return { money: Under.SYSTEMS.efectivoEscala(s, 250), talent: 2, _energia: -12 };
         },
         resultado: "Te sumás y la fecha sale perfecta. Aprendés más de lo que esperabas y la escena te anota como músico serio.",
@@ -825,6 +873,7 @@ Under.UNDER = {
         desc: "Que tu música sea de la gente.",
         efectos: function (s) {
           Under.UNDER._limpiar("under_manifiesto");
+          Under.MISIONES.sumar(s, "movida", 1);
           return { fans: Under.SYSTEMS.fansEscala(s, 900), popularity: 3, _relaciones: 4 };
         },
         resultado: "Lo abrazás y hasta le dedicás una historia a la movida. Tu tema se vuelve algo más grande que una canción.",
@@ -832,16 +881,21 @@ Under.UNDER = {
       },
       {
         texto: "Sumarte a la movida",
-        desc: "Estar adentro, con todo lo que implica.",
+        desc: "Estar adentro, con todo lo que implica. Un riesgo real.",
+        riesgo: 0.5,
         efectos: function (s) {
           Under.UNDER._limpiar("under_manifiesto");
-          if (Math.random() < 0.5) {
-            return { fans: Under.SYSTEMS.fansEscala(s, 1500), popularity: 4, _relaciones: 4, _energia: -10 };
-          }
-          return { fans: Under.SYSTEMS.fansEscala(s, 800), popularity: -2, _energia: -10 };
+          Under.MISIONES.sumar(s, "movida", 1);
+          return { fans: Under.SYSTEMS.fansEscala(s, 1800), popularity: 5, _relaciones: 4, _energia: -10 };
         },
-        resultado: "Te sumás de lleno. Tu nombre crece con la movida, aunque el fuego a veces quema.",
-        log: "Se sumó a la movida que adoptó su tema."
+        resultado: "Te sumás de lleno y la movida te lleva en hombros. Tu nombre crece con ellos.",
+        log: "Se sumó de lleno a la movida que adoptó su tema.",
+        riesgoEfectos: function (s) {
+          Under.UNDER._limpiar("under_manifiesto");
+          return { fans: Under.SYSTEMS.fansEscala(s, 400), popularity: -3, _energia: -12, _relaciones: -2 };
+        },
+        riesgoResultado: "Te sumás y el fuego te quema: la movida se parte y tu nombre queda pegado a un lado de la pelea.",
+        riesgoLog: "La movida a la que se sumó terminó quemándolo."
       },
       {
         texto: "Mantener distancia",
@@ -852,6 +906,144 @@ Under.UNDER = {
         },
         resultado: "No te metés. La movida sigue cantando tu tema igual, pero vos quedás del lado de afuera.",
         log: "Mantuvo distancia de la movida que adoptó su tema."
+      }
+    ]);
+  },
+
+  /* ---------- Ensayar en serio ---------- */
+  crearEventoEnsayo: function (state) {
+    return Under.UNDER._crear("under_ensayo", "El ensayo que te forma", [
+      "Un amigo con un estudio chico te propone ensayar una vez por semana: juntar canciones y afinarlas de verdad.",
+      "Un productor de tu zona te deja su sala dos horas por semana a cambio de que lo ayudes con sus proyectos.",
+      "Encontrás un espacio de ensayo barato en tu barrio. Solo, con el micrófono y las ideas."
+    ], [
+      {
+        texto: "Entrenar cada semana",
+        desc: "Constancia: el sonido se hace repitiendo.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_ensayo");
+          Under.MISIONES.sumar(s, "ensayo", 1);
+          return { talent: 2, fans: Under.SYSTEMS.fansEscala(s, 120), _energia: -8 };
+        },
+        resultado: "Semana tras semana el material se afina. Lo que antes no salía, ahora sale sin pensarlo.",
+        log: "Ensayó todas las semanas del año."
+      },
+      {
+        texto: "Ensayo colectivo",
+        desc: "Con otra gente aprendés más, aunque la agenda se complica.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_ensayo");
+          Under.MISIONES.sumar(s, "ensayo", 1);
+          return { talent: 2, _relaciones: 4, fans: Under.SYSTEMS.fansEscala(s, 150), _energia: -10 };
+        },
+        resultado: "El ensayo con otros te destraba cosas que solo no ves. La escena te empieza a contar como serio.",
+        log: "Ensayó en colectivo con otros artistas de la escena."
+      },
+      {
+        texto: "Improvisar sin rutina",
+        desc: "Tu talento no depende de horarios.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_ensayo");
+          return { talent: 1 };
+        },
+        resultado: "No te atás a ninguna sala. Tu música sale cuando sale, sin calendario.",
+        log: "Prefirió no fijar rutina de ensayo."
+      }
+    ]);
+  },
+
+  /* ---------- Un medio de la zona te reseña ---------- */
+  crearEventoResena: function (state) {
+    return Under.UNDER._crear("under_resena", "Una reseña de la zona", [
+      "Un fanzine de la zona quiere reseñar tu último lanzamiento.",
+      "Un blog musical local prepara una crítica de tu maqueta.",
+      "Un programa de radio arma una sección donde analizan tu sonido."
+    ], [
+      {
+        texto: "Abrirte a la reseña",
+        desc: "Si te leen bien, explota; si te leen mal, la escena lo repite igual. Un riesgo.",
+        riesgo: 0.45,
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_resena");
+          Under.MISIONES.sumar(s, "resena", 1);
+          return { fans: Under.SYSTEMS.fansEscala(s, 800), popularity: 4, money: Under.SYSTEMS.efectivoEscala(s, 80) };
+        },
+        resultado: "La reseña es brillante. La escena te lee con otros ojos y te busca para escucharte.",
+        log: "Recibió una reseña brillante de la zona.",
+        riesgoEfectos: function (s) {
+          Under.UNDER._limpiar("under_resena");
+          Under.MISIONES.sumar(s, "resena", 1);
+          return { popularity: -2, talent: 1, fans: -Under.SYSTEMS.fansEscala(s, 100) };
+        },
+        riesgoResultado: "La reseña te descose. Algunos la comparten para burlarse. Duele, pero te deja más duro.",
+        riesgoLog: "Una reseña negativa corrió por la escena."
+      },
+      {
+        texto: "Dar el material y pedir feedback",
+        desc: "Buscás que te marquen, aunque no se publique nada.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_resena");
+          return { talent: 2, _relaciones: 2 };
+        },
+        resultado: "La devolución que te dan en privado vale más que cualquier crítica publicada. Tomás nota.",
+        log: "Pidió feedback a un medio de la zona."
+      },
+      {
+        texto: "Evitarla",
+        desc: "Prefiero que no hablen de mí a que hablen mal.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_resena");
+          return { popularity: -1 };
+        },
+        resultado: "No entregás nada. El medio reseña a otro y tu nombre ni aparece.",
+        log: "Evitó una reseña de la zona."
+      }
+    ]);
+  },
+
+  /* ---------- Equipo que cambia el sonido ---------- */
+  crearEventoEquipo: function (state) {
+    return Under.UNDER._crear("under_equipo", "Equipo que cambia el sonido", [
+      "Un micro y una interfaz de segunda mano están en venta baratos. Podrían cambiar tu sonido casero.",
+      "Te ofrecen un teclado y un monitor para tu estudio de habitación.",
+      "Un técnico de la zona vende parlantes usados para escuchar tus mezclas de verdad."
+    ], [
+      {
+        texto: "Comprar el equipo",
+        desc: "Invertir en sonido: sale caro, pero se nota.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_equipo");
+          return { money: -Under.SYSTEMS.efectivoEscala(s, 200), talent: 2, fans: Under.SYSTEMS.fansEscala(s, 150) };
+        },
+        resultado: "Comprás el equipo y el sonido cambia de nivel. Tus mezclas ya no suenan a teléfono.",
+        log: "Compró equipo para su estudio casero."
+      },
+      {
+        texto: "Comprarlo sin verificar",
+        desc: "El precio es buenísimo. Sospechosamente buenísimo…",
+        riesgo: 0.5,
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_equipo");
+          return { money: -Under.SYSTEMS.efectivoEscala(s, 90), talent: 2, fans: Under.SYSTEMS.fansEscala(s, 200) };
+        },
+        resultado: "El equipo funciona de diez. Pagaste la mitad y suena el doble.",
+        log: "Consiguió buen equipo a precio de ganga.",
+        riesgoEfectos: function (s) {
+          Under.UNDER._limpiar("under_equipo");
+          return { money: -Under.SYSTEMS.efectivoEscala(s, 220), talent: -1, _energia: -5 };
+        },
+        riesgoResultado: "Te estafaron: el equipo está quemado y no te devuelven la plata. Aprendiste la lección cara.",
+        riesgoLog: "Perdió plata comprando equipo en mal estado."
+      },
+      {
+        texto: "No gastar",
+        desc: "Tu sonido actual alcanza.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_equipo");
+          return {};
+        },
+        resultado: "No comprás. Seguís con lo que tenés y la calidad se mantiene donde está.",
+        log: "No compró equipo nuevo."
       }
     ]);
   }

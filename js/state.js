@@ -88,6 +88,28 @@ Under.STATE = {
          misiones: { id: { completada, año } }; contadores: { clave: n } */
       misiones: {},
       contadores: {},
+      /* Progresión anual (PRIORIDAD 1): madurez artística (0-100)
+         e inercia de la fama (0-100). No son stats visibles: viven
+         en el estado y se reflejan en resultados y narrativa. */
+      experiencia: 0,
+      momentum: Under.DATA.CONFIG.MOMENTUM_INICIAL,
+      /* Memoria de decisiones (PRIORIDAD 2): la escena no olvida.
+         memorias: [{ id, año, titulo, tono }] con las decisiones
+         que dejan huella. reputacion (0-100): cuánto te respeta
+         la escena; se construye o se quema y abre/cierra puertas. */
+      memorias: [],
+      reputacion: Under.DATA.CONFIG.REPUTACION_INICIAL,
+      /* El público (PRIORIDAD 3): el hype es el ruido transitorio
+         alrededor de tu nombre (se apaga solo); los fans se
+         segmentan por dentro en fieles y hardcore (los casuales
+         son el resto); los haters crecen con las polémicas y
+         frenan el crecimiento. ultimosTiers alimenta lo que el
+         público espera de tu próximo lanzamiento. */
+      hype: Under.DATA.CONFIG.HYPE_INICIAL,
+      haters: 0,
+      fansFieles: 0,
+      fansHardcore: 0,
+      ultimosTiers: [],
       /* Fase 4: proyectos, equipo, inversiones, escándalos, vida y retiro */
       energia: 100,
       relaciones: 50,
@@ -114,6 +136,13 @@ Under.STATE = {
       quiebra: false,
       /* Fase 6: el nivel más alto alcanzado y la salida del underground */
       maxNivel: 0,
+      /* Red de contactos (PRIORIDAD 7): personas persistentes
+         con un vínculo que crece o se enfría. red: [{ id, nombre,
+         rol, vinculo, desde, ultima, activo }] */
+      red: [],
+      /* Crisis y recuperación (PRIORIDAD 9): cuántos años seguidos
+         llevás tocando fondo y si alguna vez saliste. */
+      aniosEnCrisis: 0,
       planAnio: null,
       eventoActualId: null,
       fase: "anio",
@@ -137,6 +166,7 @@ Under.STATE = {
     if (s.trayectoria === undefined) s.trayectoria = [];
     if (s.misiones === undefined) s.misiones = {};
     if (s.contadores === undefined) s.contadores = {};
+    if (s.misionesUsadas === undefined) s.misionesUsadas = {};
     if (s.sello === undefined) s.sello = null;
     if (s.energia === undefined) s.energia = 100;
     if (s.relaciones === undefined) s.relaciones = 50;
@@ -161,6 +191,24 @@ Under.STATE = {
     if (s.vendioCatalogo === undefined) s.vendioCatalogo = false;
     if (s.quiebra === undefined) s.quiebra = false;
     if (s.maxNivel === undefined) s.maxNivel = 0;
+    if (s.experiencia === undefined) s.experiencia = 0;
+    if (s.momentum === undefined) s.momentum = Under.DATA.CONFIG.MOMENTUM_INICIAL;
+    if (s.memorias === undefined) s.memorias = [];
+    if (s.reputacion === undefined) s.reputacion = Under.DATA.CONFIG.REPUTACION_INICIAL;
+    if (s.hype === undefined) s.hype = Under.DATA.CONFIG.HYPE_INICIAL;
+    if (s.haters === undefined) s.haters = 0;
+    if (s.fansFieles === undefined) s.fansFieles = 0;
+    if (s.fansHardcore === undefined) s.fansHardcore = 0;
+    if (s.ultimosTiers === undefined) s.ultimosTiers = [];
+    if (s.red === undefined) s.red = [];
+    if (s.aniosEnCrisis === undefined) s.aniosEnCrisis = 0;
+    /* Contratos (PRIORIDAD 8): un sello guardado de una versión
+       vieja no tiene duración ni vencimiento: se le asigna uno. */
+    if (s.sello && s.sello.vencimiento === undefined) {
+      var sdef = Under.DATA.SELLOS[s.sello.tipo];
+      s.sello.duracion = sdef ? sdef.duracion : 2;
+      s.sello.vencimiento = (s.sello.año || 1) + s.sello.duracion;
+    }
     return s;
   },
 
@@ -197,5 +245,15 @@ Under.STATE = {
       }
     }
     return eras[eras.length - 1];
+  },
+
+  /* Etapa de la carrera según la madurez artística (PRIORIDAD 1) */
+  etapaActual: function (state) {
+    var etapas = Under.DATA.ETAPAS;
+    var etapa = etapas[0];
+    for (var i = 0; i < etapas.length; i++) {
+      if (state.experiencia >= etapas[i].exp) etapa = etapas[i];
+    }
+    return etapa;
   }
 };

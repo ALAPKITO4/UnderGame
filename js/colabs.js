@@ -13,20 +13,39 @@ Under.COLABS = {
 
   /* Elige un partner acorde al nivel de carrera */
   _elegirPartner: function (state) {
+    /* Red de contactos (PRIORIDAD 7): si ya colaboraste con alguien
+       y el vínculo sigue vivo, volver a trabajar es lo natural. */
+    var conocidos = Under.RELACIONES ? Under.RELACIONES.contactos(state)
+      .filter(function (c) { return c.rol === "colega" || c.rol === "estrella" || c.rol === "culto"; })
+      .sort(function (a, b) { return b.vinculo - a.vinculo; }) : [];
+    if (conocidos.length && Math.random() < 0.55) {
+      var con = conocidos[0];
+      var def = Under.DATA.PARTNERS[con.rol] || Under.DATA.PARTNERS.igual;
+      return {
+        tipo: con.rol in Under.DATA.PARTNERS ? con.rol : "igual",
+        nombre: con.nombre,
+        idRed: con.id,
+        calidad: def.calidad + Math.floor(con.vinculo / 25),
+        audiencia: def.audiencia + con.vinculo / 200,
+        retencion: def.retencion + con.vinculo / 400,
+        desc: "un vínculo que ya laburó con vos"
+      };
+    }
     var nivel = Under.STATE.nivelCarrera(state).nivel;
     var tipo;
     if (nivel >= 6) tipo = Math.random() < 0.5 ? "estrella" : "culto";
     else if (nivel >= 3) tipo = "igual";
     else tipo = "emergente";
-    var def = Under.DATA.PARTNERS[tipo];
-    var nombre = def.nombres[Under.STATE.randInt(0, def.nombres.length - 1)];
+    var def2 = Under.DATA.PARTNERS[tipo];
+    var nombre = def2.nombres[Under.STATE.randInt(0, def2.nombres.length - 1)];
     return {
       tipo: tipo,
       nombre: nombre,
-      calidad: def.calidad,
-      audiencia: def.audiencia,
-      retencion: def.retencion,
-      desc: def.desc
+      idRed: null,
+      calidad: def2.calidad,
+      audiencia: def2.audiencia,
+      retencion: def2.retencion,
+      desc: def2.desc
     };
   },
 
@@ -64,6 +83,20 @@ Under.COLABS = {
         });
         s.totalColabs += 1;
         s.flags.colabEsteAnio = true;
+
+        /* Red de contactos (PRIORIDAD 7): el partner queda (o se
+           fortalece) en tu red. El vínculo hace que volver a
+           trabajar con él sea más fácil la próxima vez. */
+        if (Under.RELACIONES) {
+          if (partner.idRed) {
+            Under.RELACIONES.mover(s, partner.idRed, 6);
+          } else {
+            var rolRed = partner.tipo === "emergente" || partner.tipo === "igual" ? "colega" :
+              (partner.tipo === "culto" ? "culto" : "estrella");
+            Under.RELACIONES.agregar(s, "red_" + partner.nombre.toLowerCase().replace(/[^a-z]/g, ""),
+              partner.nombre, rolRed, 30);
+          }
+        }
 
         Under.COLABS._pendiente = null;
         return { fans: L.fans, popularity: L.popularidad, talent: L.talento, money: L.dinero - costo, _energia: -10, _lanzamiento: L };

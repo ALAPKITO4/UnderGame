@@ -26,6 +26,8 @@ Under.SELLO = {
       retencion: def.retencion,
       distribucion: def.distribucion,
       adelanto: def.adelanto,
+      duracion: def.duracion,
+      vencimiento: (año || 1) + def.duracion,
       año: año
     };
   },

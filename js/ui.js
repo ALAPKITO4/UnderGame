@@ -202,9 +202,23 @@ Under.UI = {
     var per = Under.DATA.PERSONALITIES[s.artista.personalidad];
     var nivel = Under.STATE.nivelCarrera(s);
     var era = Under.STATE.eraActual(s);
+    var etapa = Under.STATE.etapaActual(s);
+    /* Momento (inercia de la fama): etiqueta que se muestra en la
+       barra de año sin ser una stat visible. */
+    var calor = s.momentum >= Under.DATA.CONFIG.MOMENTUM_IMPULSO ? "En llamas"
+      : s.momentum >= 35 ? "Con impulso"
+      : s.momentum >= Under.DATA.CONFIG.MOMENTUM_FRIO ? "Tibio"
+      : "Enfríando";
+    var calorIcono = s.momentum >= Under.DATA.CONFIG.MOMENTUM_IMPULSO ? "🔥"
+      : s.momentum >= 35 ? "🌡️"
+      : s.momentum >= Under.DATA.CONFIG.MOMENTUM_FRIO ? "🫧"
+      : "🧊";
     var inicial = Under.UI.esc((s.artista.nombre[0] || "?").toUpperCase());
     var añoPct = ((s.año - 1) / (Under.DATA.CONFIG.AÑOS_MAX - 1)) * 100;
     var acc = " style='--a:" + gen.color + "'";
+    /* El hype (PRIORIDAD 3): el ruido transitorio del momento.
+       Se muestra como etiqueta, sin ser una stat visible. */
+    var hypeInfo = Under.PUBLICO ? Under.PUBLICO.etiqueta(s) : { icono: "🔇", texto: "Apagado" };
 
     var html =
       /* Topbar */
@@ -236,9 +250,26 @@ Under.UI = {
             : '<div class="nivel-sub">🌆 Ascenso</div>')) +
       '</div>' +
 
-      /* Barra de año */
-      '<div class="anio-row"><span><b>AÑO ' + s.año + '</b> / ' + Under.DATA.CONFIG.AÑOS_MAX + '</span><span>' + era.nombre + ' · ' + s.artista.edad + ' años</span></div>' +
-      '<div class="bar bar-año"><div style="width:' + Math.round(añoPct) + '%"></div></div>';
+      /* Barra de año + etapa de la carrera (PRIORIDAD 1) */
+      '<div class="anio-row"><span><b>AÑO ' + s.año + '</b> / ' + Under.DATA.CONFIG.AÑOS_MAX + '</span><span>' + era.nombre + ' · ' + etapa.nombre + ' · ' + s.artista.edad + ' años</span></div>' +
+      '<div class="bar bar-año"><div style="width:' + Math.round(añoPct) + '%"></div></div>' +
+      '<div class="momento-line"><span>' + calorIcono + ' Momento: ' + calor + '</span><span>' + hypeInfo.icono + ' Hype: ' + hypeInfo.texto + '</span><span>' + Under.UI.fmtExacto(s.decisionesTomadas) + ' decisiones · ' + Under.UI.fmt(s.stats.fans) + ' fans</span></div>' +
+    /* Identidad dentro del género (PRIORIDAD 5): tu lugar en la
+       escena del género, según la madurez artística. */
+    (Under.GENEROS
+      ? '<div class="gen-ident"><span>' + Under.GENEROS.identidad(s).icono + ' ' + Under.UI.esc(Under.GENEROS.identidad(s).texto) + ' · techo: ' + Under.UI.esc(Under.GENEROS.perfil(s).pico) + '</span></div>'
+      : "") +
+    /* La música sale sola: un aviso discreto del último tema publicado */
+    (s.ultimoLanzamiento
+      ? '<div class="ultimo-lanz"><span>🎵 Último tema: «' + Under.UI.esc(s.ultimoLanzamiento.nombre) + '»</span><span class="ultimo-tier">' + s.ultimoLanzamiento.tierIcono + ' ' + Under.UI.esc(s.ultimoLanzamiento.tierNombre) + ' · ' + Under.UI.fmt(s.ultimoLanzamiento.repros) + ' repros</span></div>'
+      : "");
+
+    /* Evento / decisión actual (arriba: se decide sin bajar la
+       página; las stats quedan debajo como referencia) */
+    var ev = s.eventoActualId ? Under.DATA.buscarEvento(s.eventoActualId, s) : null;
+    if (ev && s.planAnio) {
+      html += Under.UI.tplEvento(ev, s.planAnio.hechas + 1, s.planAnio.decisiones);
+    }
 
     /* Stats principales (solo 3: Popularidad, Talento, Dinero) */
     html += '<div class="stats-grid">';
@@ -289,20 +320,19 @@ Under.UI = {
     if (s.totalFestivales) act.push('🎪 ' + s.totalFestivales + ' festival' + (s.totalFestivales === 1 ? "" : "es"));
     if (s.mercados.length) act.push('🌎 ' + s.mercados.length + ' mercado' + (s.mercados.length === 1 ? "" : "s"));
     if (s.plataforma) act.push(s.plataforma.emoji + ' ' + s.plataforma.nombre);
+    if (Under.RELACIONES) {
+      var redN = Under.RELACIONES.contactos(s).length;
+      if (redN) act.push('🕸️ ' + redN + ' en tu red');
+    }
     if (act.length) {
       html += '<div class="act-row">' + act.map(function (a) {
         return '<span class="chip accent">' + a + '</span>';
       }).join("") + '</div>';
     }
 
-    /* Misiones activas: objetivos con progreso visible */
-    html += Under.UI.tplMisiones(s);
-
-    /* Evento / decisión actual */
-    var ev = s.eventoActualId ? Under.DATA.buscarEvento(s.eventoActualId, s) : null;
-    if (ev && s.planAnio) {
-      html += Under.UI.tplEvento(ev, s.planAnio.hechas + 1, s.planAnio.decisiones);
-    }
+    /* Misiones: detrás de un botón, no estorban la decisión */
+    html += Under.UI.tplMisionesBtn(s);
+    if (Under.MAIN.showMisiones) html += Under.UI.tplMisiones(s);
 
     /* Acciones */
     html +=
@@ -314,24 +344,60 @@ Under.UI = {
     return html;
   },
 
-  /* Misiones activas: objetivos con progreso visible */
+  /* Botón para mostrar/ocultar las misiones (ocupan espacio: viven
+     detrás de un botón, no estorban la decisión) */
+  tplMisionesBtn: function (s) {
+    if (!Under.MISIONES || !s.misiones) return "";
+    var activas = Under.MISIONES._activas(s);
+    var completadas = 0;
+    for (var id in s.misiones) {
+      if (s.misiones[id].completada) completadas++;
+    }
+    var abierto = !!Under.MAIN.showMisiones;
+    return (
+      '<button class="misiones-btn" onclick="Under.MAIN.toggleMisiones()">' +
+        '<span>🎯 Misiones</span>' +
+        '<span class="misiones-btn-meta">' + completadas + ' hechas · ' + activas.length + ' activas ' + (abierto ? "▲" : "▼") + '</span>' +
+      '</button>'
+    );
+  },
+
+  /* Misiones activas: objetivos con progreso visible, agrupados
+     por sección (grind, música, escena, industria, red, público,
+     vida, internacional, crisis, hitos) */
   tplMisiones: function (s) {
     if (!Under.MISIONES || !s.misiones) return "";
     var activas = Under.MISIONES._activas(s);
     if (activas.length === 0) return "";
-    var items = activas.slice(0, 3).map(function (def) {
-      var prog = Under.MISIONES._progreso(def, s);
-      var pct = Math.min(100, Math.round((prog / def.meta) * 100));
+    var porSec = {};
+    activas.forEach(function (def) {
+      var key = def.seccion || "otras";
+      if (!porSec[key]) porSec[key] = [];
+      porSec[key].push(def);
+    });
+    var secs = Under.MISIONES.SECCIONES;
+    var orden = Object.keys(secs).filter(function (k) { return porSec[k]; });
+    var resto = Object.keys(porSec).filter(function (k) { return !secs[k]; });
+    var body = orden.concat(resto).map(function (key) {
+      if (!porSec[key]) return "";
+      var nombre = secs[key] ? secs[key].nombre : "Otras";
       return (
-        '<div class="mision">' +
-          '<div class="mision-top"><span>' + def.icono + ' ' + Under.UI.esc(def.titulo) + '</span><b>' +
-            Under.UI.fmt(prog) + ' / ' + Under.UI.fmt(def.meta) + '</b></div>' +
-          '<div class="mision-desc">' + Under.UI.esc(def.desc) + '</div>' +
-          Under.UI.bar(pct) +
-        '</div>'
+        '<div class="mision-sec">' + nombre + '</div>' +
+        porSec[key].map(function (def) {
+          var prog = Under.MISIONES._progreso(def, s);
+          var pct = Math.min(100, Math.round((prog / def.meta) * 100));
+          return (
+            '<div class="mision">' +
+              '<div class="mision-top"><span>' + def.icono + ' ' + Under.UI.esc(def.titulo) + '</span><b>' +
+                Under.UI.fmt(prog) + ' / ' + Under.UI.fmt(def.meta) + '</b></div>' +
+              '<div class="mision-desc">' + Under.UI.esc(def.desc) + '</div>' +
+              Under.UI.bar(pct) +
+            '</div>'
+          );
+        }).join("")
       );
     }).join("");
-    return '<div class="card misiones-card"><div class="misiones-h">🎯 Misiones</div>' + items + '</div>';
+    return '<div class="card misiones-card"><div class="misiones-h">🎯 Misiones</div>' + body + '</div>';
   },
 
   tplEvento: function (ev, num, total) {
@@ -367,9 +433,39 @@ Under.UI = {
   tplOverlay: function () {
     var m = Under.MAIN;
     if (m.overlay === "resultado") return Under.UI.tplResultado();
+    if (m.overlay === "hit") return Under.UI.tplHit();
     if (m.overlay === "historial") return Under.UI.tplHistorial();
     if (m.overlay === "confirmar") return Under.UI.tplConfirmar();
     return "";
+  },
+
+  /* Animación de oyentes: salta cuando el lanzamiento automático
+     del año explota (hit/viral/global). El público llena la pantalla. */
+  tplHit: function () {
+    var L = Under.MAIN.ultimaHit;
+    if (!L) return "";
+    var oyentes = ["👂", "🎧", "👀", "🙌", "🎤", "💃", "🕺", "🔥", "📻", "🔊", "🎶", "😮"];
+    var emojis = "";
+    for (var i = 0; i < 26; i++) {
+      var e = oyentes[i % oyentes.length];
+      var left = Math.round(2 + Math.random() * 92);
+      var delay = (Math.random() * 4).toFixed(2);
+      var dur = (2.5 + Math.random() * 3).toFixed(2);
+      var size = 16 + Math.round(Math.random() * 22);
+      emojis += '<i class="oyente" style="left:' + left + '%;font-size:' + size + 'px;animation-delay:' + delay + 's;animation-duration:' + dur + 's">' + e + '</i>';
+    }
+    return (
+      '<div class="modal hit-modal">' +
+        emojis +
+        '<div class="hit-card">' +
+          '<div class="hit-tier tier tier-' + L.tier + '">' + L.tierIcono + ' ' + Under.UI.esc(L.tierNombre) + '</div>' +
+          '<h3 class="hit-titulo">«' + Under.UI.esc(L.nombre) + '»</h3>' +
+          '<p class="hit-texto">El tema se disparó y miles de oyentes lo están escuchando ahora mismo.</p>' +
+          '<div class="hit-repros">' + Under.UI.fmtExacto(L.repros) + ' reproducciones</div>' +
+          '<button class="btn principal" onclick="Under.MAIN.continuarHit()">Seguir la carrera</button>' +
+        '</div>' +
+      '</div>'
+    );
   },
 
   tplResultado: function () {
@@ -381,13 +477,16 @@ Under.UI = {
     var premio = res.efectos._premio || null;
     var esPremioGanado = premio && premio.ganado;
     var esPremioPerdido = premio && !premio.ganado;
+    /* Los cambios mostrados son los que se aplicaron de verdad
+       (escalados por el nivel de carrera, con haters/hype). */
+    var cambios = res.aplicados || res.efectos;
     var items = "";
-    var extraNombre = { _energia: "Energía", _relaciones: "Vida personal", _legado: "Legado" };
-    var keys = Object.keys(res.efectos);
+    var extraNombre = { _energia: "Energía", _relaciones: "Vida personal", _legado: "Legado", _hype: "Hype", _haters: "Haters" };
+    var keys = Object.keys(cambios);
     for (var i = 0; i < keys.length; i++) {
       var k = keys[i];
-      var v = res.efectos[k];
-      if (k === "_premio") continue;
+      var v = cambios[k];
+      if (k === "_premio" || k === "_lanzamiento" || k === "_esAlbum") continue;
       if (!(k in Under.MAIN.estado.stats) && !extraNombre[k]) continue;
       if (Math.round(v) === 0) continue;
       var signo = v > 0 ? "+" : "-";
@@ -519,8 +618,16 @@ Under.UI = {
     if (s.lanzamientos) {
       var discos = s.discografia.slice().reverse().map(function (d) {
         var tier = Under.DATA.TIERS[d.tier] || { nombre: d.tier, icono: "🎵" };
+        /* El destino de cada tema (PRIORIDAD 4): los clásicos
+           perduran, los efímeros fueron de su momento y algunos
+           volvieron a sonar años después. */
+        var destino = "";
+        if (d.tipo === "clasico") destino += " · 🎯 Clásico";
+        else if (d.tipo === "efimero") destino += " · 💨 Fue de su momento";
+        if (d.resurgio) destino += " · 📼 Volvió a sonar (año " + d.resurgio + ")";
+        var crit = d.critica ? " · 🎚️ " + d.critica.toFixed(1) : "";
         return Under.UI.sumRow(d.nombre + " · Año " + d.año,
-          tier.icono + " " + tier.nombre + " · " + Under.UI.fmtExacto(d.repros) + " repros");
+          tier.icono + " " + tier.nombre + " · " + Under.UI.fmtExacto(d.repros) + " repros" + destino + crit);
       }).join("");
       resumen += Under.UI.sec("💿 Discografía · " + s.lanzamientos + " tema" + (s.lanzamientos === 1 ? "" : "s"), discos);
     }
@@ -603,6 +710,29 @@ Under.UI = {
         Under.UI.sumRow("Su historia se contó en pantalla", s.documentales + " documental" + (s.documentales === 1 ? "" : "es")));
     }
 
+    /* El público (PRIORIDAD 3): la base que construiste, en
+       segmentos. Los casuales vinieron y se fueron con el hype;
+       los fieles y hardcore son lo que queda cuando todo termina. */
+    if (s.stats.fans > 0 || (s.haters || 0) > 0) {
+      var casualesPub = Math.max(0, s.stats.fans - (s.fansFieles || 0) - (s.fansHardcore || 0));
+      var publicoHtml =
+        Under.UI.sumRow("👥 Fans casuales", Under.UI.fmt(casualesPub)) +
+        Under.UI.sumRow("🤝 Fans fieles", Under.UI.fmt(s.fansFieles || 0)) +
+        Under.UI.sumRow("🎯 Fans hardcore", Under.UI.fmt(s.fansHardcore || 0)) +
+        Under.UI.sumRow("💢 Haters", Under.UI.fmt(s.haters || 0));
+      resumen += Under.UI.sec("👥 El público", publicoHtml);
+    }
+
+    /* Memoria de decisiones (PRIORIDAD 2): lo que la escena no
+       olvidó, listado en el resumen final. */
+    if (s.memorias.length) {
+      var memoriasHtml = s.memorias.slice().reverse().map(function (mem) {
+        var icono = mem.tono === "buena" ? "🤝" : mem.tono === "mala" ? "🩹" : "·";
+        return Under.UI.sumRow(icono + " " + Under.UI.esc(mem.titulo), "Año " + mem.año);
+      }).join("");
+      resumen += Under.UI.sec("🕰️ Lo que la escena recuerda · " + s.memorias.length, memoriasHtml);
+    }
+
     /* Gráfico de trayectoria: la evolución año a año de la carrera */
     var tray = "";
     if (s.trayectoria && s.trayectoria.length >= 2) {
@@ -631,6 +761,22 @@ Under.UI = {
         '<div class="final-name">' + Under.UI.esc(s.artista.nombre) + '</div>' +
         (s.retirado ? '<div class="sello-line">🏁 Se retiró en el año ' + s.añoRetiro + '.</div>' : "") +
       '</div>' +
+      /* Biografía y legado final (PRIORIDAD 10): el título que la
+         historia le pone a la carrera y el relato armado con lo
+         que de verdad viviste en la partida. */
+      (Under.BIOGRAFIA
+        ? (function () {
+            var bio = Under.BIOGRAFIA.generar(s);
+            return '<div class="card final-section bio-card">' +
+              '<div class="bio-rango"><span class="bio-icono">' + bio.rango.icono + '</span>' +
+              '<span class="bio-nombre">Legado: ' + Under.UI.esc(bio.rango.nombre) + '</span></div>' +
+              '<p class="bio-texto">' + Under.UI.esc(bio.parrafo) + '</p>' +
+              (bio.hitos.length ? '<div class="bio-hitos">' + bio.hitos.map(function (x) {
+                return '<span class="chip accent">' + x + '</span>';
+              }).join("") + '</div>' : "") +
+            '</div>';
+          })()
+        : "") +
       '<div class="final-stats">' +
         '<div class="card fin-stat"><div class="v">' + aniosCarrera + ' años</div><div class="k">De carrera</div></div>' +
         '<div class="card fin-stat"><div class="v">' + Under.UI.fmt(s.stats.fans) + '</div><div class="k">Fans</div></div>' +

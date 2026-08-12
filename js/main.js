@@ -43,6 +43,7 @@ Under.MAIN = {
   overlay: null,
   ultimaResultado: null,
   _confirmAccion: null,
+  showMisiones: false,
   form: { nombre: "", ciudad: "Tu ciudad", genero: null, personalidad: null },
 
   /* ---------- Arranque ---------- */
@@ -57,6 +58,7 @@ Under.MAIN = {
     this.overlay = null;
     this.estado = null;
     this.ultimaResultado = null;
+    this.showMisiones = false;
     this.form = { nombre: "", ciudad: "Tu ciudad", genero: null, personalidad: null };
     document.body.style.removeProperty("--accent");
     Under.UI.render();
@@ -246,15 +248,41 @@ Under.MAIN = {
     }
 
     s.fase = "anio";
+
+    /* Si el lanzamiento automático del año explotó, salta la
+       animación de oyentes antes de la próxima decisión. */
+    if (s.ultimoLanzamiento && s.ultimoLanzamiento.esHit) {
+      this.ultimaHit = s.ultimoLanzamiento;
+      this.overlay = "hit";
+      Under.SAVE.guardar(s);
+      Under.UI.render();
+      return;
+    }
+
     this.overlay = null;
     this.siguienteEvento();
     Under.SAVE.guardar(s);
     Under.UI.render();
   },
 
-  /* ---------- Historial, retiro y reinicio ---------- */
+  continuarHit: function () {
+    this.overlay = null;
+    this.ultimaHit = null;
+    this.siguienteEvento();
+    this.fase = "dashboard";
+    Under.SAVE.guardar(this.estado);
+    Under.UI.render();
+  },
+
+  /* ---------- Historial, misiones, retiro y reinicio ---------- */
   historial: function () {
     this.overlay = this.overlay === "historial" ? null : "historial";
+    Under.UI.render();
+  },
+
+  /* Misiones: se muestran u ocultan detrás de un botón */
+  toggleMisiones: function () {
+    this.showMisiones = !this.showMisiones;
     Under.UI.render();
   },
 

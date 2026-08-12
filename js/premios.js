@@ -51,7 +51,8 @@ Under.PREMIOS = {
     s.premios.push({ año: s.año, id: premio.id, nombre: premio.nombre, premio: money });
     s.totalPremios += 1;
     if (premio.id === "global") s.flags.tuvoPremioMayor = true;
-    return { money: money, fans: fans, popularity: premio.popularidad };
+    /* Ganar un premio enciende el hype: el nombre suena en todos lados. */
+    return { money: money, fans: fans, popularity: premio.popularidad, _hype: 8 };
   },
 
   _crearResultado: function (s, premio, ganado, money, fans, asistio) {

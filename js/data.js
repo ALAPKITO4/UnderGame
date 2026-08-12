@@ -20,13 +20,57 @@ Under.DATA = {
     AÑOS_MAX: 25,
     EDAD_INICIAL: 18,
     DINERO_INICIAL: 400,
-    REGALIA: 0.004 /* dinero por reproducción */
+    REGALIA: 0.004, /* dinero por reproducción */
+
+    /* ---- Progresión anual (PRIORIDAD 1) ----
+       La madurez artística crece haciendo cosas y con los años.
+       El momentum es la inercia de la fama: se carga cuando tu
+       popularidad sube y se desinfla solo si no la alimentás. */
+    EXPERIENCIA_POR_DECISION: 1.5,
+    EXPERIENCIA_POR_ANIO: 5,
+    MOMENTUM_INICIAL: 5,
+    MOMENTUM_DECAY: 6,     /* inercia que se pierde cada año */
+    MOMENTUM_FRIO: 20,     /* por debajo: el nombre se enfría */
+    MOMENTUM_IMPULSO: 55,  /* por encima: hay momento a favor */
+
+    /* ---- Memoria de decisiones (PRIORIDAD 2) ----
+       La reputación en la escena empieza neutra y se construye
+       (o se quema) con cada decisión que la gente recuerda. */
+    REPUTACION_INICIAL: 45,
+
+    /* ---- El público (PRIORIDAD 3) ----
+       El hype es el ruido transitorio: sube con los éxitos y se
+       apaga solo (la popularidad queda, el hype vuela). Las
+       expectativas del público salen de los últimos lanzamientos:
+       defraudarlas baja hype y reputación; superarlas lo enciende.
+       Los fans se segmentan por dentro (fieles/hardcore) y los
+       haters crecen con las polémicas y frenan el crecimiento. */
+    HYPE_INICIAL: 0,
+    HYPE_DECAY: 0.6,          /* % del hype que queda tras cada año */
+    HYPE_FRIO: 15,            /* por debajo: los casuales se empiezan a ir */
+    HYPE_PENA: 12,            /* hype que se pierde al defraudar expectativas */
+    HYPE_PENA_SUBIDO: 8,      /* extra si el hype estaba por las nubes */
+    HYPE_UMBRAL_BUENO: 10,    /* superar esto da hype */
+    HYPE_UMBRAL_MALO: -10,    /* quedar debajo de esto decepciona */
+    EXPECTATIVA_DEFAULT: 30,  /* expectativa del público sin historial */
+    FIDELIDAD_CASUAL: 0.06,   /* % de casuales que se vuelven fieles/año */
+    FIDELIDAD_HARDCORE: 0.03, /* % de fieles que se vuelven hardcore/año */
+    HATERS_CAP: 0.5           /* máx. haters vs fans (50%) */
   },
 
   /* ---------- Géneros musicales ----------
      stats: modificadores a las estadísticas iniciales.
      ventaja/desventaja: texto que se muestra al crear el artista.
-     Ningún género es objetivamente mejor que otro. */
+     Ningún género es objetivamente mejor que otro.
+
+     perfil (PRIORIDAD 5): cada género es una carrera distinta.
+       critica   → bonus a la crítica de tus temas (respeto artístico).
+       comercial → cómo convierte oídos: más = más fans por tema.
+       escena    → cuánto aprendés laburando el under y qué tan
+                   fiel es la base que construís.
+       pico      → dónde está el techo natural de la escena.
+     Ningún género es mejor: comercial paga rápido y escena paga
+     hondo. */
   GENRES: {
     urban: {
       id: "urban",
@@ -35,7 +79,8 @@ Under.DATA = {
       color: "#f59e0b",
       ventaja: "Crece rápido en plataformas y playlists.",
       desventaja: "Cuesta que te tomen en serio como artista.",
-      stats: { popularity: 5, fans: 100 }
+      stats: { popularity: 5, fans: 100 },
+      perfil: { critica: -0.25, comercial: 1.18, escena: 0.9, fidelidad: 0.92, pico: "Masivo", afinidad: "El baile y el hook" }
     },
     rap: {
       id: "rap",
@@ -44,7 +89,8 @@ Under.DATA = {
       color: "#a855f7",
       ventaja: "Base de talento fuerte para componer.",
       desventaja: "Cuesta llegar al público masivo al principio.",
-      stats: { talent: 3, popularity: -3 }
+      stats: { talent: 3, popularity: -3 },
+      perfil: { critica: 0.35, comercial: 0.92, escena: 1.15, fidelidad: 1.22, pico: "Culto", afinidad: "La palabra y la calle" }
     },
     rock: {
       id: "rock",
@@ -53,7 +99,8 @@ Under.DATA = {
       color: "#ef4444",
       ventaja: "Gran base de talento musical.",
       desventaja: "El camino comercial es más lento.",
-      stats: { talent: 5, popularity: -4 }
+      stats: { talent: 5, popularity: -4 },
+      perfil: { critica: 0.45, comercial: 0.95, escena: 1.2, fidelidad: 1.28, pico: "Fiel", afinidad: "El instrumento y el vivo" }
     },
     pop: {
       id: "pop",
@@ -62,7 +109,8 @@ Under.DATA = {
       color: "#22d3ee",
       ventaja: "Gran facilidad para el éxito comercial.",
       desventaja: "Pocas plata para arrancar es un problema menor: tu fuerza es la imagen.",
-      stats: { popularity: 6, money: 100 }
+      stats: { popularity: 6, money: 100 },
+      perfil: { critica: -0.1, comercial: 1.12, escena: 0.95, fidelidad: 0.98, pico: "Comercial", afinidad: "La imagen y el radio" }
     }
   },
 
@@ -129,6 +177,20 @@ Under.DATA = {
     { id: "consolidacion", nombre: "Consolidación", texto: "Ya tenés una identidad y una audiencia que te sigue.",     añoMin: 8,  añoMax: 12 },
     { id: "cima",          nombre: "Cima",          texto: "Podés alcanzar tu techo. Cuidado con la caída.",          añoMin: 13, añoMax: 17 },
     { id: "legado",        nombre: "Legado",        texto: "Lo que hagas ahora define cómo te van a recordar.",       añoMin: 18, añoMax: 25 }
+  ],
+
+  /* ---------- Etapas de la carrera (PRIORIDAD 1) ----------
+     La madurez artística (experiencia) marca la etapa: con los
+     años y las decisiones el artista deja de ser un novato.
+     Las etapas son el "cómo" de la progresión anual: el mismo
+     movimiento significa distinto en un debutante que en un
+     veterano (lo usa music._calcular y la interfaz). */
+  ETAPAS: [
+    { id: "debutante",      nombre: "Debutante",      exp: 0  },
+    { id: "en_crecimiento", nombre: "En crecimiento", exp: 25 },
+    { id: "asentado",       nombre: "Asentado",       exp: 50 },
+    { id: "veterano",       nombre: "Veterano",       exp: 75 },
+    { id: "leyenda_viva",   nombre: "Leyenda viva",   exp: 90 }
   ],
 
   CIUDADES: [
@@ -220,15 +282,15 @@ Under.DATA = {
      adelanto: plata que te dan al firmar (se escala con el nivel). */
   SELLOS: {
     pequeno: {
-      retencion: 0.75, distribucion: 1.2, adelanto: 1000,
+      retencion: 0.75, distribucion: 1.2, adelanto: 1000, duracion: 2,
       nombres: ["Sello Nexo", "Fábrica de Sueños", "Ritmo Sur", "Casa Fuego"]
     },
     medio: {
-      retencion: 0.65, distribucion: 1.35, adelanto: 4000,
+      retencion: 0.65, distribucion: 1.35, adelanto: 4000, duracion: 3,
       nombres: ["Gran Pulso", "Melodía Capital", "Sonido Global", "Estudio Norte"]
     },
     grande: {
-      retencion: 0.55, distribucion: 1.5, adelanto: 12000,
+      retencion: 0.55, distribucion: 1.5, adelanto: 12000, duracion: 4,
       nombres: ["Estelar Records", "Vía Láctea Music", "Titán Discos", "Aurora Global"]
     }
   },
@@ -402,11 +464,6 @@ Under.DATA = {
      disponible: condición para que entre en el pozo este año. */
   DINAMICOS: [
     {
-      id: "lanzamiento", peso: 4,
-      disponible: function () { return true; },
-      generar: function (s) { return Under.MUSIC.crearEventoLanzamiento(s); }
-    },
-    {
       id: "gira", peso: 2,
       disponible: function (s) { return !s.flags.giraEsteAnio && Under.STATE.nivelCarrera(s).nivel >= 1; },
       generar: function (s) { return Under.GIRAS.crearEventoGira(s); }
@@ -534,19 +591,19 @@ Under.DATA = {
       generar: function (s) { return Under.UNDER.crearEventoRival(s); }
     },
     {
-      id: "under_freestyle", peso: 1,
+      id: "under_freestyle", peso: 2,
       disponible: function (s) {
         return s.año >= 1 && Under.STATE.nivelCarrera(s).nivel <= 3 && s.stats.talent >= 55;
       },
       generar: function (s) { return Under.UNDER.crearEventoFreestyle(s); }
     },
     {
-      id: "under_cypher", peso: 1,
+      id: "under_cypher", peso: 2,
       disponible: function (s) { return s.lanzamientos >= 1 && Under.STATE.nivelCarrera(s).nivel <= 3; },
       generar: function (s) { return Under.UNDER.crearEventoCypher(s); }
     },
     {
-      id: "under_telonero", peso: 1,
+      id: "under_telonero", peso: 2,
       disponible: function (s) {
         var n = Under.STATE.nivelCarrera(s).nivel;
         return s.año >= 2 && n >= 1 && n <= 4;
@@ -554,17 +611,17 @@ Under.DATA = {
       generar: function (s) { return Under.UNDER.crearEventoTelonero(s); }
     },
     {
-      id: "under_remix", peso: 1,
+      id: "under_remix", peso: 2,
       disponible: function (s) { return s.lanzamientos >= 1; },
       generar: function (s) { return Under.UNDER.crearEventoRemix(s); }
     },
     {
-      id: "under_filtracion", peso: 1,
+      id: "under_filtracion", peso: 2,
       disponible: function (s) { return s.lanzamientos >= 2; },
       generar: function (s) { return Under.UNDER.crearEventoFiltracion(s); }
     },
     {
-      id: "under_zona", peso: 1,
+      id: "under_zona", peso: 2,
       disponible: function (s) { return s.lanzamientos >= 1 && Under.STATE.nivelCarrera(s).nivel <= 3; },
       generar: function (s) { return Under.UNDER.crearEventoZona(s); }
     },
@@ -579,17 +636,17 @@ Under.DATA = {
       generar: function (s) { return Under.UNDER.crearEventoColega(s); }
     },
     {
-      id: "under_referente", peso: 1,
+      id: "under_referente", peso: 2,
       disponible: function (s) { return s.año >= 2 && Under.STATE.nivelCarrera(s).nivel <= 3; },
       generar: function (s) { return Under.UNDER.crearEventoReferente(s); }
     },
     {
-      id: "under_bloqueo", peso: 1,
+      id: "under_bloqueo", peso: 2,
       disponible: function (s) { return s.año >= 2 && Under.STATE.nivelCarrera(s).nivel <= 3; },
       generar: function (s) { return Under.UNDER.crearEventoBloqueo(s); }
     },
     {
-      id: "under_advertencia", peso: 1,
+      id: "under_advertencia", peso: 2,
       disponible: function (s) { return s.año >= 3 && Under.STATE.nivelCarrera(s).nivel <= 3; },
       generar: function (s) { return Under.UNDER.crearEventoAdvertencia(s); }
     },
@@ -671,29 +728,44 @@ Under.DATA = {
     /* Gran actualización 2: más misiones del underground y de la
        vida grande para que los años nunca se sientan vacíos. */
     {
-      id: "under_feria", peso: 1,
+      id: "under_feria", peso: 2,
       disponible: function (s) { return s.año >= 1 && Under.STATE.nivelCarrera(s).nivel <= 3; },
       generar: function (s) { return Under.UNDER.crearEventoFeria(s); }
     },
     {
-      id: "under_escuela", peso: 1,
+      id: "under_escuela", peso: 2,
       disponible: function (s) { return s.año >= 2 && Under.STATE.nivelCarrera(s).nivel <= 3; },
       generar: function (s) { return Under.UNDER.crearEventoEscuela(s); }
     },
     {
-      id: "under_fiesta", peso: 1,
+      id: "under_fiesta", peso: 2,
       disponible: function (s) { return s.año >= 1 && Under.STATE.nivelCarrera(s).nivel <= 3; },
       generar: function (s) { return Under.UNDER.crearEventoFiesta(s); }
     },
     {
-      id: "under_banda", peso: 1,
+      id: "under_banda", peso: 2,
       disponible: function (s) { return s.lanzamientos >= 1 && Under.STATE.nivelCarrera(s).nivel <= 3; },
       generar: function (s) { return Under.UNDER.crearEventoBanda(s); }
     },
     {
-      id: "under_manifiesto", peso: 1,
+      id: "under_manifiesto", peso: 2,
       disponible: function (s) { return s.año >= 3 && Under.STATE.nivelCarrera(s).nivel <= 3; },
       generar: function (s) { return Under.UNDER.crearEventoManifiesto(s); }
+    },
+    {
+      id: "under_ensayo", peso: 2,
+      disponible: function (s) { return s.año >= 1 && Under.STATE.nivelCarrera(s).nivel <= 3; },
+      generar: function (s) { return Under.UNDER.crearEventoEnsayo(s); }
+    },
+    {
+      id: "under_resena", peso: 1,
+      disponible: function (s) { return s.lanzamientos >= 1 && Under.STATE.nivelCarrera(s).nivel <= 3; },
+      generar: function (s) { return Under.UNDER.crearEventoResena(s); }
+    },
+    {
+      id: "under_equipo", peso: 1,
+      disponible: function (s) { return s.año >= 2 && Under.STATE.nivelCarrera(s).nivel <= 3; },
+      generar: function (s) { return Under.UNDER.crearEventoEquipo(s); }
     },
     {
       id: "grande_docuserie", peso: 1,
@@ -742,6 +814,29 @@ Under.DATA = {
       id: "gen_urban", peso: 2,
       disponible: function (s) { return s.artista.genero === "urban" && s.año >= 2; },
       generar: function (s) { return Under.EXTRA.crearEventoGeneroUrban(s); }
+    },
+    /* Carreras por género (PRIORIDAD 5): la segunda vuelta. Cuando
+       la escena ya no te ve como promesa, cada género tiene su
+       gran movimiento. Se apoya en js/generos.js. */
+    {
+      id: "gen2_rap", peso: 2,
+      disponible: function (s) { return s.artista.genero === "rap" && s.año >= 5; },
+      generar: function (s) { return Under.GENEROS.crearEventoGeneroRap2(s); }
+    },
+    {
+      id: "gen2_rock", peso: 2,
+      disponible: function (s) { return s.artista.genero === "rock" && s.año >= 5; },
+      generar: function (s) { return Under.GENEROS.crearEventoGeneroRock2(s); }
+    },
+    {
+      id: "gen2_pop", peso: 2,
+      disponible: function (s) { return s.artista.genero === "pop" && s.año >= 5; },
+      generar: function (s) { return Under.GENEROS.crearEventoGeneroPop2(s); }
+    },
+    {
+      id: "gen2_urban", peso: 2,
+      disponible: function (s) { return s.artista.genero === "urban" && s.año >= 5; },
+      generar: function (s) { return Under.GENEROS.crearEventoGeneroUrban2(s); }
     },
     {
       id: "extra_serie", peso: 2,
@@ -812,6 +907,173 @@ Under.DATA = {
         return s.año >= 1 && Under.STATE.nivelCarrera(s).nivel <= 3;
       },
       generar: function (s) { return Under.EXTRA.crearEventoEstudio(s); }
+    },
+    /* Memoria de decisiones (PRIORIDAD 2): lo que hiciste años
+       atrás vuelve. Tres hilos narrativos que reabren viejas
+       cuentas cuando la escena ya cambió. */
+    {
+      id: "mem_productor", peso: 1,
+      disponible: function (s) {
+        return s.año >= 5 && s.año <= 8 && !s.flags.memProductorUsado &&
+          !!Under.MEMORIA && Under.MEMORIA.recuerda(s, "rechazoProductor");
+      },
+      generar: function (s) { return Under.MEMORIA.crearEventoProductor(s); }
+    },
+    {
+      id: "mem_nova", peso: 1,
+      disponible: function (s) {
+        return s.año >= 6 && s.año <= 10 && !s.flags.memNovaUsado &&
+          !!Under.MEMORIA && Under.MEMORIA.recuerda(s, "rechazoMiaNova");
+      },
+      generar: function (s) { return Under.MEMORIA.crearEventoNova(s); }
+    },
+    {
+      id: "mem_escena", peso: 1,
+      disponible: function (s) {
+        if (!Under.MEMORIA) return false;
+        if (s.flags.memEscenaEsteAnio) return false;
+        if (Under.MEMORIA.cuantas(s) < 2) return false;
+        if (s.ultimaMemEscena && s.año - s.ultimaMemEscena < 3) return false;
+        return s.reputacion >= 55 || s.reputacion <= 40;
+      },
+      generar: function (s) { return Under.MEMORIA.crearEventoEscena(s); }
+    },
+    /* Canciones y éxito (PRIORIDAD 4): el catálogo tiene vida.
+       Un tema viejo puede volver a sonar (resurgimiento) y un
+       gran éxito seguido de flojos abre la duda del one-hit
+       wonder. Ambos responden al historial de lanzamientos. */
+    {
+      id: "cat_revival", peso: 1,
+      disponible: function (s) {
+        if (!Under.CANCIONES) return false;
+        if (s.flags.revivalEsteAnio) return false;
+        if (s.flags.ultimoRevival && s.año - s.flags.ultimoRevival < 3) return false;
+        if (s.stats.fans < 1500) return false;
+        return !!Under.CANCIONES._candidatoRevival(s);
+      },
+      generar: function (s) { return Under.CANCIONES.crearEventoRevival(s); }
+    },
+    {
+      id: "cat_onehit", peso: 1,
+      disponible: function (s) {
+        if (!Under.CANCIONES) return false;
+        if (s.flags.oneHitUsado) return false;
+        if (s.año < 3) return false;
+        if (!Under.CANCIONES._ultimoHit(s)) return false;
+        return Under.CANCIONES._flojosDesdeHit(s) >= 2;
+      },
+      generar: function (s) { return Under.CANCIONES.crearEventoOneHit(s); }
+    },
+    /* Eventos de contexto (PRIORIDAD 6): la disponibilidad lee el
+       estado real y el peso es dinámico (función del estado), así
+       el mismo pool se inclina según cómo vaya la carrera. */
+    {
+      id: "ctx_reputacion_alta", peso: function (s) { return s.reputacion >= 70 ? 3 : 0; },
+      disponible: function (s) { return s.reputacion >= 70 && s.año >= 3; },
+      generar: function (s) { return Under.CONTEXTO.crearEventoReputacionAlta(s); }
+    },
+    {
+      id: "ctx_reputacion_baja", peso: function (s) { return s.reputacion <= 38 ? 3 : 0; },
+      disponible: function (s) { return s.reputacion <= 38 && s.año >= 3; },
+      generar: function (s) { return Under.CONTEXTO.crearEventoReputacionBaja(s); }
+    },
+    {
+      id: "ctx_momentum_alto", peso: function (s) { return s.momentum >= 55 ? 3 : 0; },
+      disponible: function (s) { return s.momentum >= 55; },
+      generar: function (s) { return Under.CONTEXTO.crearEventoMomentumAlto(s); }
+    },
+    {
+      id: "ctx_momentum_bajo", peso: function (s) { return s.momentum <= 18 ? 3 : 0; },
+      disponible: function (s) { return s.momentum <= 18 && s.año >= 3; },
+      generar: function (s) { return Under.CONTEXTO.crearEventoMomentumBajo(s); }
+    },
+    {
+      id: "ctx_legado", peso: function (s) { return s.legado >= 35 ? 3 : 0; },
+      disponible: function (s) { return s.legado >= 35 && s.año >= 8; },
+      generar: function (s) { return Under.CONTEXTO.crearEventoLegado(s); }
+    },
+    {
+      id: "ctx_hype", peso: function (s) { return (s.hype || 0) >= 55 ? 3 : 0; },
+      disponible: function (s) { return (s.hype || 0) >= 55 && s.año >= 2; },
+      generar: function (s) { return Under.CONTEXTO.crearEventoHype(s); }
+    },
+    /* Red de contactos (PRIORIDAD 7): la escena se mueve con
+       personas. Los vínculos construidos (o descuidados) cambian
+       qué se te ofrece y en qué condiciones. */
+    {
+      id: "rel_productor", peso: function (s) {
+        var prod = Under.RELACIONES ? Under.RELACIONES.mejorVinculo(s, "productor") : null;
+        return prod ? 3 : 2;
+      },
+      disponible: function (s) { return s.año >= 2 && !s.flags.relProductorEsteAnio; },
+      generar: function (s) { return Under.RELACIONES.crearEventoProductor(s); }
+    },
+    {
+      id: "rel_colega", peso: 2,
+      disponible: function (s) { return s.año >= 2 && !s.flags.relColegaEsteAnio; },
+      generar: function (s) { return Under.RELACIONES.crearEventoColega(s); }
+    },
+    {
+      id: "rel_aliado", peso: function (s) {
+        var aliado = Under.RELACIONES ? Under.RELACIONES.mejorVinculo(s, "aliado") : null;
+        return aliado ? 3 : 2;
+      },
+      disponible: function (s) { return s.año >= 3 && !s.flags.relAliadoEsteAnio; },
+      generar: function (s) { return Under.RELACIONES.crearEventoAliado(s); }
+    },
+    /* Contratos y economía (PRIORIDAD 8): la renegociación se
+       ofrece fuerte cuando el contrato está por vencer; las
+       cláusulas pueden caer en cualquier momento del contrato. */
+    {
+      id: "ctr_renegociar", peso: function (s) {
+        return Under.CONTRATOS && Under.CONTRATOS.cercaDeVencer(s) ? 4 : 0;
+      },
+      disponible: function (s) {
+        return !!s.sello && !s.flags.selloRenegociadoEsteAnio && Under.CONTRATOS.cercaDeVencer(s);
+      },
+      generar: function (s) { return Under.CONTRATOS.crearEventoRenegociar(s); }
+    },
+    {
+      id: "ctr_clausulas", peso: 2,
+      disponible: function (s) {
+        return !!s.sello && s.año >= 2 && !s.flags.ctrClausulaEsteAnio && !s.sello.exclusivo;
+      },
+      generar: function (s) { return Under.CONTRATOS.crearEventoClausulas(s); }
+    },
+    /* Crisis, recuperación y evolución (PRIORIDAD 9): el estado
+       real de la carrera decide qué te pasa. Tocar fondo pesa
+       fuerte cuando el momentum y la popularidad se hunden; el
+       rebote aparece cuando salís; la evolución es una opción
+       natural en años estables. */
+    {
+      id: "cris_fondo", peso: function (s) {
+        return (s.momentum <= 22 && s.stats.popularity <= 38 && s.año >= 3) ? 4 : 0;
+      },
+      disponible: function (s) {
+        return s.año >= 3 && !s.flags.crisFondoEsteAnio &&
+          s.momentum <= 22 && s.stats.popularity <= 38;
+      },
+      generar: function (s) { return Under.CRISIS.crearEventoFondo(s); }
+    },
+    {
+      id: "cris_rebote", peso: function (s) {
+        return (s.flags.estuvoEnCrisis && s.momentum >= 45 && !s.flags.crisReboteEsteAnio) ? 3 : 0;
+      },
+      disponible: function (s) {
+        return s.año >= 3 && s.flags.estuvoEnCrisis && s.momentum >= 45 && !s.flags.crisReboteEsteAnio;
+      },
+      generar: function (s) { return Under.CRISIS.crearEventoRebote(s); }
+    },
+    {
+      id: "cris_evolucion", peso: function (s) {
+        var estable = !(s.momentum <= 22) && s.año >= 4;
+        return estable && !s.flags.crisEvoEsteAnio ? 2 : 0;
+      },
+      disponible: function (s) {
+        return s.año >= 4 && !s.flags.crisEvoEsteAnio &&
+          !(s.momentum <= 22 && s.stats.popularity <= 38);
+      },
+      generar: function (s) { return Under.CRISIS.crearEventoEvolucion(s); }
     }
   ],
 
@@ -848,6 +1110,10 @@ Under.DATA = {
           texto: "Publicarlo ya, tal cual está",
           resultado: "Lo subís a todas las plataformas esa misma noche. No está perfecto, pero es tuyo. Toca alguna gente de tu barrio, y un par de desconocidos lo comparten.",
           efectos: { fans: 80, popularity: 4 },
+          riesgo: 0.25,
+          riesgoEfectos: { fans: 15, popularity: 1, talent: -1 },
+          riesgoResultado: "Lo subís crudo esa misma noche. La mezcla no aguanta y el tema pasa sin pena ni gloria. Aprendés a la fuerza que publicar sin pulir puede salir caro.",
+          riesgoLog: "Publicaste tu primer tema crudo y no la pegó.",
           flags: { primerTema: true, primeroCrudo: true },
           log: "Publicaste tu primer tema, crudo y directo."
         },
