@@ -593,6 +593,7 @@ Under.SYSTEMS = {
     state.terminada = true;
     state.fase = "final";
     state.historial.push({ año: state.año, texto: "Fin de la carrera. Resultado: " + state.resultadoFinal.titulo + "." });
+    Under.SAVE.registrarFinal(state.resultadoFinal.tipo);
     Under.SYSTEMS.chequearLogros(state);
   }
 };

@@ -7,6 +7,7 @@ window.Under = window.Under || {};
 
 Under.SAVE = {
   clave: function () { return Under.DATA.CONFIG.SAVE_KEY; },
+  claveFinales: function () { return "under_finales_descubiertos"; },
 
   guardar: function (estado) {
     try {
@@ -33,6 +34,32 @@ Under.SAVE = {
   borrar: function () {
     try {
       localStorage.removeItem(Under.SAVE.clave());
+    } catch (e) { /* noop */ }
+  },
+
+  /* ---------- Finales descubiertos ----------
+     Galería persistente entre partidas: cada carrera termina con
+     un final distinto y esta lista guarda cuáles viste, para que
+     haya una razón más para volver a empezar. */
+  finales: function () {
+    try {
+      var raw = localStorage.getItem(Under.SAVE.claveFinales());
+      if (!raw) return [];
+      var arr = JSON.parse(raw);
+      return Array.isArray(arr) ? arr : [];
+    } catch (e) {
+      return [];
+    }
+  },
+
+  registrarFinal: function (tipo) {
+    if (!tipo) return;
+    try {
+      var arr = Under.SAVE.finales();
+      if (arr.indexOf(tipo) === -1) {
+        arr.push(tipo);
+        localStorage.setItem(Under.SAVE.claveFinales(), JSON.stringify(arr));
+      }
     } catch (e) { /* noop */ }
   }
 };

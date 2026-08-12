@@ -166,8 +166,8 @@ Under.DATA = {
     { nivel: 4, puntaje: 62,  nombre: "Artista grande",           desc: "Saliste del underground. La industria te mira." },
     { nivel: 5, puntaje: 74,  nombre: "Estrella nacional",        desc: "Tu país conoce tu nombre." },
     { nivel: 6, puntaje: 84,  nombre: "Estrella internacional",   desc: "Tu nombre cruza fronteras." },
-    { nivel: 7, puntaje: 92,  nombre: "Superestrella",            desc: "Rompés récords en todo el mundo." },
-    { nivel: 8, puntaje: 100, nombre: "Fama mundial",             desc: "El mundo entero te escucha." }
+    { nivel: 7, puntaje: 91,  nombre: "Superestrella",            desc: "Rompés récords en todo el mundo." },
+    { nivel: 8, puntaje: 96,  nombre: "Fama mundial",             desc: "El mundo entero te escucha." }
   ],
 
   /* ---------- Eras de la carrera ---------- */

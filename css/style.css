@@ -154,6 +154,18 @@ body {
 .menu { display: grid; gap: 12px; animation: subir .45s ease both; }
 .menu-hint { text-align: center; color: var(--text3); font-size: 12.5px; margin-top: 18px; line-height: 1.6; }
 
+/* Galería de finales descubiertos (persiste entre partidas) */
+.finales-wrap {
+  margin-top: 20px; padding: 14px 16px;
+  border: 1.5px dashed var(--border); border-radius: 14px;
+  background: var(--card2); text-align: center;
+  animation: subir .5s ease both;
+}
+.finales-h { font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text3); font-weight: 700; margin-bottom: 10px; }
+.finales-chips { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-bottom: 10px; }
+.final-chip { font-size: 11px; }
+.finales-resto { font-size: 11.5px; color: var(--accent); font-weight: 700; }
+
 /* ---------- Pantalla de creación ---------- */
 .form-header { text-align: center; margin: 10px 0 22px; }
 .form-header h1 { font-size: 24px; letter-spacing: 1px; }
@@ -466,6 +478,21 @@ input[type="radio"]:checked + .sel-card .nm { color: var(--a); }
 
 /* ---------- Pantalla final ---------- */
 .final-hero { text-align: center; padding: 40px 0 10px; }
+
+/* Finales 2.0: banner que enmarca el final según su grado */
+.final-banner {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 8px 18px; margin-bottom: 14px;
+  border-radius: 999px; font-size: 12px; font-weight: 800;
+  letter-spacing: 2px; text-transform: uppercase;
+  border: 1.5px solid var(--border); background: var(--card2);
+}
+.final-banner .final-icono { font-size: 18px; }
+.final-grado-legendario { color: #ffd54a; border-color: rgba(255,213,74,.5); box-shadow: 0 0 18px rgba(255,213,74,.18); }
+.final-grado-dorado { color: #fcd34d; border-color: rgba(252,211,77,.45); }
+.final-grado-propio { color: var(--accent); border-color: var(--border); }
+.final-grado-tragico { color: #f87171; border-color: rgba(248,113,113,.5); }
+.final-grado-discreto { color: var(--text2); border-color: var(--border); }
 .final-title { font-size: 34px; font-weight: 800; letter-spacing: 3px; background: linear-gradient(135deg, var(--accent), #ff9a5a); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .final-name { font-size: 20px; margin-top: 8px; font-weight: 700; }
 .final-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 22px 0; }

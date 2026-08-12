@@ -114,17 +114,37 @@ Under.UI = {
       ? '<button class="btn principal" onclick="Under.MAIN.continuarPartida()">▶ Continuar carrera</button>'
       : '';
 
+    /* Finales descubiertos entre partidas: una razón más para
+       volver a empezar y ver qué otra historia te toca. */
+    var finales = Under.SAVE.finales();
+    var finalesHtml = "";
+    if (finales.length) {
+      var index = Under.RETIRO.FINALES_INDEX;
+      var total = Object.keys(index).length;
+      var resto = (total > finales.length) ? ("<span class='finales-resto'>Faltan " + (total - finales.length) + "</span>") : "<span class='finales-resto'>¡Completaste todos!</span>";
+      finalesHtml =
+        '<div class="finales-wrap">' +
+          '<div class="finales-h">Finales descubiertos · ' + finales.length + ' de ' + total + '</div>' +
+          '<div class="finales-chips">' + finales.map(function (t) {
+            var f = index[t];
+            return '<span class="chip final-chip">' + (f ? f.icono + " " + Under.UI.esc(f.titulo) : Under.UI.esc(t)) + '</span>';
+          }).join("") + '</div>' +
+          resto +
+        '</div>';
+    }
+
     return (
       '<div class="logo-wrap">' +
         '<div class="logo-note">🎧</div>' +
-        '<div class="logo">UNDER</div>' +
+        '<div class="logo">ECO</div>' +
         '<div class="logo-sub">Simulador de carrera musical</div>' +
       '</div>' +
       '<div class="menu">' +
         continuarBtn +
         '<button class="btn" onclick="Under.MAIN.nuevaCarrera()">✨ Nueva carrera</button>' +
       '</div>' +
-      '<div class="menu-hint">Empezás siendo un artista desconocido.<br>Vos decidís si terminás como leyenda underground, estrella nacional… o la próxima fama mundial.</div>'
+      finalesHtml +
+      '<div class="menu-hint">Empezás bajo tierra, como un eco que nadie escucha.<br>Vos decidís si terminás como leyenda del under, estrella nacional… o la próxima fama mundial.</div>'
     );
   },
 
@@ -603,8 +623,24 @@ Under.UI = {
 
   tplFinal: function () {
     var s = Under.MAIN.estado;
-    var rf = s.resultadoFinal || { titulo: "FIN DE CARRERA", historia: "" };
+    var rf = s.resultadoFinal || { titulo: "FIN DE CARRERA", historia: "", grado: "propio", icono: "🏁" };
     var aniosCarrera = s.retirado ? (s.añoRetiro - 1) : (s.año - 1);
+
+    /* ---------- Banner del final (FINALES 2.0) ----------
+       Cada final tiene un grado: legendario, dorado, propio,
+       trágico o discreto. El banner le pone marco a la historia. */
+    var grados = {
+      legendario: "★ FINAL LEGENDARIO",
+      dorado: "◆ FINAL DORADO",
+      propio: "· FINAL PROPIO",
+      tragico: "✕ FINAL TRÁGICO",
+      discreto: "· UNA HISTORIA DISCRETA"
+    };
+    var grado = grados[rf.grado] || "FIN DE CARRERA";
+    var banner = '<div class="final-banner final-grado-' + (rf.grado || "propio") + '">' +
+      '<span class="final-icono">' + (rf.icono || "🏁") + '</span>' +
+      '<span class="final-grado">' + grado + '</span>' +
+    '</div>';
 
     /* ---------- Resumen completo: logros, discografía, proyectos y más ---------- */
     var resumen = "";
@@ -757,6 +793,7 @@ Under.UI = {
 
     return (
       '<div class="final-hero">' +
+        banner +
         '<div class="final-title">' + Under.UI.esc(rf.titulo) + '</div>' +
         '<div class="final-name">' + Under.UI.esc(s.artista.nombre) + '</div>' +
         (s.retirado ? '<div class="sello-line">🏁 Se retiró en el año ' + s.añoRetiro + '.</div>' : "") +
