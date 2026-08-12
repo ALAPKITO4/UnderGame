@@ -921,6 +921,250 @@ Under.UNDER = {
     ]);
   },
 
+  /* ---------- Émile y Massita quieren un 50/50 ---------- */
+  crearEventoMassita: function (state) {
+    var tema = (state.ultimoLanzamiento && state.ultimoLanzamiento.nombre) || "tu último tema";
+    return Under.UNDER._crear("under_massita", "Émile y Massita proponen un 50/50", [
+      "Émile y Massita, artistas emergentes de tu ciudad con más seguidores que vos, escucharon tu sonido y proponen un remix de «" + tema + "». Quieren un 50/50.",
+      "Émile y Massita quieren llevar «" + tema + "» a su estilo y proponen un remix a medias, 50/50. Son emergentes, pero ya tienen más seguidores que vos.",
+      "A Émile y Massita les gusta tu tema «" + tema + "» y te tiran un 50/50 para remixarlo. Tienen su propia gente y creen que el cruce les sirve a los dos."
+    ], [
+      {
+        texto: "Hacer el remix 50/50",
+        desc: "Su público te conoce de arriba.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_massita");
+          Under.MISIONES.sumar(s, "colega", 1);
+          Under.MISIONES.sumar(s, "contenido", 1);
+          return { talent: 1, fans: Under.SYSTEMS.fansEscala(s, 800), popularity: 3, _energia: -8 };
+        },
+        resultado: "Grabás con Émile y Massita. El remix junta a sus seguidores con los tuyos y los dos nombres salen ganando.",
+        log: "Hizo un remix 50/50 con Émile y Massita."
+      },
+      {
+        texto: "Pedir 60/40 a tu favor",
+        desc: "El tema es tuyo y la base también.",
+        riesgo: 0.35,
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_massita");
+          Under.MISIONES.sumar(s, "colega", 1);
+          return { money: Under.SYSTEMS.efectivoEscala(s, 250), fans: Under.SYSTEMS.fansEscala(s, 600), popularity: 2, _energia: -8 };
+        },
+        resultado: "Aceptan el 60/40 a regañadientes. El remix sale y a vos te toca la parte grande.",
+        log: "Negoció 60/40 en el remix con Émile y Massita.",
+        riesgoEfectos: function (s) {
+          Under.UNDER._limpiar("under_massita");
+          return { popularity: -2 };
+        },
+        riesgoResultado: "Te quedás con el 50/50 en la mano… no: se cae. Émile y Massita lo hacen con otro y el remix suena sin vos.",
+        riesgoLog: "Se cayó el remix con Émile y Massita por la negociación."
+      },
+      {
+        texto: "Dejarlo pasar",
+        desc: "Ese remix no va con tu sonido.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_massita");
+          return {};
+        },
+        resultado: "Lo dejás pasar. Émile y Massita buscan a otro, pero tu tema sigue siendo tuyo.",
+        log: "Dejó pasar el remix con Émile y Massita."
+      }
+    ]);
+  },
+
+  /* ---------- Kilpatay y el estudio grande ---------- */
+  crearEventoEstudioGrande: function (state) {
+    return Under.UNDER._crear("under_estudio_grande", "Kilpatay te abre un estudio grande", [
+      "Kilpatay, el productor con el que laburaste años atrás, ahora trabaja en un estudio grande. Te recomienda grabar una sesión ahí.",
+      "El estudio grande donde labura Kilpatay tiene un hueco en la agenda, y él te propone para esa sesión. La recomendación pesa.",
+      "Kilpatay no se olvidó de vos: ahora está en un estudio grande y te empuja para que grabes una sesión de verdad."
+    ], [
+      {
+        texto: "Agarrar la sesión",
+        desc: "Un sonido de otro nivel y contactos de la industria.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_estudio_grande");
+          Under.MISIONES.sumar(s, "ensayo", 1);
+          return { money: -Under.SYSTEMS.efectivoEscala(s, 80), talent: 2, fans: Under.SYSTEMS.fansEscala(s, 1200), popularity: 3, _energia: -10 };
+        },
+        resultado: "Grabás una sesión en el estudio grande. El sonido te queda de otro planeta y los ingenieros se acuerdan de tu nombre.",
+        log: "Grabó una sesión en el estudio grande recomendado por Kilpatay."
+      },
+      {
+        texto: "Pedir una sesión con más horas",
+        desc: "Más horas, más sonido… y más costo.",
+        riesgo: 0.3,
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_estudio_grande");
+          Under.MISIONES.sumar(s, "ensayo", 1);
+          return { money: -Under.SYSTEMS.efectivoEscala(s, 180), talent: 3, fans: Under.SYSTEMS.fansEscala(s, 1500), popularity: 3, _energia: -12 };
+        },
+        resultado: "Conseguís más horas y la sesión sale redonda. Kilpatay te la anota como la que te puso en otro nivel.",
+        log: "Grabó una sesión extendida en el estudio grande.",
+        riesgoEfectos: function (s) {
+          Under.UNDER._limpiar("under_estudio_grande");
+          return { popularity: -1, money: -Under.SYSTEMS.efectivoEscala(s, 120) };
+        },
+        riesgoResultado: "El pedido extra enfría la recomendación. La sesión se achica y Kilpatay queda medio en evidencia.",
+        riesgoLog: "Se pasó de exigencia y perdió la sesión en el estudio grande."
+      },
+      {
+        texto: "Agradecerle a Kilpatay y pasar",
+        desc: "No querés saltar etapas.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_estudio_grande");
+          return { _relaciones: 2 };
+        },
+        resultado: "Le agradecés a Kilpatay y dejás pasar la sesión. Él entiende: 'cuando estés listo, el estudio sigue acá'.",
+        log: "Agradeció la recomendación de Kilpatay y dejó pasar la sesión."
+      }
+    ]);
+  },
+
+  /* ---------- Tu video en Cayo se viraliza ---------- */
+  crearEventoViralCayo: function (state) {
+    return Under.UNDER._crear("under_viral_cayo", "Tu video en Cayo se viraliza", [
+      "Un video tuyo cantando en Cayo Makensi se hizo viral en redes. En dos días tiene miles de visitas. Nadie sabe qué va a pasar.",
+      "Alguien grabó tu toque en Cayo Makensi y el video explotó. En dos días son miles de visitas y la escena entera lo está viendo.",
+      "Un video tuyo cantando en Cayo no para de sumar vistas. En dos días ya son miles, y el revuelo llega más lejos de lo que imaginabas."
+    ], [
+      {
+        texto: "Montarte en la ola",
+        desc: "Publicás seguido mientras el video crece.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_viral_cayo");
+          Under.MISIONES.sumar(s, "contenido", 1);
+          return { fans: Under.SYSTEMS.fansEscala(s, 1500), popularity: 4, _energia: -8 };
+        },
+        resultado: "Aprovechás el momento: subís contenido, respondés comentarios, y el video te lleva una audiencia que ayer no existía.",
+        log: "Se montó en la ola de su video viral en Cayo."
+      },
+      {
+        texto: "Dejarlo que crezca solo",
+        desc: "No forzar nada.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_viral_cayo");
+          return { fans: Under.SYSTEMS.fansEscala(s, 600), popularity: 2 };
+        },
+        resultado: "No tocás nada. El video sigue sumando y tu nombre queda en el aire, esperando el próximo paso.",
+        log: "Dejó que su video viral creciera solo."
+      },
+      {
+        texto: "No darle bola",
+        desc: "El ruido no te mueve.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_viral_cayo");
+          return {};
+        },
+        resultado: "No le das importancia. El video pasa, y tu carrera sigue su propio ritmo.",
+        log: "Ignoró la viralización de su video en Cayo."
+      }
+    ]);
+  },
+
+  /* ---------- Nominación a la canción del año ---------- */
+  crearEventoCancionAnio: function (state) {
+    var cuenta = Under.UNDER._cuentaIg(state);
+    return Under.UNDER._crear("under_cancion_anio", "Nominación a la canción del año", [
+      "Los de " + cuenta + " se les dio por nominarte a la canción del año. El stream es en unos meses y tu agenda está llena. Ganar no está asegurado: la categoría está dura.",
+      cuenta + " te nominó a la canción del año. El stream es en unos meses, tu agenda está llena y la categoría está durísima. Ganar no está asegurado.",
+      "Llegó la nominación: los de " + cuenta + " te meten en la terna a la canción del año. El stream es en unos meses y tu agenda no te deja ni respirar."
+    ], [
+      {
+        texto: "Despejar la agenda para el stream",
+        desc: "Vas con todo a la terna. La categoría está dura.",
+        riesgo: 0.45,
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_cancion_anio");
+          return { money: Under.SYSTEMS.efectivoEscala(s, 500), fans: Under.SYSTEMS.fansEscala(s, 1500), popularity: 5, _energia: -12 };
+        },
+        resultado: "Reacomodás todo y llegás al stream con un show preparado. La ganás por poco y " + cuenta + " te celebra como el suyo.",
+        log: "Ganó la canción del año en el stream de la escena.",
+        riesgoEfectos: function (s) {
+          Under.UNDER._limpiar("under_cancion_anio");
+          return { popularity: -2, _energia: -12 };
+        },
+        riesgoResultado: "Reacomodás tu agenda, vas con todo y perdés por poco. La categoría estaba dura, y tu nombre queda pegado a la terna.",
+        riesgoLog: "Perdió la canción del año por poco."
+      },
+      {
+        texto: "Ir al stream sin despejar nada",
+        desc: "Si ganás, ganás; si no, tu agenda sigue intacta.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_cancion_anio");
+          return { fans: Under.SYSTEMS.fansEscala(s, 600), popularity: 2, _energia: -5 };
+        },
+        resultado: "Pasás por el stream entre compromiso y compromiso. No ganás, pero los de " + cuenta + " se acuerdan de que fuiste.",
+        log: "Fue al stream de la canción del año sin despejar agenda."
+      },
+      {
+        texto: "Declinar la nominación",
+        desc: "Tu agenda está llena y ganar no está asegurado.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_cancion_anio");
+          return { popularity: -1 };
+        },
+        resultado: "Declinás con un mensaje elegante. Los de " + cuenta + " lo toman con respeto, aunque se nota que esperaban otra cosa.",
+        log: "Declinó la nominación a la canción del año."
+      }
+    ]);
+  },
+
+  /* ---------- WTF IVO te bardea en hongo TV ---------- */
+  crearEventoIvo: function (state) {
+    var tema = (state.ultimoLanzamiento && state.ultimoLanzamiento.nombre) || "tu último tema";
+    return Under.UNDER._crear("under_ivo", "WTF IVO te bardea en hongo TV", [
+      "Un rival aparece: WTF IVO. En un stream con hongo TV dice que «" + tema + "» es un clon de 'lune a lune'. La gente empieza a elegir bando.",
+      "WTF IVO, un npc de la escena, largó en un stream de hongo TV que tu tema «" + tema + "» es un clon de 'lune a lune'. Tu nombre empieza a sonar pegado al suyo.",
+      "En hongo TV, WTF IVO tira que «" + tema + "» es una copia de 'lune a lune'. Los comentarios se dividen y vos quedás en el medio del bardo."
+    ], [
+      {
+        texto: "Responder con un tema",
+        desc: "Una diss que deje el asunto cerrado.",
+        riesgo: 0.5,
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_ivo");
+          return { talent: 1, popularity: 5, fans: Under.SYSTEMS.fansEscala(s, 900), _energia: -8 };
+        },
+        resultado: "La diss apunta directo a IVO. La escena se prende, el clip circula y tu nombre queda una plaza arriba del suyo.",
+        log: "Respondió a WTF IVO con una diss contundente.",
+        riesgoEfectos: function (s) {
+          Under.UNDER._limpiar("under_ivo");
+          return { popularity: -3, fans: -Under.SYSTEMS.fansEscala(s, 150), _energia: -8 };
+        },
+        riesgoResultado: "La diss te sale floja y hongo TV la repite con IVO comentándola en vivo. La risa es de ellos.",
+        riesgoLog: "Su diss contra WTF IVO salió mal."
+      },
+      {
+        texto: "Enfrentarlo en el mismo stream",
+        desc: "Lo buscás en su propio terreno.",
+        riesgo: 0.4,
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_ivo");
+          return { popularity: 4, fans: Under.SYSTEMS.fansEscala(s, 500), _energia: -8 };
+        },
+        resultado: "Entrás al stream y se arma el bardo en vivo. La gente elige bando y vos ganás la mitad de la pelea.",
+        log: "Enfrentó a WTF IVO en su stream.",
+        riesgoEfectos: function (s) {
+          Under.UNDER._limpiar("under_ivo");
+          return { popularity: -2, _energia: -8 };
+        },
+        riesgoResultado: "En el vivo te enredás con las palabras y IVO te corta el audio. El clip queda mal para vos.",
+        riesgoLog: "Perdió el ida y vuelta con WTF IVO en el stream."
+      },
+      {
+        texto: "Ignorarlo",
+        desc: "El clon de quién, decís.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_ivo");
+          return {};
+        },
+        resultado: "No respondés. El clip se apaga solo y tu nombre queda limpio, aunque IVO se queda con la última palabra.",
+        log: "Ignoró la provocación de WTF IVO."
+      }
+    ]);
+  },
+
   /* ---------- Backstage: conocer a un referente ---------- */
   crearEventoReferente: function (state) {
     return Under.UNDER._crear("under_referente", "Un referente te habla", [

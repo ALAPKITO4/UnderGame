@@ -730,6 +730,44 @@ Under.DATA = {
       },
       generar: function (s) { return Under.UNDER.crearEventoMakensi(s); }
     },
+    {
+      id: "under_massita", peso: 2,
+      disponible: function (s) {
+        return s.lanzamientos >= 1 && Under.STATE.nivelCarrera(s).nivel <= 3;
+      },
+      generar: function (s) { return Under.UNDER.crearEventoMassita(s); }
+    },
+    {
+      id: "under_estudio_grande", peso: 2,
+      disponible: function (s) {
+        var n = Under.STATE.nivelCarrera(s).nivel;
+        return s.año >= 3 && s.lanzamientos >= 1 && n >= 1 && n <= 4;
+      },
+      generar: function (s) { return Under.UNDER.crearEventoEstudioGrande(s); }
+    },
+    {
+      id: "under_viral_cayo", peso: 2,
+      disponible: function (s) {
+        var n = Under.STATE.nivelCarrera(s).nivel;
+        return s.lanzamientos >= 1 && n >= 1 && n <= 3;
+      },
+      generar: function (s) { return Under.UNDER.crearEventoViralCayo(s); }
+    },
+    {
+      id: "under_cancion_anio", peso: 2,
+      disponible: function (s) {
+        var n = Under.STATE.nivelCarrera(s).nivel;
+        return s.año >= 2 && s.lanzamientos >= 2 && n >= 1 && n <= 3;
+      },
+      generar: function (s) { return Under.UNDER.crearEventoCancionAnio(s); }
+    },
+    {
+      id: "under_ivo", peso: 2,
+      disponible: function (s) {
+        return s.año >= 2 && s.lanzamientos >= 1 && Under.STATE.nivelCarrera(s).nivel <= 3;
+      },
+      generar: function (s) { return Under.UNDER.crearEventoIvo(s); }
+    },
     /* Gran actualización: misiones exclusivas para cuando ya
        saliste del underground (nivel 4+ alcanzado alguna vez). */
     {
@@ -1381,7 +1419,7 @@ Under.DATA = {
       añoMin: 2, añoMax: 4,
       condiciones: { flags: { primerTema: true } },
       titulo: "Tu primer merch",
-      texto: "Unos pocos fans de tu barrio te preguntan si tenés remeras o stickers.\n\nNo tenés nada. El momento parece pedir que arranques con la merca… digo, con el merch.",
+      texto: "Unos chicos de fuego te preguntan si tenés remeras o stickers.\n\nNo tenés dudas. El momento parece pedir que arranques con la merca… digo, con el merch.",
       opciones: [
         {
           texto: "Hacer un tiraje chico",
