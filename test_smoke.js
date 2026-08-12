@@ -196,6 +196,7 @@ function jugar(gen, per) {
          "fan_club", "fan_hater", "fan_tatuaje",
          "under_casa", "under_plaza", "under_video", "under_fanzine", "under_estudio",
          "under_ensayo", "under_resena", "under_equipo",
+         "under_obs", "under_ig", "under_petalos", "under_coscu", "under_makensi",
          "mem_productor", "mem_nova", "mem_escena",
          "cat_revival", "cat_onehit",
          "ctx_reputacion_alta", "ctx_reputacion_baja", "ctx_momentum_alto",

@@ -694,6 +694,42 @@ Under.DATA = {
       disponible: function (s) { return s.año >= 1 && Under.STATE.nivelCarrera(s).nivel <= 3; },
       generar: function (s) { return Under.UNDER.crearEventoCiclo(s); }
     },
+    {
+      id: "under_obs", peso: 2,
+      disponible: function (s) {
+        return s.lanzamientos >= 1 && Under.STATE.nivelCarrera(s).nivel <= 3;
+      },
+      generar: function (s) { return Under.UNDER.crearEventoObs(s); }
+    },
+    {
+      id: "under_ig", peso: 2,
+      disponible: function (s) {
+        return s.lanzamientos >= 1 && Under.STATE.nivelCarrera(s).nivel <= 3;
+      },
+      generar: function (s) { return Under.UNDER.crearEventoIg(s); }
+    },
+    {
+      id: "under_petalos", peso: 2,
+      disponible: function (s) {
+        var n = Under.STATE.nivelCarrera(s).nivel;
+        return s.lanzamientos >= 1 && n >= 1 && n <= 3;
+      },
+      generar: function (s) { return Under.UNDER.crearEventoPetalos(s); }
+    },
+    {
+      id: "under_coscu", peso: 2,
+      disponible: function (s) {
+        return s.lanzamientos >= 1 && Under.STATE.nivelCarrera(s).nivel <= 3;
+      },
+      generar: function (s) { return Under.UNDER.crearEventoCoscu(s); }
+    },
+    {
+      id: "under_makensi", peso: 2,
+      disponible: function (s) {
+        return s.año >= 2 && s.lanzamientos >= 1 && Under.STATE.nivelCarrera(s).nivel <= 3;
+      },
+      generar: function (s) { return Under.UNDER.crearEventoMakensi(s); }
+    },
     /* Gran actualización: misiones exclusivas para cuando ya
        saliste del underground (nivel 4+ alcanzado alguna vez). */
     {

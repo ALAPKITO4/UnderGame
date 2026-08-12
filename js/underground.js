@@ -33,6 +33,31 @@ Under.UNDER = {
     return list[Under.STATE.randInt(0, list.length - 1)];
   },
 
+  /* La cuenta de la escena local: para Córdoba es @cba_underground
+     (la real del under cordobés); para otras ciudades se adapta
+     con una versión corta del nombre elegido. */
+  _cuentaIg: function (state) {
+    var c = ((state.artista && state.artista.ciudad) || "").split(",")[0].toLowerCase().trim();
+    c = c.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9 ]/g, "").replace(/\s+/g, " ");
+    var n = c.split(" ")[0] || "zona";
+    var full = c.replace(/\s+/g, "");
+    if (full.indexOf("ciudaddemexico") === 0) return "@cdmx_underground";
+    if (full.indexOf("ciudaddepanama") === 0) return "@pty_underground";
+    if (n.indexOf("cordob") === 0) return "@cba_underground";
+    if (n.indexOf("buenos") === 0) return "@bsas_underground";
+    if (n.indexOf("rosario") === 0) return "@rosario_underground";
+    if (n.indexOf("bogota") === 0) return "@bogota_underground";
+    if (n.indexOf("medellin") === 0) return "@mede_underground";
+    if (n.indexOf("lima") === 0) return "@lima_underground";
+    if (n.indexOf("santiago") === 0) return "@stgo_underground";
+    if (n.indexOf("montevideo") === 0) return "@monte_underground";
+    if (n.indexOf("quito") === 0) return "@quito_underground";
+    if (n.indexOf("caracas") === 0) return "@caracas_underground";
+    if (n.indexOf("sao") === 0) return "@sp_underground";
+    if (n.indexOf("madrid") === 0) return "@madriz_underground";
+    return "@" + (n.slice(0, 3) || "zona") + "_underground";
+  },
+
   /* Factory común: cachea el evento por id para que el texto
      elegido no cambie entre renders y resuelve al decidir. */
   _crear: function (id, titulo, textos, opciones) {
@@ -658,6 +683,240 @@ Under.UNDER = {
         },
         resultado: "No te sumás. El ciclo sigue sin vos, y la escena también.",
         log: "No participó de un ciclo del barrio."
+      }
+    ]);
+  },
+
+  /* ---------- Kilpatay y La OBS ---------- */
+  crearEventoObs: function (state) {
+    return Under.UNDER._crear("under_obs", "Kilpatay te abre La OBS", [
+      "Kilpatay escuchó tu tema y no se quedó callado: te ofrece grabar en La OBS, con un sonido profesional.",
+      "El estudio La OBS te abre sus puertas de noche. Kilpatay escuchó tu tema y quiere grabarte con un sonido profesional.",
+      "Kilpatay te escribe: 'La OBS es tuya esta noche'. Estudio de verdad, con ingeniero de sonido y todo."
+    ], [
+      {
+        texto: "Grabar en La OBS",
+        desc: "Un sonido profesional le cambia el peso a tus temas.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_obs");
+          Under.MISIONES.sumar(s, "ensayo", 1);
+          return { talent: 2, fans: Under.SYSTEMS.fansEscala(s, 600), _energia: -8 };
+        },
+        resultado: "Grabás en La OBS. Cuando escuchás el tema terminado entendés la diferencia: esto suena a disco.",
+        log: "Grabó en La OBS con sonido profesional."
+      },
+      {
+        texto: "Pedirle que te produzca un tema completo",
+        desc: "Kilpatay no produce a cualquiera.",
+        riesgo: 0.4,
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_obs");
+          Under.MISIONES.sumar(s, "ensayo", 1);
+          return { talent: 3, fans: Under.SYSTEMS.fansEscala(s, 900), _energia: -10 };
+        },
+        resultado: "Kilpatay acepta y te produce el tema de punta a punta. El resultado vale la jugada.",
+        log: "Consiguió que Kilpatay le produzca un tema en La OBS.",
+        riesgoEfectos: function (s) {
+          Under.UNDER._limpiar("under_obs");
+          return { popularity: -1, _energia: -10 };
+        },
+        riesgoResultado: "Kilpatay pone condiciones y la cosa se enfría. Quedás grabando solo, con la puerta medio cerrada.",
+        riesgoLog: "Falló en conseguir la producción de Kilpatay."
+      },
+      {
+        texto: "Agradecer y pasar",
+        desc: "Todavía no estás listo para ese estudio.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_obs");
+          return {};
+        },
+        resultado: "Agradecés el gesto y lo guardás. La OBS puede esperar su momento.",
+        log: "Dejó pasar la oportunidad de grabar en La OBS."
+      }
+    ]);
+  },
+
+  /* ---------- Tu tema en la cuenta de la escena ---------- */
+  crearEventoIg: function (state) {
+    var cuenta = Under.UNDER._cuentaIg(state);
+    return Under.UNDER._crear("under_ig", "Tu tema en la escena", [
+      "Los de " + cuenta + " publicaron tu tema para la difusión. Unos cientos de personas que no te conocían lo escucharon en el día.",
+      cuenta + " subió tu tema a sus historias y te etiquetó. Los comentarios empiezan a llegar.",
+      "Tu tema apareció en " + cuenta + ", la cuenta de la escena local. Tu nombre empieza a sonar entre los que no te conocen."
+    ], [
+      {
+        texto: "Agradecer y dejar que fluya",
+        desc: "La difusión hace su trabajo sola.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_ig");
+          Under.MISIONES.sumar(s, "contenido", 1);
+          return { fans: Under.SYSTEMS.fansEscala(s, 700), popularity: 3 };
+        },
+        resultado: "La publicación se llena de comentarios. Gente que no sabía que existías ahora escucha tu tema.",
+        log: "Su tema fue difundido por la cuenta de la escena."
+      },
+      {
+        texto: "Responder cada comentario",
+        desc: "El público nuevo te ve cercano.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_ig");
+          Under.MISIONES.sumar(s, "contenido", 1);
+          return { fans: Under.SYSTEMS.fansEscala(s, 500), popularity: 2, _energia: -8, _relaciones: 2 };
+        },
+        resultado: "Respondés hasta los comentarios medio ácidos. La gente del under lo nota y te respeta.",
+        log: "Respondió a su público en la cuenta de la escena."
+      },
+      {
+        texto: "Subir un adelanto mientras calienta",
+        desc: "Aprovechás el momento para mostrar lo que viene.",
+        riesgo: 0.3,
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_ig");
+          Under.MISIONES.sumar(s, "contenido", 1);
+          return { fans: Under.SYSTEMS.fansEscala(s, 1000), popularity: 3 };
+        },
+        resultado: "El adelanto explota de la mano de la publicación. La escena pide la fecha.",
+        log: "Aprovechó la difusión para subir un adelanto.",
+        riesgoEfectos: function (s) {
+          Under.UNDER._limpiar("under_ig");
+          return { popularity: -2 };
+        },
+        riesgoResultado: "El adelanto no convence y lo comparan con el tema publicado. Bajón de momento.",
+        riesgoLog: "El adelanto publicado tras la difusión quedó flojo."
+      }
+    ]);
+  },
+
+  /* ---------- Telonero en Pétalos del Sol ---------- */
+  crearEventoPetalos: function (state) {
+    return Under.UNDER._crear("under_petalos", "Telonero en Pétalos del Sol", [
+      "En Pétalos del Sol, un lugar chico pero con nombre, te ofrecen tocar como telonero un viernes con La Family Racks de cabeza de fecha. Es tu primer escenario real frente a gente que no te conoce.",
+      "La Family Racks llena Pétalos del Sol los viernes y busca telonero. Lugar chico, gente que no te conoce: la primera prueba de verdad.",
+      "Pétalos del Sol te abre la puerta: tocás de telonero antes de La Family Racks. Lugar chico, pero es tu primer escenario real."
+    ], [
+      {
+        texto: "Aceptar y tocar sin red",
+        desc: "Gente que no te conoce: la prueba real.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_petalos");
+          Under.MISIONES.sumar(s, "telonero", 1);
+          Under.MISIONES.sumar(s, "toques", 1);
+          return { talent: 2, fans: Under.SYSTEMS.fansEscala(s, 800), popularity: 3, _energia: -15 };
+        },
+        resultado: "Subís y hay un silencio que no conocés: nadie está obligado a aplaudirte. Para cuando terminás, una parte de esa gente ya te buscó en redes.",
+        log: "Fue telonero de La Family Racks en Pétalos del Sol."
+      },
+      {
+        texto: "Conocer a La Family Racks antes",
+        desc: "Ganarte su respaldo antes de subir.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_petalos");
+          Under.MISIONES.sumar(s, "artistas", 1);
+          return { _relaciones: 4, talent: 1 };
+        },
+        resultado: "Compartís unas birras con La Family Racks antes de la fecha. La escena te anota y ellos te tiran consejos de verdad.",
+        log: "Conoció a La Family Racks y ganó su respaldo."
+      },
+      {
+        texto: "Dejarlo pasar",
+        desc: "No es tu momento todavía.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_petalos");
+          return {};
+        },
+        resultado: "Dejás pasar el viernes. El escenario de verdad espera.",
+        log: "Dejó pasar el telonero en Pétalos del Sol."
+      }
+    ]);
+  },
+
+  /* ---------- La reseña de Coscu ---------- */
+  crearEventoCoscu: function (state) {
+    return Under.UNDER._crear("under_coscu", "La reseña de Coscu", [
+      "Coscu hace una muy buena reseña sobre tu tema: la mitad es elogio sincero, la otra mitad es crítica fuerte. Su público lo mira todo.",
+      "En su stream, Coscu pone tu tema y lo desmenuza: arranca elogiando de verdad y después te deja en evidencia con una crítica fuerte.",
+      "Coscu subió una reseña de tu tema. La mitad es sincero elogio; la otra mitad es un análisis que no perdona nada."
+    ], [
+      {
+        texto: "Tomar la crítica como material",
+        desc: "El elogio te confirma; la crítica te mejora.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_coscu");
+          Under.MISIONES.sumar(s, "resena", 1);
+          return { talent: 2, fans: Under.SYSTEMS.fansEscala(s, 900), popularity: 3 };
+        },
+        resultado: "Escuchás la reseña dos veces. La crítica duele, pero tiene razón en un par de puntos. Volvés al estudio con eso en la cabeza.",
+        log: "Aprovechó la reseña de Coscu para mejorar."
+      },
+      {
+        texto: "Responderle en vivo",
+        desc: "Puede salir muy bien… o muy mal.",
+        riesgo: 0.5,
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_coscu");
+          Under.MISIONES.sumar(s, "resena", 1);
+          return { fans: Under.SYSTEMS.fansEscala(s, 1500), popularity: 4 };
+        },
+        resultado: "Le respondés con una buena historia y la gente lo celebra. Hasta el mismo Coscu te lo reconoce.",
+        log: "Le respondió a Coscu y salió bien.",
+        riesgoEfectos: function (s) {
+          Under.UNDER._limpiar("under_coscu");
+          return { popularity: -3 };
+        },
+        riesgoResultado: "La respuesta queda chica y la gente la viraliza en tu contra. El clip te persigue un rato.",
+        riesgoLog: "Su respuesta a la reseña de Coscu salió mal."
+      },
+      {
+        texto: "No darle bolilla",
+        desc: "Ni el elogio ni la crítica te mueven.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_coscu");
+          return {};
+        },
+        resultado: "No respondés nada. La reseña queda ahí, hablando sola por su público.",
+        log: "Ignoró la reseña de Coscu."
+      }
+    ]);
+  },
+
+  /* ---------- Una noche en Cayo Makensi ---------- */
+  crearEventoMakensi: function (state) {
+    return Under.UNDER._crear("under_makensi", "Una noche en Cayo Makensi", [
+      "En Larrañaga 67, Cayo Makensi: esta noche toca un artista muy conocido y alabado por todos. Hay tres teloneros, y Lucio y Benja trajeron un puñado de gente que no te conoce. A último momento te avisan que hay lugar en la fecha.",
+      "Te avisan a último momento: quedó lugar en la fecha de Cayo Makensi, Larrañaga 67. Un artista muy conocido toca esta noche, con tres teloneros; Lucio y Benja llevan un puñado de gente que no te conoce.",
+      "Cayo Makensi, Larrañaga 67: el show de esta noche es de un artista alabado por todos. Tres teloneros, un lugar libre a último momento, y Lucio y Benja con su gente, que no te conoce."
+    ], [
+      {
+        texto: "Aceptar y tocar esa misma noche",
+        desc: "Un escenario real, aunque nadie sepa quién sos.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_makensi");
+          Under.MISIONES.sumar(s, "telonero", 1);
+          Under.MISIONES.sumar(s, "toques", 1);
+          return { talent: 1, fans: Under.SYSTEMS.fansEscala(s, 500), popularity: 3, _energia: -18 };
+        },
+        resultado: "Subís entre tres teloneros y el headliner que todos alaban. Lucio y Benja están adelante con su gente. Tocás sin red, y cuando terminás, algunos que no te conocían se van hablando de vos.",
+        log: "Tocó a último momento en Cayo Makensi."
+      },
+      {
+        texto: "Quedarte a ver el show del headliner",
+        desc: "Aprendés mirando a un grande.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_makensi");
+          return { talent: 2, _relaciones: 2 };
+        },
+        resultado: "Te quedás entre el público y estudiás cada movimiento del headliner. Salís de Cayo Makensi con otra idea de lo que es un show.",
+        log: "Fue a ver al headliner en Cayo Makensi."
+      },
+      {
+        texto: "Dejarlo pasar",
+        desc: "A último momento, sin prepararte, no.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_makensi");
+          return {};
+        },
+        resultado: "Dejás pasar la fecha. Cayo Makensi va a seguir estando en Larrañaga 67.",
+        log: "Dejó pasar la fecha de Cayo Makensi."
       }
     ]);
   },
