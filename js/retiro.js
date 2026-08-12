@@ -71,6 +71,20 @@ Under.RETIRO = {
 
     /* ---------- Retiro temprano: el jugador elige su final ---------- */
     if (opts.retiro) {
+      /* Camino under (PRIORIDAD 10): quien eligió quedarse en la
+         escena se retira como leyenda del under, no como estrella. */
+      if (s.flags && s.flags.camino === "under") {
+        if (vida >= 65) {
+          return this._final("retiro_vida", "propio", "🌅", "SE FUE A VIVIR",
+            "Le dijiste adiós a los escenarios para vivir tu vida.\n\nNo lo veas como un final: es la decisión de alguien que entendió lo que de verdad importa.", nivel);
+        }
+        if (nivel >= 2) {
+          return this._final("underground", "propio", "🎤", "LEYENDA UNDERGROUND",
+            "Anunciaste tu retiro y la escena entera lo sintió.\n\nNunca llenaste estadios ni necesitaste hacerlo: te fuiste siendo dueño de la casa que te vio crecer. El under te va a nombrar por años.", nivel);
+        }
+        return this._final("retiro_corto", "discreto", "🕊️", "UNA CARRERA CORTA",
+          "No duró mucho, pero fue tuya.\n\nA veces la decisión más valiente es saber cuándo decir basta.", nivel);
+      }
       if (nivel >= 8 && legado >= 70) {
         return this._final("retiro_mito", "legendario", "🌟", "SE FUE COMO MITO",
           "El mundo entero te escuchaba y elegiste irte cuando tu nombre ya era historia.\n\nDicen que los genios se van antes. Vos te fuiste siendo inmortal.", nivel);
@@ -147,6 +161,29 @@ Under.RETIRO = {
     if (nivel >= 7) {
       return this._final("estrella", "dorado", "⭐", "SUPERESTRELLA",
         "Tu nombre cruza fronteras. Llenás escenarios, rompés récords y el planeta entero te escucha.", nivel);
+    }
+
+    /* Camino under (PRIORIDAD 10): quien eligió quedarse en la escena
+       termina como leyenda del under, no como ciudadano del mundo. */
+    if (s.flags && s.flags.camino === "under") {
+      if (s.flags.superoQuiebra) {
+        return this._final("supero_quiebra", "propio", "🧯", "SOBREVIVIÓ A LA QUIEBRA",
+          "Tocaste fondo, vendiste todo y volviste.\n\nReconstruiste tu carrera desde las cenizas. Esa historia vale más que cualquier récord.", nivel);
+      }
+      if ((contadores.taller || 0) >= 4) {
+        return this._final("escuela", "propio", "🎓", "EL MAESTRO",
+          "No llenaste estadios, pero formaste a los que sí.\n\nTalleres y consejos: tu música sigue viva en cada pibe que enseñaste.", nivel);
+      }
+      if (talento >= 70 && s.stats.popularity < 60) {
+        return this._final("culto", "propio", "🕯️", "ARTISTA DE CULTO",
+          "Nunca llenaste estadios, pero tu influencia es enorme. Tu música marcó a una generación que la defiende con fiereza.", nivel);
+      }
+      if (nivel >= 2) {
+        return this._final("underground", "propio", "🎤", "LEYENDA UNDERGROUND",
+          "Elegiste quedarte abajo y la escena te eligió a vos.\n\nNunca llenaste estadios ni necesitaste hacerlo: los que te escuchan lo hacen de verdad, y te van a nombrar por años como uno de los suyos. El under te hizo leyenda.", nivel);
+      }
+      return this._final("discreta", "discreto", "🎵", "UNA CARRERA DISCRETA",
+        "No todas las carreras terminan en estadios. Viviste la música a tu manera, y eso también es una historia.", nivel);
     }
 
     /* Carreras con una forma propia: las define algo concreto */

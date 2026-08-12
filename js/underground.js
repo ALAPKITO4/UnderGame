@@ -1247,6 +1247,188 @@ Under.UNDER = {
     ]);
   },
 
+  /* ---------- Galperin quiere regrabar «Pulmón 1312» ---------- */
+  crearEventoGalperin: function (state) {
+    return Under.UNDER._crear("under_galperin", "Galperin propone regrabar «Pulmón 1312»", [
+      "Tu amiga te pasa el mensaje de Galperin: «LARECONCHADETUTIA». Su tema «Pulmón 1312» está re pegado en la escena y te propone regrabarlo juntos.",
+      "Galperin te busca por la amiga: «Pulmón 1312» está explotando y cree que el tema queda mejor con los dos. Quiere regrabarlo a dúo.",
+      "La amiga te manda el texto de Galperin: dice que «Pulmón 1312» se merece tu parte. El tema está re pegado y la propuesta es regrabarlo juntos."
+    ], [
+      {
+        texto: "Regrabarlo juntos",
+        desc: "Un tema que ya suena, ahora con tu nombre.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_galperin");
+          var est = { calidad: 6, viral: 0, texto: "regrabación de «Pulmón 1312» con Galperin" };
+          var L = Under.MUSIC._calcular(s, "Pulmón 1312 (feat. Galperin)", est);
+          L.repros = Math.round(L.repros * 1.4);
+          L.fans = Math.round(L.fans * 1.4);
+          L.dinero = Math.round(L.dinero * 0.7);
+          Under.MUSIC._registrar(s, L, est, 0);
+          s.colaboraciones.push({
+            año: s.año, nombre: L.nombre, partner: "Galperin", tipo: "igual",
+            tier: L.tier, repros: L.repros, fans: L.fans, dinero: L.dinero
+          });
+          s.totalColabs += 1;
+          s.flags.colabEsteAnio = true;
+          if (Under.RELACIONES) Under.RELACIONES.agregar(s, "red_galperin", "Galperin", "colega", 35);
+          return { fans: L.fans, popularity: L.popularidad, talent: L.talento, money: L.dinero, _energia: -10, _lanzamiento: L };
+        },
+        resultado: function (s, efectos) {
+          var L = efectos._lanzamiento;
+          return "Grabás «" + L.nombre + "» con Galperin.\n\n" + Under.MUSIC.TIER_FLAVOR[L.tier] + "\n\n" +
+            L.tierIcono + " " + L.tierNombre + " · " + Under.UI.fmtExacto(L.repros) + " reproducciones.";
+        },
+        log: "Regrabó «Pulmón 1312» junto a Galperin."
+      },
+      {
+        texto: "Aceptar cobrando un buen pago",
+        desc: "Tu parte vale plata y lo sabés.",
+        riesgo: 0.3,
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_galperin");
+          var est = { calidad: 6, viral: 0, texto: "regrabación de «Pulmón 1312» con Galperin" };
+          var L = Under.MUSIC._calcular(s, "Pulmón 1312 (feat. Galperin)", est);
+          L.repros = Math.round(L.repros * 1.3);
+          L.fans = Math.round(L.fans * 1.3);
+          L.dinero = Math.round(L.dinero);
+          Under.MUSIC._registrar(s, L, est, 0);
+          s.colaboraciones.push({
+            año: s.año, nombre: L.nombre, partner: "Galperin", tipo: "igual",
+            tier: L.tier, repros: L.repros, fans: L.fans, dinero: L.dinero
+          });
+          s.totalColabs += 1;
+          s.flags.colabEsteAnio = true;
+          if (Under.RELACIONES) Under.RELACIONES.agregar(s, "red_galperin", "Galperin", "colega", 25);
+          return { fans: L.fans, popularity: L.popularidad, talent: L.talento, money: L.dinero, _energia: -10, _lanzamiento: L };
+        },
+        resultado: function (s, efectos) {
+          var L = efectos._lanzamiento;
+          return "Le ponés precio a tu parte y Galperin acepta a regañadientes.\n\n" + Under.MUSIC.TIER_FLAVOR[L.tier] +
+            "\n\n" + L.tierIcono + " " + L.tierNombre + " · " + Under.UI.fmtExacto(L.repros) + " reproducciones.";
+        },
+        log: "Cobró caro su parte de «Pulmón 1312» con Galperin.",
+        riesgoEfectos: function (s) {
+          Under.UNDER._limpiar("under_galperin");
+          return { popularity: -1 };
+        },
+        riesgoResultado: "Pedís demasiado y Galperin lo hace solo. El tema explota igual, pero sin tu nombre.",
+        riesgoLog: "Perdió el regrabado con Galperin por cobrar demasiado."
+      },
+      {
+        texto: "Dejarlo pasar",
+        desc: "Ese tema es de él; el tuyo lo hacés vos.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_galperin");
+          return {};
+        },
+        resultado: "Le decís que no. «Pulmón 1312» sigue sonando solo y vos seguís con lo tuyo.",
+        log: "Dejó pasar el regrabado con Galperin."
+      }
+    ]);
+  },
+
+  /* ---------- Fruity audiovisual quiere tu tema ---------- */
+  crearEventoFruity: function (state) {
+    var tema = (state.ultimoLanzamiento && state.ultimoLanzamiento.nombre) || "tu último tema";
+    return Under.UNDER._crear("under_fruity", "Fruity audiovisual quiere tu tema", [
+      "Tu amiga te pasa el mensaje: Fruity audiovisual, un estudio de la facu, quiere licenciar «" + tema + "» para una escena clave de un corto. Pagan por usarla, pero la ceden a una película que no conocés.",
+      "Fruity audiovisual te escribe por la amiga: necesitan «" + tema + "» para la escena central de su corto de la facu. Hay plata de por medio y el material queda en manos que no conocés.",
+      "Un estudio de la facu, Fruity audiovisual, quiere usar «" + tema + "» en una escena clave de un corto. Pagan, pero la ceden para una película que no viste."
+    ], [
+      {
+        texto: "Licenciar el tema",
+        desc: "Plata ahora y tu música en una pantalla.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_fruity");
+          Under.MISIONES.sumar(s, "contenido", 1);
+          return { money: Under.SYSTEMS.efectivoEscala(s, 700), fans: Under.SYSTEMS.fansEscala(s, 400), popularity: 2 };
+        },
+        resultado: "Firmás la licencia. Tu tema suena en el corto y la plata entra al toque.",
+        log: "Licenció su tema para el corto de Fruity audiovisual."
+      },
+      {
+        texto: "Pedir ver el corto antes",
+        desc: "Controlás dónde queda tu música.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_fruity");
+          Under.MISIONES.sumar(s, "contenido", 1);
+          return { money: Under.SYSTEMS.efectivoEscala(s, 550), fans: Under.SYSTEMS.fansEscala(s, 500), popularity: 2, talent: 1 };
+        },
+        resultado: "Te muestran el corto antes de firmar. La escena te convence y el trato queda en mejores términos.",
+        log: "Vio el corto de Fruity antes de licenciar su tema."
+      },
+      {
+        texto: "No licenciarlo",
+        desc: "Tu música no sale de tus manos.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_fruity");
+          return {};
+        },
+        resultado: "Le decís que no. El corto busca otro tema y el tuyo sigue siendo tuyo.",
+        log: "Rechazó licenciar su tema a Fruity audiovisual."
+      }
+    ]);
+  },
+
+  /* ---------- La bifurcación: mainstream o leyenda del under ----------
+     Misión obligatoria y siempre presente: en cuanto la carrera cruza
+     al nivel 4 (la industria te mira), hay que elegir camino. Cada
+     opción ramifica el resto de la carrera (PRIORIDAD 10). */
+  crearEventoCamino: function (state) {
+    var id = "camino_carrera";
+    if (Under.UNDER._pendientes[id]) return Under.UNDER._pendientes[id];
+
+    var textos = [
+      "Ya no sos un secreto. Los números crecieron, llegaron llamadas de sellos y tu nombre aparece donde antes no estaba. La escena que te vio crecer te mira: saben que este cruce define todo.",
+      "Estás en la puerta grande. Unos dicen que te vas con los grandes, otros apuestan a que te quedás. La fama golpea una vez, y la escena quiere saber de qué lado la vas a mirar.",
+      "El under ya no te alcanza… o quizás te alcanza más que nunca. Todos los que te bancaron desde el bar de la esquina miran esta decisión: mainstream o leyenda del under."
+    ];
+    var texto = textos[Under.STATE.randInt(0, textos.length - 1)];
+
+    var ev = {
+      id: id,
+      recurrente: false,
+      importante: true,
+      titulo: "Mainstream o leyenda del under",
+      texto: texto + "\n\nElegí un camino: no hay vuelta atrás.",
+      opciones: [
+        {
+          texto: "Volverte mainstream",
+          desc: "Seguís creciendo fuerte, pero la escena que te crió queda atrás y el foco trae polémicas.",
+          efectos: function (s) {
+            Under.UNDER._limpiar(id);
+            s.flags.camino = "mainstream";
+            s.flags.abandonoElUnder = true;
+            /* La escena que te vio crecer no te lo perdona del todo. */
+            s.reputacion = Math.max(0, (s.reputacion || 50) - 10);
+            return { popularity: 6, fans: Under.SYSTEMS.fansEscala(s, 4000), money: Under.SYSTEMS.dineroEscala(s, 2500), _relaciones: -8, _hype: 20 };
+          },
+          resultado: "Elegís el mainstream. Tu nombre empieza a sonar en todos lados, pero el bar de la esquina ya no es tu casa. Crecer de verdad duele: cada oído nuevo te aleja de los que te bancaron desde el principio.",
+          log: "Eligió el camino mainstream y dejó el under atrás."
+        },
+        {
+          texto: "Seguir siendo under",
+          desc: "Crecés más lento y no llegás tan lejos, pero la escena te ama y te apoya en todo.",
+          efectos: function (s) {
+            Under.UNDER._limpiar(id);
+            s.flags.camino = "under";
+            s.flags.sigueEnElUnder = true;
+            s.flags.salioDelUnderground = false;
+            /* La escena te ama: tu nombre vale oro abajo. */
+            s.reputacion = Math.min(100, (s.reputacion || 50) + 10);
+            return { popularity: 3, fans: Under.SYSTEMS.fansEscala(s, 3000), _relaciones: 8, _hype: 10 };
+          },
+          resultado: "Te quedás en el under. No vas a llenar estadios ni salir en todos lados, pero cada persona que te escucha te lo devuelve con creces: te quieren, te esperan y te bancan hasta el final. La escena te va a nombrar como uno de los suyos para siempre.",
+          log: "Eligió quedarse en el under y se volvió leyenda de la escena."
+        }
+      ]
+    };
+
+    Under.UNDER._pendientes[id] = ev;
+    return ev;
+  },
+
   /* ---------- Backstage: conocer a un referente ---------- */
   crearEventoReferente: function (state) {
     return Under.UNDER._crear("under_referente", "Un referente te habla", [

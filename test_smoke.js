@@ -198,7 +198,7 @@ function jugar(gen, per) {
          "under_ensayo", "under_resena", "under_equipo",
          "under_obs", "under_ig", "under_petalos", "under_coscu", "under_makensi",
          "under_massita", "under_estudio_grande", "under_viral_cayo", "under_cancion_anio", "under_ivo",
-         "under_blake", "under_hongo_tv",
+         "under_blake", "under_hongo_tv", "under_galperin", "under_fruity", "camino_carrera",
          "merch_barrio",
          "mem_productor", "mem_nova", "mem_escena",
          "cat_revival", "cat_onehit",

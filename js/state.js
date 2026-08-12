@@ -202,6 +202,13 @@ Under.STATE = {
     if (s.ultimosTiers === undefined) s.ultimosTiers = [];
     if (s.red === undefined) s.red = [];
     if (s.aniosEnCrisis === undefined) s.aniosEnCrisis = 0;
+    /* Camino de carrera (PRIORIDAD 10): una partida guardada antes
+       de la bifurcación que ya cruzó la puerta grande se asume
+       mainstream; las que estaban más abajo la eligen al llegar. */
+    if (s.flags && s.flags.camino === undefined && (s.maxNivel || 0) >= 6) {
+      s.flags.camino = "mainstream";
+      s.flags.abandonoElUnder = true;
+    }
     /* Contratos (PRIORIDAD 8): un sello guardado de una versión
        vieja no tiene duración ni vencimiento: se le asigna uno. */
     if (s.sello && s.sello.vencimiento === undefined) {
@@ -226,6 +233,17 @@ Under.STATE = {
     for (var i = 0; i < Under.DATA.CAREER_LEVELS.length; i++) {
       if (score >= Under.DATA.CAREER_LEVELS[i].puntaje) {
         nivel = Under.DATA.CAREER_LEVELS[i];
+      }
+    }
+    /* Camino under (PRIORIDAD 10): quien eligió quedarse en la
+       escena no cruza la puerta de la fama grande: su nivel de
+       carrera queda topeado en el under (nivel 3). */
+    if (state.flags && state.flags.camino === "under" && nivel.nivel > 3) {
+      for (var j = 0; j < Under.DATA.CAREER_LEVELS.length; j++) {
+        if (Under.DATA.CAREER_LEVELS[j].nivel === 3) {
+          nivel = Under.DATA.CAREER_LEVELS[j];
+          break;
+        }
       }
     }
     return {

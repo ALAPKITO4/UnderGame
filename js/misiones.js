@@ -1125,6 +1125,12 @@ Under.MISIONES = (function () {
   function _elegible(def, state) {
     var nivel = Under.STATE.nivelCarrera(state).nivel;
     if (nivel < 1) nivel = 1;
+    /* Los primeros 3 años son SOLO del under: nada de sellos,
+       internacional ni crisis hasta que la carrera cruce esa puerta. */
+    if (state.año <= 3 &&
+        (def.seccion === "industria" || def.seccion === "internacional" || def.seccion === "crisis")) {
+      return false;
+    }
     if (def.etapaMin && nivel < def.etapaMin) return false;
     if (def.etapaMax && nivel > def.etapaMax) return false;
     return true;

@@ -533,7 +533,12 @@ Under.DATA = {
       generar: function (s) { return Under.ALBUMS.crearEventoProyecto(s); }
     },
     {
-      id: "escandalo", peso: 2,
+      id: "escandalo", peso: function (s) {
+        /* El foco del mainstream (PRIORIDAD 10) trae polémicas:
+           la doble exposición hace que los escándalos lleguen
+           más seguido para quien eligió ese camino. */
+        return (s.flags && s.flags.camino === "mainstream") ? 4 : 2;
+      },
       disponible: function (s) {
         return !s.flags.escandaloEsteAnio && s.año >= 2 && Under.STATE.nivelCarrera(s).nivel >= 1;
       },
@@ -781,6 +786,30 @@ Under.DATA = {
         return s.año >= 3 && s.lanzamientos >= 1 && Under.STATE.nivelCarrera(s).nivel <= 3;
       },
       generar: function (s) { return Under.UNDER.crearEventoHongoTv(s); }
+    },
+    {
+      id: "under_galperin", peso: 2,
+      disponible: function (s) {
+        return s.año >= 2 && s.lanzamientos >= 1 && Under.STATE.nivelCarrera(s).nivel <= 3;
+      },
+      generar: function (s) { return Under.UNDER.crearEventoGalperin(s); }
+    },
+    {
+      id: "under_fruity", peso: 2,
+      disponible: function (s) {
+        return s.año >= 2 && s.lanzamientos >= 1 && Under.STATE.nivelCarrera(s).nivel <= 3;
+      },
+      generar: function (s) { return Under.UNDER.crearEventoFruity(s); }
+    },
+    /* La bifurcación de carrera: aparece SIEMPRE al cruzar al
+       nivel 4 (la intercepta seleccionarEvento). Vive acá para
+       que buscarEvento la resuelva en una recarga. */
+    {
+      id: "camino_carrera", peso: 1,
+      disponible: function (s) {
+        return !s.flags.camino && Under.STATE.nivelCarrera(s).nivel >= 4;
+      },
+      generar: function (s) { return Under.UNDER.crearEventoCamino(s); }
     },
     /* Gran actualización: misiones exclusivas para cuando ya
        saliste del underground (nivel 4+ alcanzado alguna vez). */

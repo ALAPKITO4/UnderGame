@@ -103,6 +103,13 @@ Under.SYSTEMS = {
       var evForzado = Under.DATA.buscarEvento(forzado, state);
       if (evForzado) return evForzado;
     }
+    /* La bifurcación (PRIORIDAD 10): en cuanto la carrera cruza al
+       nivel 4 (la industria empieza a mirarte), el camino se elige
+       y SIEMPRE aparece: mainstream o quedarse en el under. */
+    if (!state.flags.camino && Under.STATE.nivelCarrera(state).nivel >= 4) {
+      var evCamino = Under.DATA.buscarEvento("camino_carrera", state);
+      if (evCamino) return evCamino;
+    }
     /* Desde el año 2 la música sale sola (Under.MUSIC.lanzarAutomatico
        se ejecuta en iniciarAnio). Las decisiones de cada año son los
        otros eventos de la escena: giras, sellos, festivales, crisis… */
@@ -149,6 +156,14 @@ Under.SYSTEMS = {
          el contexto del momento decide qué tan probable es. */
       var peso = typeof d.peso === "function" ? d.peso(state) : d.peso;
       peso = Math.max(0, Math.round(peso || 0));
+      /* La amiga trae la vida del under: en los primeros años las
+         misiones de la escena (under_*) salen más que el resto.
+         Pero quien eligió quedarse en el under no se queda sin
+         carrera: sus giras, premios y colabs siguen teniendo aire. */
+      if (d.id.indexOf("under_") === 0) {
+        if (state.año <= 3) peso *= 2;
+        else if (state.flags && state.flags.camino === "under") peso = Math.max(1, Math.round(peso / 2));
+      }
       for (var w = 0; w < peso; w++) pool.push(d.id);
     });
 
@@ -232,6 +247,13 @@ Under.SYSTEMS = {
       if (k === "fans" || k === "money") v = Math.round(v * f);
       else if (k === "_haters") v = Math.round(v * f);
       res[k] = v;
+    }
+
+    /* Camino under (PRIORIDAD 10): los que te escuchan te aman.
+       Cada oído nuevo que gana le cuesta más que al mainstream,
+       pero el que llega, llega para quedarse: +30% fans. */
+    if (state.flags && state.flags.camino === "under" && res.fans && res.fans > 0) {
+      res.fans = Math.round(res.fans * 1.3);
     }
 
     /* Las consecuencias visibles: los golpes generan odio, los
