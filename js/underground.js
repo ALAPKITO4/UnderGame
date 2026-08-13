@@ -86,7 +86,8 @@ Under.UNDER = {
     return Under.UNDER._crear("under_ciudad", "Un toque en la escena", [
       "Un bar del bajo te ofrece un viernes en " + esc.nombre + ". Poca gente, cero escenario: un rincón con dos parlantes y una puerta que no cierra del todo.",
       "Un ciclo de artistas nuevos arranca en " + esc2.nombre + ". Te ofrecen la primera fecha.",
-      "En " + esc3.nombre + " arman un toque entre amigos. Entrada a la gorra y mucho ruido."
+      "En " + esc3.nombre + " arman un toque entre amigos. Entrada a la gorra y mucho ruido.",
+      "Los amigos con la 3flip te ofrecen tu primera fecha."
     ], [
       {
         texto: "Aceptar el toque",
@@ -262,9 +263,9 @@ Under.UNDER = {
   /* ---------- Batalla de freestyle ---------- */
   crearEventoFreestyle: function (state) {
     return Under.UNDER._crear("under_freestyle", "Batalla de freestyle", [
-      "Hay una batalla de freestyle en una plaza y te anotaron sin preguntarte.",
-      "Un cypher improvisado en la puerta de un estudio. Todos esperan que sueltes la mejor barra.",
-      "Un conocido te desafía a un duelo de rimas en un evento callejero."
+      "Hay una batalla de freestyle en La Sobre y te anotaron sin preguntarte.",
+      "Un cypher improvisado en La Sobre. Todos esperan que sueltes la mejor barra.",
+      "Un conocido te desafía a un duelo de rimas en una joda de La Sobre."
     ], [
       {
         texto: "Batallar",
@@ -275,13 +276,13 @@ Under.UNDER = {
           Under.MISIONES.sumar(s, "freestyle", 1);
           return { talent: 2, popularity: 5, fans: Under.SYSTEMS.fansEscala(s, 400), _energia: -10 };
         },
-        resultado: "Batallás y la rompés. La plaza estalla y te anotan como el que no se achica.",
+        resultado: "Batallás y la rompés. La Sobre estalla y te anotan como el que no se achica.",
         log: "Ganó una batalla de freestyle.",
         riesgoEfectos: function (s) {
           Under.UNDER._limpiar("under_freestyle");
           return { popularity: -2, fans: -Under.SYSTEMS.fansEscala(s, 100), _energia: -10 };
         },
-        riesgoResultado: "Batallás y te quedás en blanco. La plaza lo vio todo, y el video corre por los grupos.",
+        riesgoResultado: "Batallás y te quedás en blanco. La Sobre lo vio todo, y el video corre por los grupos.",
         riesgoLog: "Perdió una batalla de freestyle."
       },
       {
@@ -296,7 +297,7 @@ Under.UNDER = {
       },
       {
         texto: "No participar",
-        desc: "El escenario callejero no es lo tuyo.",
+        desc: "El escenario de La Sobre no es lo tuyo.",
         efectos: function (s) {
           Under.UNDER._limpiar("under_freestyle");
           return {};
@@ -310,8 +311,8 @@ Under.UNDER = {
   /* ---------- Cypher de la escena ---------- */
   crearEventoCypher: function (state) {
     return Under.UNDER._crear("under_cypher", "Un cypher de la escena", [
-      "Te invitan a un cypher grabado con seis artistas de la escena.",
-      "Una colectiva urbana arma una sesión colaborativa y querés entrar."
+      "Te invitan a un cypher grabado en La Sobre con seis artistas de la escena.",
+      "Una colectiva urbana arma una sesión colaborativa en La Sobre y querés entrar."
     ], [
       {
         texto: "Sumarte al cypher",
@@ -553,11 +554,10 @@ Under.UNDER = {
 
   /* ---------- Un colega te propone grabar juntos ---------- */
   crearEventoColega: function (state) {
-    var nombre = Under.UNDER._artista();
     return Under.UNDER._crear("under_colega", "Un colega de la escena", [
-      nombre + ", un artista de tu misma camada, te propone grabar un tema juntos, sin plata de por medio.",
-      nombre + ", un MC de tu ciudad, quiere que compartan un verso en un tema suyo.",
-      nombre + " te ofrece grabar un tema conjunto para su sello chico."
+      "Ghosfe, un artista de tu misma camada, te propone grabar un tema juntos, sin plata de por medio.",
+      "Caupiii, un MC de tu ciudad, quiere que compartan un verso en un tema suyo.",
+      "Ghosfe y Caupiii te ofrecen grabar un tema conjunto para la escena."
     ], [
       {
         texto: "Grabar juntos",
@@ -568,8 +568,8 @@ Under.UNDER = {
           Under.MISIONES.sumar(s, "artistas", 1);
           return { talent: 1, fans: Under.SYSTEMS.fansEscala(s, 400), popularity: 2, _energia: -8 };
         },
-        resultado: "El tema sale y la escena lo repite. Tu nombre suena al lado del de otro, y eso se nota.",
-        log: "Grabó un tema con un colega de la escena."
+        resultado: "El tema con Ghosfe y Caupiii sale y la escena lo repite. Tu nombre suena al lado del de ellos, y eso se nota.",
+        log: "Grabó un tema con Ghosfe y Caupiii."
       },
       {
         texto: "Producir el tema",
@@ -579,7 +579,7 @@ Under.UNDER = {
           return { money: -Under.SYSTEMS.efectivoEscala(s, 100), fans: Under.SYSTEMS.fansEscala(s, 500), popularity: 2 };
         },
         resultado: "Producís la sesión y tu nombre entra en los créditos. En la escena, el que produce manda.",
-        log: "Produjo un tema de un colega."
+        log: "Produjo un tema de Ghosfe y Caupiii."
       },
       {
         texto: "Dejarlo pasar",
@@ -588,32 +588,32 @@ Under.UNDER = {
           Under.UNDER._limpiar("under_colega");
           return {};
         },
-        resultado: "No te sumás. El colega sigue con lo suyo y la oportunidad se disuelve.",
-        log: "Dejó pasar un tema con un colega."
+        resultado: "No te sumás. Ghosfe y Caupiii siguen con lo suyo y la oportunidad se disuelve.",
+        log: "Dejó pasar un tema con Ghosfe y Caupiii."
       }
     ]);
   },
 
-  /* ---------- Una sala te ofrece una fecha fija ---------- */
+  /* ---------- Una sala te da una fecha suelta ---------- */
   crearEventoSala: function (state) {
     var esc = Under.UNDER._escenario();
     var esc2 = Under.UNDER._escenario();
-    return Under.UNDER._crear("under_sala", "Una sala te ofrece una fecha", [
-      "En " + esc.nombre + " quieren darte una fecha fija al mes. Poco caché, pero un lugar con nombre para hacerte el dueño.",
-      "Un ciclo de residencias arranca en " + esc2.nombre + " y te ofrecen el jueves de cada mes.",
-      "El dueño de " + esc.nombre + " vio tu último toque y te invita a tocar una vez por mes, sin bajarte del escenario."
+    return Under.UNDER._crear("under_sala", "Una sala te da una fecha", [
+      "En " + esc.nombre + " te ofrecen una fecha suelta. Poco caché, pero un lugar con nombre para que te conozcan.",
+      "Un ciclo de la escena arranca en " + esc2.nombre + " y te dan un hueco en la grilla para una noche.",
+      "El dueño de " + esc.nombre + " vio tu último toque y te invita a tocar una noche en su lugar."
     ], [
       {
-        texto: "Tomar la residencia",
-        desc: "Un lugar fijo donde crecer y que te conozcan.",
+        texto: "Tomar la fecha",
+        desc: "Una noche en un lugar con nombre.",
         efectos: function (s) {
           Under.UNDER._limpiar("under_sala");
           Under.MISIONES.sumar(s, "salas", 1);
           Under.MISIONES.sumar(s, "artistas", 1);
           return { money: Under.SYSTEMS.efectivoEscala(s, 150), fans: Under.SYSTEMS.fansEscala(s, 450), popularity: 3, _energia: -15 };
         },
-        resultado: "Mes a mes vas a " + esc.nombre + " y la sala empieza a llenarse con tu nombre. Un lugar propio en la escena.",
-        log: "Consiguió una fecha fija mensual en una sala de la escena."
+        resultado: "Tocás una noche en " + esc.nombre + " y la sala se llena con tu nombre. Un lugar con nombre en la escena.",
+        log: "Tocó una noche en una sala de la escena."
       },
       {
         texto: "Negociar un porcentaje de la barra",
@@ -624,7 +624,7 @@ Under.UNDER = {
           Under.MISIONES.sumar(s, "salas", 1);
           return { money: Under.SYSTEMS.efectivoEscala(s, 300), popularity: 2, _energia: -15 };
         },
-        resultado: "Negociás y te llevás un porcentaje de la barra. La sala acepta a regañadientes, pero la fecha es tuya.",
+        resultado: "Negociás y te llevás un porcentaje de la barra. La sala acepta a regañadientes, pero esa noche es tuya.",
         log: "Negoció un porcentaje de barra en una sala.",
         riesgoEfectos: function (s) {
           Under.UNDER._limpiar("under_sala");
@@ -641,7 +641,7 @@ Under.UNDER = {
           return {};
         },
         resultado: "Lo dejás pasar. Otra noche, otro lugar, otra historia.",
-        log: "Dejó pasar una fecha fija en una sala."
+        log: "Dejó pasar una fecha suelta en una sala."
       }
     ]);
   },
@@ -1025,29 +1025,29 @@ Under.UNDER = {
     ]);
   },
 
-  /* ---------- Tu video en Cayo se viraliza ---------- */
-  crearEventoViralCayo: function (state) {
-    return Under.UNDER._crear("under_viral_cayo", "Tu video en Cayo se viraliza", [
-      "Un video tuyo cantando en Cayo Makensi se hizo viral en redes. En dos días tiene miles de visitas. Nadie sabe qué va a pasar.",
-      "Alguien grabó tu toque en Cayo Makensi y el video explotó. En dos días son miles de visitas y la escena entera lo está viendo.",
-      "Un video tuyo cantando en Cayo no para de sumar vistas. En dos días ya son miles, y el revuelo llega más lejos de lo que imaginabas."
+  /* ---------- Tu video en La Sobre se viraliza ---------- */
+  crearEventoViralSobre: function (state) {
+    return Under.UNDER._crear("under_viral_sobre", "Tu video en La Sobre se viraliza", [
+      "Un video tuyo tirando rimas en La Sobre se hizo viral en redes. En dos días tiene miles de visitas. Nadie sabe qué va a pasar.",
+      "Alguien grabó tus rimas en La Sobre y el video explotó. En dos días son miles de visitas y la escena entera lo está viendo.",
+      "Un video tuyo tirando rimas en La Sobre no para de sumar vistas. En dos días ya son miles, y el revuelo llega más lejos de lo que imaginabas."
     ], [
       {
         texto: "Montarte en la ola",
         desc: "Publicás seguido mientras el video crece.",
         efectos: function (s) {
-          Under.UNDER._limpiar("under_viral_cayo");
+          Under.UNDER._limpiar("under_viral_sobre");
           Under.MISIONES.sumar(s, "contenido", 1);
           return { fans: Under.SYSTEMS.fansEscala(s, 1500), popularity: 4, _energia: -8 };
         },
         resultado: "Aprovechás el momento: subís contenido, respondés comentarios, y el video te lleva una audiencia que ayer no existía.",
-        log: "Se montó en la ola de su video viral en Cayo."
+        log: "Se montó en la ola de su video viral en La Sobre."
       },
       {
         texto: "Dejarlo que crezca solo",
         desc: "No forzar nada.",
         efectos: function (s) {
-          Under.UNDER._limpiar("under_viral_cayo");
+          Under.UNDER._limpiar("under_viral_sobre");
           return { fans: Under.SYSTEMS.fansEscala(s, 600), popularity: 2 };
         },
         resultado: "No tocás nada. El video sigue sumando y tu nombre queda en el aire, esperando el próximo paso.",
@@ -1057,11 +1057,11 @@ Under.UNDER = {
         texto: "No darle bola",
         desc: "El ruido no te mueve.",
         efectos: function (s) {
-          Under.UNDER._limpiar("under_viral_cayo");
+          Under.UNDER._limpiar("under_viral_sobre");
           return {};
         },
         resultado: "No le das importancia. El video pasa, y tu carrera sigue su propio ritmo.",
-        log: "Ignoró la viralización de su video en Cayo."
+        log: "Ignoró la viralización de su video en La Sobre."
       }
     ]);
   },
@@ -1251,39 +1251,39 @@ Under.UNDER = {
     ]);
   },
 
-  /* ---------- Galperin quiere regrabar «Pulmón 1312» ---------- */
+  /* ---------- Pulmón quiere regrabar «Galperin» ---------- */
   crearEventoGalperin: function (state) {
-    return Under.UNDER._crear("under_galperin", "Galperin propone regrabar «Pulmón 1312»", [
-      "Tu amiga te pasa el mensaje de Galperin: «LARECONCHADETUTIA». Su tema «Pulmón 1312» está re pegado en la escena y te propone regrabarlo juntos.",
-      "Galperin te busca por la amiga: «Pulmón 1312» está explotando y cree que el tema queda mejor con los dos. Quiere regrabarlo a dúo.",
-      "La amiga te manda el texto de Galperin: dice que «Pulmón 1312» se merece tu parte. El tema está re pegado y la propuesta es regrabarlo juntos."
+    return Under.UNDER._crear("under_galperin", "Pulmón propone regrabar «Galperin»", [
+      "Tu amiga te pasa el mensaje de Pulmón: «LARECONCHADETUTIA». Su tema «Galperin» está re pegado en la escena y te propone regrabarlo juntos.",
+      "Pulmón te busca por la amiga: «Galperin» está explotando y cree que el tema queda mejor con los dos. Quiere regrabarlo a dúo.",
+      "La amiga te manda el texto de Pulmón: dice que «Galperin» se merece tu parte. El tema está re pegado y la propuesta es regrabarlo juntos."
     ], [
       {
         texto: "Regrabarlo juntos",
         desc: "Un tema que ya suena, ahora con tu nombre.",
         efectos: function (s) {
           Under.UNDER._limpiar("under_galperin");
-          var est = { calidad: 6, viral: 0, texto: "regrabación de «Pulmón 1312» con Galperin" };
-          var L = Under.MUSIC._calcular(s, "Pulmón 1312 (feat. Galperin)", est);
+          var est = { calidad: 6, viral: 0, texto: "regrabación de «Galperin» con Pulmón" };
+          var L = Under.MUSIC._calcular(s, "Galperin (feat. Pulmón)", est);
           L.repros = Math.round(L.repros * 1.4);
           L.fans = Math.round(L.fans * 1.4);
           L.dinero = Math.round(L.dinero * 0.7);
           Under.MUSIC._registrar(s, L, est, 0);
           s.colaboraciones.push({
-            año: s.año, nombre: L.nombre, partner: "Galperin", tipo: "igual",
+            año: s.año, nombre: L.nombre, partner: "Pulmón", tipo: "igual",
             tier: L.tier, repros: L.repros, fans: L.fans, dinero: L.dinero
           });
           s.totalColabs += 1;
           s.flags.colabEsteAnio = true;
-          if (Under.RELACIONES) Under.RELACIONES.agregar(s, "red_galperin", "Galperin", "colega", 35);
+          if (Under.RELACIONES) Under.RELACIONES.agregar(s, "red_pulmon", "Pulmón", "colega", 35);
           return { fans: L.fans, popularity: L.popularidad, talent: L.talento, money: L.dinero, _energia: -10, _lanzamiento: L };
         },
         resultado: function (s, efectos) {
           var L = efectos._lanzamiento;
-          return "Grabás «" + L.nombre + "» con Galperin.\n\n" + Under.MUSIC.TIER_FLAVOR[L.tier] + "\n\n" +
+          return "Grabás «" + L.nombre + "» con Pulmón.\n\n" + Under.MUSIC.TIER_FLAVOR[L.tier] + "\n\n" +
             L.tierIcono + " " + L.tierNombre + " · " + Under.UI.fmtExacto(L.repros) + " reproducciones.";
         },
-        log: "Regrabó «Pulmón 1312» junto a Galperin."
+        log: "Regrabó «Galperin» junto a Pulmón."
       },
       {
         texto: "Aceptar cobrando un buen pago",
@@ -1291,33 +1291,33 @@ Under.UNDER = {
         riesgo: 0.3,
         efectos: function (s) {
           Under.UNDER._limpiar("under_galperin");
-          var est = { calidad: 6, viral: 0, texto: "regrabación de «Pulmón 1312» con Galperin" };
-          var L = Under.MUSIC._calcular(s, "Pulmón 1312 (feat. Galperin)", est);
+          var est = { calidad: 6, viral: 0, texto: "regrabación de «Galperin» con Pulmón" };
+          var L = Under.MUSIC._calcular(s, "Galperin (feat. Pulmón)", est);
           L.repros = Math.round(L.repros * 1.3);
           L.fans = Math.round(L.fans * 1.3);
           L.dinero = Math.round(L.dinero);
           Under.MUSIC._registrar(s, L, est, 0);
           s.colaboraciones.push({
-            año: s.año, nombre: L.nombre, partner: "Galperin", tipo: "igual",
+            año: s.año, nombre: L.nombre, partner: "Pulmón", tipo: "igual",
             tier: L.tier, repros: L.repros, fans: L.fans, dinero: L.dinero
           });
           s.totalColabs += 1;
           s.flags.colabEsteAnio = true;
-          if (Under.RELACIONES) Under.RELACIONES.agregar(s, "red_galperin", "Galperin", "colega", 25);
+          if (Under.RELACIONES) Under.RELACIONES.agregar(s, "red_pulmon", "Pulmón", "colega", 25);
           return { fans: L.fans, popularity: L.popularidad, talent: L.talento, money: L.dinero, _energia: -10, _lanzamiento: L };
         },
         resultado: function (s, efectos) {
           var L = efectos._lanzamiento;
-          return "Le ponés precio a tu parte y Galperin acepta a regañadientes.\n\n" + Under.MUSIC.TIER_FLAVOR[L.tier] +
+          return "Le ponés precio a tu parte y Pulmón acepta a regañadientes.\n\n" + Under.MUSIC.TIER_FLAVOR[L.tier] +
             "\n\n" + L.tierIcono + " " + L.tierNombre + " · " + Under.UI.fmtExacto(L.repros) + " reproducciones.";
         },
-        log: "Cobró caro su parte de «Pulmón 1312» con Galperin.",
+        log: "Cobró caro su parte de «Galperin» con Pulmón.",
         riesgoEfectos: function (s) {
           Under.UNDER._limpiar("under_galperin");
           return { popularity: -1 };
         },
-        riesgoResultado: "Pedís demasiado y Galperin lo hace solo. El tema explota igual, pero sin tu nombre.",
-        riesgoLog: "Perdió el regrabado con Galperin por cobrar demasiado."
+        riesgoResultado: "Pedís demasiado y Pulmón lo hace solo. El tema explota igual, pero sin tu nombre.",
+        riesgoLog: "Perdió el regrabado con Pulmón por cobrar demasiado."
       },
       {
         texto: "Dejarlo pasar",
@@ -1326,8 +1326,8 @@ Under.UNDER = {
           Under.UNDER._limpiar("under_galperin");
           return {};
         },
-        resultado: "Le decís que no. «Pulmón 1312» sigue sonando solo y vos seguís con lo tuyo.",
-        log: "Dejó pasar el regrabado con Galperin."
+        resultado: "Le decís que no. «Galperin» sigue sonando solo y vos seguís con lo tuyo.",
+        log: "Dejó pasar el regrabado de «Galperin» con Pulmón."
       }
     ]);
   },
@@ -1946,7 +1946,7 @@ Under.UNDER = {
   crearEventoFamilyCypher: function (state) {
     var tema = (state.ultimoLanzamiento && state.ultimoLanzamiento.nombre) || "tu último tema";
     return Under.UNDER._crear("under_family_cypher", "Un cypher de Family Racks", [
-      "Drokerr, EssKiff, gk, I Love Swag, Vlempiree y Caupiii, toda Family Racks, arman un cypher y te quieren adentro. Una sola sesión, todos al frente del mic.",
+      "Drokerr, EssKiff, gk, Ghosfe, Vlempiree y Caupiii, toda Family Racks, arman un cypher y te quieren adentro. Una sola sesión, todos al frente del mic.",
       "Family Racks junta a la camada nueva para un cypher y te reservan un lugar. Drokerr dice que «" + tema + "» tiene el flow para bancarlo.",
       "El cypher de Family Racks se arma y tu nombre está en la lista: EssKiff lo propuso después de escucharte."
     ], [
@@ -2124,7 +2124,7 @@ Under.UNDER = {
     return Under.UNDER._crear("under_990", "Una noche en el 990 Club", [
       "El 990 Club arma una fecha de artistas nuevos y te quieren en el line-up.",
       "990 Club te ofrece una noche para presentar tu material. Un lugar con buena gente y buen sonido.",
-      "Los del 990 Club te anotaron en su fecha mensual. La escena de los nuevos pasa por ahí."
+      "Los del 990 Club te anotaron en su fecha de artistas nuevos. La escena de los nuevos pasa por ahí."
     ], [
       {
         texto: "Tocar en el 990",
@@ -2138,15 +2138,15 @@ Under.UNDER = {
         log: "Tocó en el 990 Club."
       },
       {
-        texto: "Pedir una residencia",
-        desc: "Un mes fijo en el 990 para crecer.",
+        texto: "Pedir una fecha propia",
+        desc: "Que esa noche sea tuya.",
         efectos: function (s) {
           Under.UNDER._limpiar("under_990");
           Under.MISIONES.sumar(s, "salas", 1);
           return { money: Under.SYSTEMS.efectivoEscala(s, 300), fans: Under.SYSTEMS.fansEscala(s, 600), popularity: 2, _energia: -18 };
         },
-        resultado: "Negociás una fecha al mes en el 990. Tu nombre empieza a llenar el lugar de a poco.",
-        log: "Consiguió una fecha mensual en el 990 Club."
+        resultado: "Negociás una fecha propia en el 990. Tu nombre empieza a llenar el lugar de a poco.",
+        log: "Consiguió una fecha propia en el 990 Club."
       },
       {
         texto: "Dejarlo pasar",
@@ -3017,6 +3017,46 @@ Under.UNDER = {
         },
         resultado: "Te quedás hasta que cierra. Se arma una joda que se cuenta en la escena, y los pibes se van diciendo que sos de verdad.",
         log: "Pasó toda la noche con pibes que lo reconocieron en Cayo."
+      }
+    ]);
+  },
+
+  /* ---------- La 3flip en Casa Babylon ---------- */
+  crearEventoCasa3Flip: function (state) {
+    return Under.UNDER._crear("under_casa_3flip", "La 3flip en Casa Babylon", [
+      "En Casa Babylon arman la 3flip con los amigos: micrófonos abiertos, parlantes prestados y toda la escena dando vueltas. Te tiran para que vayas.",
+      "Casa Babylon arma la 3flip, la joda que junta a los amigos del under. Te invitan a estar del lado de adentro.",
+      "La 3flip se arma en Casa Babylon y tu nombre está en la lista. Los amigos arman la noche y vos no podés faltar."
+    ], [
+      {
+        texto: "Ir",
+        desc: "La escena se junta y tu nombre está.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_casa_3flip");
+          return { popularity: 2, fans: Under.SYSTEMS.fansEscala(s, 300), _relaciones: 3, _energia: -6 };
+        },
+        resultado: "Vas a la 3flip en Casa Babylon. Los amigos te reciben, el mic abre y la escena te ve de cerca. Quedás en la foto de la noche.",
+        log: "Fue a la 3flip en Casa Babylon."
+      },
+      {
+        texto: "Llevar un tema para la 3flip",
+        desc: "Vas con material: la joda se hace tuya.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_casa_3flip");
+          return { popularity: 3, talent: 1, fans: Under.SYSTEMS.fansEscala(s, 450), _relaciones: 2, _energia: -9 };
+        },
+        resultado: "Llevás un tema para la 3flip y suena a todo lo que da. Los amigos lo piden de nuevo antes de que termine la noche.",
+        log: "Llevó un tema a la 3flip en Casa Babylon."
+      },
+      {
+        texto: "No ir",
+        desc: "La 3flip se arma igual sin vos.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_casa_3flip");
+          return { _energia: 3 };
+        },
+        resultado: "No vas. La 3flip se arma igual en Casa Babylon, pero los amigos guardan el asiento para la próxima.",
+        log: "No fue a la 3flip en Casa Babylon."
       }
     ]);
   }

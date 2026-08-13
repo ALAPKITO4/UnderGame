@@ -204,7 +204,7 @@ Under.DATA = {
     { nombre: "Drokerr",        rol: "artista",            grupo: "family racks" },
     { nombre: "EssKiff",        rol: "artista",            grupo: "family racks" },
     { nombre: "gk",             rol: "artista",            grupo: "family racks" },
-    { nombre: "I Love Swag",    rol: "artista",            grupo: "family racks" },
+    { nombre: "Ghosfe",         rol: "artista",            grupo: "family racks" },
     { nombre: "Vlempiree",      rol: "artista",            grupo: "family racks" },
     { nombre: "Caupiii",        rol: "artista",            grupo: "family racks" },
     { nombre: "Emile",          rol: "artista",            grupo: "los amigos y fruittyaudiovisual" },
@@ -234,7 +234,7 @@ Under.DATA = {
     { nombre: "Cayo Makensi",    nivel: 3 },
     { nombre: "990 Club",        nivel: 3 },
     { nombre: "Undersc",         nivel: 2 },
-    { nombre: "Pétalos del sol", nivel: 2 },
+    { nombre: "Pétalos del Sol", nivel: 2 },
     { nombre: "Casa Babylon",    nivel: 1 },
     { nombre: "La Sobre",        nivel: 0 }
   ],
@@ -380,9 +380,9 @@ Under.DATA = {
      usan para que la escena se sienta de verdad. */
   ARTISTAS_ESCENA: [
     "Marti", "Fabrizio", "Benja Fuego", "Lucio Fuego", "Kiwa El Distinto",
-    "Drokerr", "EssKiff", "gk", "I Love Swag", "Vlempiree",
+    "Drokerr", "EssKiff", "gk", "Ghosfe", "Vlempiree",
     "Caupiii", "Emile", "Pascu", "Pulmon1312", "Tuconeone",
-    "Ivinn", "Burger", "Genaa", "roro", "Agus", "Agusfornite"
+    "Ivinn", "Burger", "Genaa", "Agus", "Agusfornite"
   ],
 
   /* ---------- Lanzamientos (FASE 2) ----------
@@ -863,12 +863,12 @@ Under.DATA = {
       generar: function (s) { return Under.UNDER.crearEventoEstudioGrande(s); }
     },
     {
-      id: "under_viral_cayo", peso: 2,
+      id: "under_viral_sobre", peso: 2,
       disponible: function (s) {
         var n = Under.STATE.nivelCarrera(s).nivel;
         return s.lanzamientos >= 1 && n >= 1 && n <= 3;
       },
-      generar: function (s) { return Under.UNDER.crearEventoViralCayo(s); }
+      generar: function (s) { return Under.UNDER.crearEventoViralSobre(s); }
     },
     {
       id: "under_cancion_anio", peso: 2,
@@ -1063,6 +1063,14 @@ Under.DATA = {
         return s.año >= 2 && s.lanzamientos >= 1 && n <= 3;
       },
       generar: function (s) { return Under.UNDER.crearEventoJodaCayo(s); }
+    },
+    {
+      id: "under_casa_3flip", peso: 2,
+      disponible: function (s) {
+        var n = Under.STATE.nivelCarrera(s).nivel;
+        return s.año >= 1 && s.lanzamientos >= 1 && n <= 3;
+      },
+      generar: function (s) { return Under.UNDER.crearEventoCasa3Flip(s); }
     },
     /* Los nombres de la escena cuando ya saliste del underground:
        Ivinn, Pulmon1312 y Drokerr crecen con el mainstream. */
@@ -1647,17 +1655,17 @@ Under.DATA = {
       era: ["comienzos"],
       añoMin: 2, añoMax: 3,
       titulo: "Tu primer concierto",
-      texto: "Un bar del centro te ofrece tocar un viernes. Pagan poco, el lugar es chico, pero es tu primer escenario real frente a gente que no conocés.",
+      texto: "Los de Family Racks te ofrecen tu primera fecha en Pétalos del Sol. Pagan poco, el lugar es chico, pero es tu primer escenario real frente a gente que no conocés.",
       opciones: [
         {
           texto: "Aceptar sin dudar",
-          resultado: "Subís a un escenario por primera vez. El miedo se va después de la primera canción. Al terminar, alguien te pide una foto.",
+          resultado: "Subís al escenario de Pétalos del Sol por primera vez, con Family Racks al lado. El miedo se va después de la primera canción. Al terminar, alguien te pide una foto.",
           efectos: { money: 80, fans: 200, popularity: 3 },
-          log: "Diste tu primer concierto en un bar."
+          log: "Dio su primer concierto en Pétalos del Sol con Family Racks."
         },
         {
           texto: "Pedir más plata",
-          resultado: "Pedís un poco más y el dueño se tensa. Al final aceptan, pero a regañadientes. Toca un público chico y la historia queda un poco incómoda.",
+          resultado: "Pedís un poco más y los de Family Racks se tensan. Al final aceptan, pero a regañadientes. Tocás ante un público chico y la historia queda un poco incómoda.",
           efectos: { money: 140, fans: 160, popularity: 2 },
           log: "Negociaste tu primer concierto."
         },
@@ -1671,30 +1679,30 @@ Under.DATA = {
     },
 
     {
-      id: "critica_local",
+      id: "critica_coscu",
       prioridad: 1,
       era: ["comienzos"],
       añoMin: 2, añoMax: 3,
-      titulo: "Una crítica en un blog local",
-      texto: "Un blog de música de tu ciudad publica una reseña sobre tu tema. La mitad es elogio sincero; la otra mitad te critica fuerte.",
+      titulo: "La crítica de Coscu",
+      texto: "Coscu escucha tu tema en vivo en su stream y lo analiza: la mitad es elogio sincero; la otra mitad te critica fuerte. Todo su público lo está viendo.",
       opciones: [
         {
           texto: "Responder con altura",
-          resultado: "Agradecés los elogios y aceptás las críticas. El blog te anota en el radar y la gente valora tu madurez.",
+          resultado: "Agradecés los elogios y aceptás las críticas en el chat del stream. Coscu te anota en el radar y la gente valora tu madurez.",
           efectos: { fans: 150, popularity: 3 },
-          log: "Respondiste con altura a una crítica."
+          log: "Respondiste con altura a la crítica de Coscu."
         },
         {
-          texto: "Bardearlos en redes",
-          resultado: "Los escrachás en una historia. La polémica genera ruido, pero parte de la gente se aleja.",
+          texto: "Bardearlo en redes",
+          resultado: "Lo escrachás en una historia. La polémica genera ruido, pero parte de la gente se aleja.",
           efectos: { fans: -100, popularity: 2 },
-          log: "Bardeaste a un blog local en redes."
+          log: "Bardeó a Coscu en redes."
         },
         {
           texto: "Ignorarla y seguir trabajando",
-          resultado: "No le das ni cinco de pelota. Seguís grabando, y con el tiempo la crítica pierde peso.",
+          resultado: "No le das ni cinco de pelota. Seguís grabando, y con el tiempo la crítica de Coscu pierde peso.",
           efectos: { talent: 1, fans: 20 },
-          log: "Ignoraste una crítica local."
+          log: "Ignoraste la crítica de Coscu."
         }
       ]
     },
@@ -1842,7 +1850,7 @@ Under.DATA = {
       añoMin: 3, añoMax: 6,
       importante: true,
       titulo: "Un video tuyo se está compartiendo",
-      texto: "Un video tuyo cantando a capela en una plaza se está compartiendo por redes. En dos días tiene miles de vistas.\n\nNadie sabe qué va a pasar.",
+      texto: "Un video tuyo cantando a capela en La Sobre se está compartiendo por redes. En dos días tiene miles de vistas.\n\nNadie sabe qué va a pasar.",
       opciones: [
         {
           texto: "Subirlo a tus plataformas",

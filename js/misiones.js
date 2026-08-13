@@ -67,7 +67,7 @@ Under.MISIONES = (function () {
     "🎯 Misión completada: Vivir el bar. Los sonidistas ya te guardan el buen cable.");
   m("m_toques_8", "grind", 2, 5, "🎤", "El circuito te espera", "Tocá en 8 toques de la escena", 8, "toques",
     { fans: 15000, popularity: 5, _energia: 8 },
-    "🎯 Misión completada: El circuito te espera. Ya tenés fechas fijas en la agenda de los bares.");
+    "🎯 Misión completada: El circuito te espera. Ya te llaman de todos los bares de la zona.");
   m("m_toques_12", "grind", 3, 6, "🎤", "Leyenda de los bares", "Tocá en 12 toques de la escena", 12, "toques",
     { fans: 25000, popularity: 5, _energia: 10 },
     "🎯 Misión completada: Leyenda de los bares. Cada escenario chico de la zona te conoce.");
@@ -86,15 +86,15 @@ Under.MISIONES = (function () {
   m("m_maqueta_2", "grind", 2, 4, "💽", "Siempre algo nuevo", "Grabá 2 maquetas", 2, "maqueta",
     { fans: 6000, popularity: 4, money: 800 },
     "🎯 Misión completada: Siempre algo nuevo. La escena espera tu próximo cassette.");
-  m("m_freestyle", "grind", 1, 3, "🔥", "La plaza es tuya", "Ganá una batalla de freestyle", 1, "freestyle",
+  m("m_freestyle", "grind", 1, 3, "🔥", "La Sobre es tuya", "Ganá una batalla de freestyle", 1, "freestyle",
     { talent: 2, popularity: 4, fans: 3000 },
-    "🎯 Misión completada: La plaza es tuya. Tu barra corre de boca en boca.");
+    "🎯 Misión completada: La Sobre es tuya. Tu barra corre de boca en boca.");
   m("m_freestyle_3", "grind", 1, 4, "🔥", "Rima con hambre", "Ganá 3 batallas de freestyle", 3, "freestyle",
     { talent: 3, popularity: 5, fans: 8000 },
-    "🎯 Misión completada: Rima con hambre. Las plazas ya discuten quién te puede ganar.");
-  m("m_freestyle_6", "grind", 2, 5, "🔥", "Rey de la plaza", "Ganá 6 batallas de freestyle", 6, "freestyle",
+    "🎯 Misión completada: Rima con hambre. En La Sobre ya discuten quién te puede ganar.");
+  m("m_freestyle_6", "grind", 2, 5, "🔥", "Rey de La Sobre", "Ganá 6 batallas de freestyle", 6, "freestyle",
     { talent: 4, popularity: 5, fans: 15000 },
-    "🎯 Misión completada: Rey de la plaza. Los combos de tu ciudad se bajan de la pelea.");
+    "🎯 Misión completada: Rey de La Sobre. Los combos de tu ciudad se bajan de la pelea.");
   m("m_circuito", "grind", 1, 4, "🎯", "De toque en toque", "Viví 10 momentos entre toques, radios y batallas", 10,
     function (s) {
       var c = s.contadores || {};
@@ -109,13 +109,13 @@ Under.MISIONES = (function () {
     },
     { popularity: 3, fans: 3000, _energia: 5 },
     "🎯 Misión completada: Todo por el micro. Vivís para el escenario.");
-  m("m_doble_escena", "grind", 2, 4, "⚔️", "Bar y plaza", "Ganá 4 batallas y tocá 4 veces en bares", 4,
+  m("m_doble_escena", "grind", 2, 4, "⚔️", "Bar y La Sobre", "Ganá 4 batallas y tocá 4 veces en bares", 4,
     function (s) {
       var c = s.contadores || {};
       return Math.min(c.toques || 0, c.freestyle || 0);
     },
     { talent: 3, popularity: 4, fans: 6000 },
-    "🎯 Misión completada: Bar y plaza. Dueño de los dos escenarios del under.");
+    "🎯 Misión completada: Bar y La Sobre. Dueño de los dos escenarios del under.");
 
   /* ============================================================
      SECCIÓN 2 — HACER MÚSICA (etapa 1-8)
@@ -777,7 +777,7 @@ Under.MISIONES = (function () {
     "🎯 Misión completada: Cinta tras cinta. Tu material corre de mano en mano.");
   m("m2_freestyle_10", "grind", 3, 6, "🔥", "Sin techo", "Ganá 10 batallas de freestyle", 10, "freestyle",
     { talent: 4, popularity: 6, fans: 20000 },
-    "🎯 Misión completada: Sin techo. Las plazas ya no te quieren enfrentar.");
+    "🎯 Misión completada: Sin techo. En La Sobre ya no te quieren enfrentar.");
 
   /* Música: catálogo que crece */
   m("m2_temas_30", "musica", 5, 8, "💿", "Tres décadas de temas", "Lanzá 30 temas", 30, function (s) { return s.lanzamientos; },
@@ -961,9 +961,9 @@ Under.MISIONES = (function () {
   m("m3_radio_10", "grind", 2, 5, "📻", "La voz que se repite", "Dá 10 entrevistas en radios de la escena", 10, "radio",
     { fans: 15000, popularity: 5, money: 3000 },
     "🎯 Misión completada: La voz que se repite. Ya te reconocen por el teléfono.");
-  m("m3_freestyle_12", "grind", 2, 5, "🔥", "Sin rival en la plaza", "Ganá 12 batallas de freestyle", 12, "freestyle",
+  m("m3_freestyle_12", "grind", 2, 5, "🔥", "Sin rival en La Sobre", "Ganá 12 batallas de freestyle", 12, "freestyle",
     { talent: 4, popularity: 6, fans: 18000 },
-    "🎯 Misión completada: Sin rival en la plaza. Ya nadie quiere subir a medirse con vos.");
+    "🎯 Misión completada: Sin rival en La Sobre. Ya nadie quiere subir a medirse con vos.");
   m("m3_maqueta_4", "grind", 2, 4, "💽", "Cintas que vuelan", "Grabá 4 maquetas", 4, "maqueta",
     { fans: 12000, popularity: 4, money: 2000 },
     "🎯 Misión completada: Cintas que vuelan. Tu material viaja de mano en mano.");
@@ -1056,13 +1056,13 @@ Under.MISIONES = (function () {
   /* ============================================================
      LOTE 4 — ROTACIÓN Y ESCENAS NUEVAS (salas, ciclos, artistas)
      ============================================================ */
-  /* Grind: las salas y las fechas fijas del under */
-  m("m4_salas_6", "grind", 1, 4, "🎟️", "Dueño de la sala", "Conseguí 6 fechas fijas en salas de la escena", 6, "salas",
+  /* Grind: las salas de la escena */
+  m("m4_salas_6", "grind", 1, 4, "🎟️", "Dueño de la sala", "Tocá en 6 salas de la escena", 6, "salas",
     { fans: 12000, popularity: 5, money: 3000, _energia: 8 },
-    "🎯 Misión completada: Dueño de la sala. Ya tenés un rincón del under que te espera cada mes.");
-  m("m4_salas_12", "grind", 3, 6, "🎟️", "La casa es tuya", "Conseguí 12 fechas fijas en salas de la escena", 12, "salas",
+    "🎯 Misión completada: Dueño de la sala. La escena ya sabe cómo suena tu nombre en las salas.");
+  m("m4_salas_12", "grind", 3, 6, "🎟️", "La casa es tuya", "Tocá en 12 salas de la escena", 12, "salas",
     { fans: 25000, popularity: 5, money: 8000, _energia: 10 },
-    "🎯 Misión completada: La casa es tuya. Hay salas que ya no se imaginan el mes sin vos.");
+    "🎯 Misión completada: La casa es tuya. Hay salas que te piden volver apenas terminás de tocar.");
   m("m4_ciclos_2", "grind", 1, 4, "🎪", "Parte del circuito", "Participá en 2 ciclos del barrio", 2, "ciclos",
     { fans: 8000, popularity: 4, _relaciones: 4 },
     "🎯 Misión completada: Parte del circuito. Los ciclos te empiezan a llamar para la próxima edición.");

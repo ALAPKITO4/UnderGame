@@ -53,7 +53,7 @@ Under.EXTRA = {
     ], [
       {
         texto: "Aceptar el duelo",
-        desc: "Todo el respeto se gana en la plaza.",
+        desc: "Todo el respeto se gana en La Sobre.",
         efectos: function (s) {
           Under.EXTRA._limpiar("gen_rap");
           if (Math.random() < 0.5) {
