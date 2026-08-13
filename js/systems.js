@@ -103,6 +103,13 @@ Under.SYSTEMS = {
       var evForzado = Under.DATA.buscarEvento(forzado, state);
       if (evForzado) return evForzado;
     }
+    /* La gira al exterior aceptada se juega primero: la noche del
+       show decide cómo termina el compromiso antes que cualquier
+       otra decisión del año. */
+    if (state.giraActiva && Under.GIRAS && Under.GIRAS.crearEventoFecha) {
+      var evFecha = Under.GIRAS.crearEventoFecha(state);
+      if (evFecha) return evFecha;
+    }
     /* La bifurcación (PRIORIDAD 10): en cuanto la carrera cruza al
        nivel 4 (la industria empieza a mirarte), el camino se elige
        y SIEMPRE aparece: mainstream o quedarse en el under. */

@@ -179,7 +179,7 @@ function jugar(gen, per) {
 
     var idx = choices[Math.floor(Math.random() * choices.length)];
     /* Aceptar siempre las oportunidades de Fase 3, 4 y 5 para cubrir sus caminos */
-    if (["gira", "colab", "premio", "sello", "album", "equipo", "inversion",
+    if (["gira", "gira_fecha", "colab", "premio", "sello", "album", "equipo", "inversion",
          "plataforma", "mercado", "festival", "estadio", "evolucion", "documental", "credito", "catalogo",
          "under_ciudad", "under_radio", "under_influencer", "under_rival",
          "under_freestyle", "under_cypher", "under_telonero", "under_remix",
@@ -457,6 +457,8 @@ function jugar(gen, per) {
     "Juego " + totalGames + ": quedó un festival pendiente sin resolver");
   assert(Under.ESTADIOS._pendiente === null,
     "Juego " + totalGames + ": quedó un estadio pendiente sin resolver");
+  assert(Under.GIRAS._pendiente === null && s.giraActiva === null,
+    "Juego " + totalGames + ": quedó una gira o su fecha pendiente sin resolver");
   assert(Under.LEGADO._pendienteEvol === null && Under.LEGADO._pendienteDoc === null,
     "Juego " + totalGames + ": quedó un evento de legado pendiente sin resolver");
   assert(Under.ECONOMIA._pendienteCredito === null && Under.ECONOMIA._pendienteCatalogo === null,

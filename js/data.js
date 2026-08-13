@@ -441,6 +441,37 @@ Under.DATA = {
     { id: "cilindro",          nombre: "Cilindro de Avellaneda (Racing)", ciudad: "Avellaneda",    capacidad: 51000, fansMin: 600000, costo: 38000, base: 580000, precio: 95,  fans: 58000,  popularidad: 6 }
   ],
 
+  /* ---------- Lugares grandes del exterior (FASE 5) ----------
+     Las giras que cruzan fronteras te llevan a estadios y lugares
+     gigantes de otros países. nivelMin marca desde qué gira pueden
+     ofrecerse; los más míticos quedan reservados para la mundial.
+     Los menos conocidos muestran su capacidad en el texto del evento. */
+  GIRA_VENUES: [
+    /* Regional (gira nivel 5): los grandes de Latinoamérica */
+    { id: "centenario",     nombre: "Estadio Centenario",             ciudad: "Montevideo",       pais: "Uruguay",   capacidad: 60235, nivelMin: 5 },
+    { id: "nacional_scl",   nombre: "Estadio Nacional",               ciudad: "Santiago",         pais: "Chile",     capacidad: 63000, nivelMin: 5 },
+    { id: "chaco",          nombre: "Estadio Defensores del Chaco",   ciudad: "Asunción",         pais: "Paraguay",  capacidad: 42354, nivelMin: 5 },
+    { id: "siles",          nombre: "Estadio Hernando Siles",         ciudad: "La Paz",           pais: "Bolivia",   capacidad: 42000, nivelMin: 5 },
+    { id: "olimpico_univ",  nombre: "Estadio Olímpico Universitario", ciudad: "Ciudad de México", pais: "México",    capacidad: 58445, nivelMin: 5 },
+    { id: "morumbi",        nombre: "Estadio Morumbí",                ciudad: "São Paulo",        pais: "Brasil",    capacidad: 66795, nivelMin: 5 },
+    /* Internacional (gira nivel 6): el mundo grande */
+    { id: "bernabeu",       nombre: "Santiago Bernabéu",              ciudad: "Madrid",           pais: "España",    capacidad: 81044, nivelMin: 6 },
+    { id: "stade_france",   nombre: "Stade de France",                ciudad: "París",            pais: "Francia",   capacidad: 80698, nivelMin: 6 },
+    { id: "allianz",        nombre: "Allianz Arena",                  ciudad: "Múnich",           pais: "Alemania",  capacidad: 75000, nivelMin: 6 },
+    { id: "metlife",        nombre: "MetLife Stadium",                ciudad: "Nueva Jersey",     pais: "EE. UU.",   capacidad: 82500, nivelMin: 6 },
+    { id: "sofi",           nombre: "SoFi Stadium",                   ciudad: "Los Ángeles",      pais: "EE. UU.",   capacidad: 70000, nivelMin: 6 },
+    { id: "tokyo_dome",     nombre: "Tokyo Dome",                     ciudad: "Tokio",            pais: "Japón",     capacidad: 55000, nivelMin: 6 },
+    { id: "accor",          nombre: "Accor Stadium",                  ciudad: "Sídney",           pais: "Australia", capacidad: 83500, nivelMin: 6 },
+    { id: "nido_pajaro",    nombre: "Estadio Nacional de Pekín",      ciudad: "Pekín",            pais: "China",     capacidad: 80000, nivelMin: 6 },
+    /* Íconos (casi solo para la gira mundial): los templos del planeta */
+    { id: "wembley",        nombre: "Wembley Stadium",                ciudad: "Londres",          pais: "Reino Unido", capacidad: 90000, nivelMin: 7 },
+    { id: "camp_nou",       nombre: "Camp Nou",                       ciudad: "Barcelona",        pais: "España",    capacidad: 99354, nivelMin: 7 },
+    { id: "azteca",         nombre: "Estadio Azteca",                 ciudad: "Ciudad de México", pais: "México",    capacidad: 87523, nivelMin: 7 },
+    { id: "maracana",       nombre: "Estadio Maracaná",               ciudad: "Río de Janeiro",   pais: "Brasil",    capacidad: 78838, nivelMin: 7 },
+    { id: "lusail",         nombre: "Lusail Stadium",                 ciudad: "Doha",             pais: "Qatar",     capacidad: 80000, nivelMin: 7 },
+    { id: "mcb",            nombre: "Melbourne Cricket Ground",       ciudad: "Melbourne",        pais: "Australia", capacidad: 100024, nivelMin: 7 }
+  ],
+
   /* ---------- Colaboraciones (FASE 3) ----------
      audiencia: multiplicador de reproducciones/fans del tema.
      retencion: % del dinero que te queda (el resto va al partner).
@@ -596,6 +627,11 @@ Under.DATA = {
       id: "gira", peso: 2,
       disponible: function (s) { return !s.flags.giraEsteAnio && Under.STATE.nivelCarrera(s).nivel >= 1; },
       generar: function (s) { return Under.GIRAS.crearEventoGira(s); }
+    },
+    {
+      id: "gira_fecha", peso: 0,
+      disponible: function (s) { return !!s.giraActiva; },
+      generar: function (s) { return Under.GIRAS.crearEventoFecha(s); }
     },
     {
       id: "colab", peso: 2,

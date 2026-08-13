@@ -81,6 +81,7 @@ Under.STATE = {
       sello: null,
       giras: [],
       totalGiras: 0,
+      giraActiva: null,
       colaboraciones: [],
       totalColabs: 0,
       premios: [],
@@ -168,6 +169,7 @@ Under.STATE = {
     }
     if (s.giras === undefined) s.giras = [];
     if (s.totalGiras === undefined) s.totalGiras = 0;
+    if (s.giraActiva === undefined) s.giraActiva = null;
     if (s.colaboraciones === undefined) s.colaboraciones = [];
     if (s.totalColabs === undefined) s.totalColabs = 0;
     if (s.premios === undefined) s.premios = [];
