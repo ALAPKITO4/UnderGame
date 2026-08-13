@@ -255,44 +255,44 @@ Under.EXTRA = {
     ]);
   },
 
-  /* ---------- Música para una publicidad ---------- */
+  /* ---------- Naty vintage te ofrece ser modelo ---------- */
   crearEventoPublicidad: function (state) {
-    return Under.EXTRA._crear("extra_publicidad", "Naty vintage te llama", [
-      "Naty vintage te llama: una marca local quiere un jingle para su publicidad de radio y tele.",
-      "Naty vintage te contacta por una empresa de barrio que te pide una canción corta para su campaña.",
-      "Naty vintage te ofrece un spot institucional que necesita música original y pensaron en vos."
+    return Under.EXTRA._crear("extra_publicidad", "Naty vintage te ofrece ser modelo", [
+      "Naty vintage te ofrece ser modelo, es tu marca favorita.",
+      "Naty vintage quiere que seas su modelo. Es tu marca favorita, no lo podés creer.",
+      "Naty vintage te propone ser su modelo, tu marca favorita de toda la vida."
     ], [
       {
-        texto: "Componer el jingle",
-        desc: "Poco glamour, plata segura y oficio.",
+        texto: "Aceptar",
+        desc: "Tu cara, su marca.",
         efectos: function (s) {
           Under.EXTRA._limpiar("extra_publicidad");
           Under.MISIONES.sumar(s, "naty", 1);
-          return { money: Under.SYSTEMS.efectivoEscala(s, 250), talent: 1 };
+          return { fans: Under.SYSTEMS.fansEscala(s, 300), popularity: 2 };
         },
-        resultado: "Escribís un jingle que se repite hasta en el ascensor. La marca paga y el oficio suma.",
-        log: "Compuso un jingle para una publicidad."
+        resultado: "Ponés tu cara en la campaña de tu marca favorita. La calle te empieza a reconocer por donde pasa.",
+        log: "Fue modelo de Naty vintage."
       },
       {
-        texto: "Adaptar un tema viejo",
-        desc: "Un tema tuyo, recortado para el spot.",
+        texto: "Proponer que suene tu música",
+        desc: "Modelo y banda sonora.",
         efectos: function (s) {
           Under.EXTRA._limpiar("extra_publicidad");
           Under.MISIONES.sumar(s, "naty", 1);
-          return { money: Under.SYSTEMS.efectivoEscala(s, 150), fans: Under.SYSTEMS.fansEscala(s, 150) };
+          return { money: Under.SYSTEMS.efectivoEscala(s, 200), fans: Under.SYSTEMS.fansEscala(s, 200), talent: 1 };
         },
-        resultado: "Recortás un tema y queda perfecto para el spot. Cobrás y un puñado de gente te descubre.",
-        log: "Adaptó un tema para una publicidad."
+        resultado: "Aceptás ser modelo y de paso les vendés un tema para la campaña. Doble oficio y tu marca favorita en ambas.",
+        log: "Fue modelo de Naty vintage y aportó música."
       },
       {
-        texto: "No prestar tu música",
-        desc: "Los jingles no son tu lenguaje.",
+        texto: "Declinar",
+        desc: "Tu música no necesita tu cara.",
         efectos: function (s) {
           Under.EXTRA._limpiar("extra_publicidad");
           return { talent: 1 };
         },
-        resultado: "Decís que no. La marca contrata a otro y tu catálogo queda intacto.",
-        log: "No prestó su música para una publicidad."
+        resultado: "Decís que no. Naty vintage busca otra cara y tu música queda sola en el ruedo.",
+        log: "No fue modelo de Naty vintage."
       }
     ]);
   },
