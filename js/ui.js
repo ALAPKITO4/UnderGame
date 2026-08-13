@@ -114,22 +114,79 @@ Under.UI = {
       ? '<button class="btn principal" onclick="Under.MAIN.continuarPartida()">▶ Continuar carrera</button>'
       : '';
 
-    /* Finales descubiertos entre partidas: una razón más para
-       volver a empezar y ver qué otra historia te toca. */
+    /* Finales descubiertos entre partidas (PRIORIDAD 11): la
+       galería se agrupa por arco y muestra qué personalidades
+       ya desbloqueaste. Da la meta para volver a empezar. */
     var finales = Under.SAVE.finales();
     var finalesHtml = "";
     if (finales.length) {
       var index = Under.RETIRO.FINALES_INDEX;
+      var arcosOrden = ["under", "mainstream", "productor", "olvidado", "tragedia", "retiro"];
+      var nombresArco = (Under.RETIRO && Under.RETIRO.NOMBRES_ARCO) || {};
+      /* Cuenta descubiertos y totales por arco */
+      var tot = {}, descu = {};
+      arcosOrden.forEach(function (a) { tot[a] = 0; descu[a] = 0; });
+      Object.keys(index).forEach(function (t) {
+        var a = (Under.RETIRO.ARCOS && Under.RETIRO.ARCOS[t]) || "retiro";
+        tot[a] = (tot[a] || 0) + 1;
+      });
+      finales.forEach(function (t) {
+        var a = (Under.RETIRO.ARCOS && Under.RETIRO.ARCOS[t]) || "retiro";
+        descu[a] = (descu[a] || 0) + 1;
+      });
+
+      var gruposHtml = "";
+      arcosOrden.forEach(function (a) {
+        if (!tot[a]) return;
+        var chips = [];
+        finales.forEach(function (t) {
+          var fa = (Under.RETIRO.ARCOS && Under.RETIRO.ARCOS[t]) || "retiro";
+          if (fa !== a) return;
+          var f = index[t];
+          chips.push('<span class="chip final-chip">' + (f ? f.icono + " " + Under.UI.esc(f.titulo) : Under.UI.esc(t)) + '</span>');
+        });
+        gruposHtml +=
+          '<div class="finales-grupo">' +
+            '<div class="finales-grupo-h">' + nombresArco[a] + ' · ' + descu[a] + '/' + tot[a] + '</div>' +
+            (chips.length ? '<div class="finales-chips">' + chips.join("") + '</div>' : '<div class="finales-vacio">Sin descubrir</div>') +
+          '</div>';
+      });
+
       var total = Object.keys(index).length;
-      var resto = (total > finales.length) ? ("<span class='finales-resto'>Faltan " + (total - finales.length) + "</span>") : "<span class='finales-resto'>¡Completaste todos!</span>";
+      var resto = (total > finales.length) ? ("<span class='finales-resto'>Te faltan " + (total - finales.length) + " finales</span>") : "<span class='finales-resto'>¡Completaste todos los finales!</span>";
+
+      /* Personalidades desbloqueadas (las 3 de arcos con desbloqueo) */
+      var desbloqueos = Under.SAVE.desbloqueos();
+      var desbloqueosTot = Under.DATA.PERSONALITIES
+        ? Object.keys(Under.DATA.PERSONALITIES).filter(function (k) { return Under.DATA.PERSONALITIES[k].unlock; }).length
+        : 0;
+      var desbloqueoHtml = "";
+      if (desbloqueosTot) {
+        var arrDes = arcosOrden.filter(function (a) { return desbloqueos.indexOf(a) !== -1 && Under.RETIRO.DESBLOQUEOS && Under.RETIRO.DESBLOQUEOS[a]; });
+        var desChips = arrDes.map(function (a) {
+          var d = Under.RETIRO.DESBLOQUEOS[a];
+          return '<span class="chip accent">' + d.emoji + " " + Under.UI.esc(d.nombre) + '</span>';
+        }).join("");
+        desbloqueoHtml =
+          '<div class="finales-desbloqueos">' +
+            '<div class="finales-h">Personalidades desbloqueadas · ' + arrDes.length + '/' + desbloqueosTot + '</div>' +
+            (desChips ? '<div class="finales-chips">' + desChips + '</div>' : '<div class="finales-vacio">Ninguna todavía: jugá hasta un final para desbloquear la primera.</div>') +
+          '</div>';
+      }
+
       finalesHtml =
         '<div class="finales-wrap">' +
           '<div class="finales-h">Finales descubiertos · ' + finales.length + ' de ' + total + '</div>' +
-          '<div class="finales-chips">' + finales.map(function (t) {
-            var f = index[t];
-            return '<span class="chip final-chip">' + (f ? f.icono + " " + Under.UI.esc(f.titulo) : Under.UI.esc(t)) + '</span>';
-          }).join("") + '</div>' +
+          gruposHtml +
           resto +
+          desbloqueoHtml +
+        '</div>';
+    } else {
+      /* Aviso de primeras veces: no hay finales descubiertos. */
+      finalesHtml =
+        '<div class="finales-wrap">' +
+          '<div class="finales-h">Cada carrera termina en un final distinto</div>' +
+          '<div class="finales-vacio">Mirá tu primer final para empezar a llenar la galería y desbloquear nuevas personalidades.</div>' +
         '</div>';
     }
 
@@ -180,19 +237,33 @@ Under.UI = {
     }
     html += '</div></div>';
 
-    /* Personalidades */
+/* Personalidades */
     html += '<div class="field"><label>Personalidad</label><div class="grid-per">';
     var pids = Object.keys(Under.DATA.PERSONALITIES);
     for (var p = 0; p < pids.length; p++) {
       var per = Under.DATA.PERSONALITIES[pids[p]];
+      /* PRIORIDAD 11: las personalidades de desbloqueo aparecen
+         bloqueadas hasta alcanzar el arco que las habilita. */
+      var locked = per.unlock && !Under.SAVE.desbloqueado(per.unlock);
       var checkedP = Under.MAIN.form.personalidad === per.id ? " checked" : "";
-      html +=
-        '<input type="radio" name="personalidad" id="per-' + per.id + '" value="' + per.id + '"' + checkedP + ' onchange="Under.MAIN.pickPersonalidad(this.value)">' +
-        '<label class="sel-card" for="per-' + per.id + '">' +
-          '<div class="em">' + per.emoji + '</div>' +
-          '<div class="nm">' + per.nombre + '</div>' +
-          '<div class="ds">' + Under.UI.esc(per.desc) + '</div>' +
-        '</label>';
+      if (locked) {
+        var arcoNom = (Under.RETIRO && Under.RETIRO.NOMBRES_ARCO[per.unlock]) || per.unlock;
+        html +=
+          '<input type="radio" name="personalidad" id="per-' + per.id + '" value="' + per.id + '" disabled>' +
+          '<label class="sel-card locked" for="per-' + per.id + '">' +
+            '<div class="em">🔒</div>' +
+            '<div class="nm">' + Under.UI.esc(per.nombre) + '</div>' +
+            '<div class="ds">Desbloqueá un final de «' + Under.UI.esc(arcoNom) + '» para usarla.</div>' +
+          '</label>';
+      } else {
+        html +=
+          '<input type="radio" name="personalidad" id="per-' + per.id + '" value="' + per.id + '"' + checkedP + ' onchange="Under.MAIN.pickPersonalidad(this.value)">' +
+          '<label class="sel-card" for="per-' + per.id + '">' +
+            '<div class="em">' + per.emoji + '</div>' +
+            '<div class="nm">' + Under.UI.esc(per.nombre) + '</div>' +
+            '<div class="ds">' + Under.UI.esc(per.desc) + '</div>' +
+          '</label>';
+      }
     }
     html += '</div></div>';
 
@@ -631,6 +702,27 @@ Under.UI = {
       '<span class="final-grado">' + grado + '</span>' +
     '</div>';
 
+    /* PRIORIDAD 11: el final desbloquea contenido para la próxima
+       partida. Si es la primera vez que se alcanza el arco, se
+       destaca con un badge ¡NUEVO!. Los arcos sin desbloqueo
+       (olvidado/tragedia/retiro) no muestran esta tarjeta. */
+    var desbloqueoHtml = "";
+    if (rf.desbloqueo) {
+      var nw = rf.desbloqueoNuevo ? '<span class="chip accent unlock-new">¡NUEVO!</span>' : "";
+      desbloqueoHtml =
+        '<div class="card final-section unlock-card">' +
+          '<div class="final-sec-h">🔓 Desbloqueo de este final</div>' +
+          '<div class="unlock-row"><span class="unlock-emo">' + rf.desbloqueo.emoji + '</span>' +
+            '<div class="unlock-text"><b>' + Under.UI.esc(rf.desbloqueo.nombre) + '</b>' +
+              '<span class="unlock-desc"> — ' + Under.UI.esc(rf.desbloqueo.desc) + '</span></div>' +
+            nw +
+          '</div>' +
+          (rf.desbloqueoNuevo
+            ? '<div class="unlock-hint">Podés elegir esta personalidad en tu próxima carrera.</div>'
+            : '<div class="unlock-hint">Ya estaba desbloqueada de antes.</div>') +
+        '</div>';
+    }
+
     /* ---------- Resumen completo: logros, discografía, proyectos y más ---------- */
     var resumen = "";
 
@@ -787,6 +879,7 @@ Under.UI = {
         '<div class="final-name">' + Under.UI.esc(s.artista.nombre) + '</div>' +
         (s.retirado ? '<div class="sello-line">🏁 Se retiró en el año ' + s.añoRetiro + '.</div>' : "") +
       '</div>' +
+      desbloqueoHtml +
       /* Biografía y legado final (PRIORIDAD 10): el título que la
          historia le pone a la carrera y el relato armado con lo
          que de verdad viviste en la partida. */

@@ -601,6 +601,23 @@ function jugar(gen, per) {
   assert(typeof bio.parrafo === "string" && bio.parrafo.length > 40,
     "Juego " + totalGames + ": la biografía es demasiado corta");
 
+  /* PRIORIDAD 11: el final pertenece a un arco y tiene su
+     desbloqueo bien formado. */
+  var rf = s.resultadoFinal;
+  assert(!!rf && !!rf.tipo, "Juego " + totalGames + ": sin resultadoFinal");
+  assert(typeof rf.arco === "string" && Under.RETIRO.NOMBRES_ARCO[rf.arco] !== undefined,
+    "Juego " + totalGames + ": resultadoFinal.arco inválido (" + rf.arco + ")");
+  assert(Under.RETIRO.FINALES_INDEX[rf.tipo] !== undefined,
+    "Juego " + totalGames + ": resultadoFinal.tipo no está en FINALES_INDEX (" + rf.tipo + ")");
+  if (rf.desbloqueo) {
+    assert(!!rf.desbloqueo.nombre && !!rf.desbloqueo.idpers,
+      "Juego " + totalGames + ": desbloqueo del final incompleto");
+    assert(finalHtml.indexOf("unlock-card") !== -1,
+      "Juego " + totalGames + ": pantalla final no muestra la tarjeta de desbloqueo");
+  }
+  assert(typeof rf.desbloqueoNuevo === "boolean",
+    "Juego " + totalGames + ": resultadoFinal sin flag desbloqueoNuevo");
+
   statsF3.giras += s.totalGiras;
   statsF3.colabs += s.totalColabs;
   statsF3.premios += s.totalPremios;
@@ -699,6 +716,7 @@ function jugarRetiro() {
   assert(s.retirado === true, "Retiro: no quedó marcado retirado");
   assert(s.añoRetiro !== null && s.añoRetiro >= 1, "Retiro: sin año de retiro");
   assert(!!s.resultadoFinal && !!s.resultadoFinal.tipo, "Retiro: sin resultadoFinal.tipo");
+  assert(typeof s.resultadoFinal.arco === "string", "Retiro: sin arco en resultadoFinal");
   assert(Under.MAIN.fase === "final", "Retiro: no llegó a la pantalla final");
 
   console.log("Retiro OK → " + s.resultadoFinal.titulo + " (año " + s.añoRetiro + ")");
@@ -819,6 +837,31 @@ assert(statsMisiones.completadas >= 1, "Ninguna partida completó una misión");
 /* Prioridad 8: la renegociación y las cláusulas tienen cobertura */
 assert(statsF8.renegociaciones + statsF8.clausulas >= 1,
   "Ninguna partida vivió una renegociación o una cláusula");
+
+/* PRIORIDAD 11: integridad de Finales 3.0 (arcos + desbloqueos) */
+var arcosValidos = ["under", "mainstream", "productor", "olvidado", "tragedia", "retiro"];
+Object.keys(Under.RETIRO.FINALES_INDEX).forEach(function (t) {
+  var a = Under.RETIRO.ARCOS[t];
+  assert(arcosValidos.indexOf(a) !== -1,
+    "Finales: '" + t + "' sin arco válido (" + a + ")");
+});
+/* Los 3 desbloqueos apuntan a personalidades reales y bloqueadas */
+["under", "mainstream", "productor"].forEach(function (arco) {
+  var d = Under.RETIRO.DESBLOQUEOS[arco];
+  assert(!!d && !!d.idpers, "Desbloqueo de arco '" + arco + "' mal definido");
+  var p = Under.DATA.PERSONALITIES[d.idpers];
+  assert(!!p && p.unlock === arco,
+    "Desbloqueo '" + arco + "' no apunta a una personalidad con unlock='" + arco + "'");
+});
+/* Las 3 personalidades desbloqueables tienen stats válidos */
+["alma", "showman", "mente"].forEach(function (id) {
+  var p = Under.DATA.PERSONALITIES[id];
+  assert(!!p && !!p.unlock, "Personalidad desbloqueable '" + id + "' falta o sin unlock");
+  assert(Object.keys(p.stats).every(function (k) { return ["popularity", "talent", "fans", "money"].indexOf(k) !== -1; }),
+    "Personalidad desbloqueable '" + id + "' con stats no soportados");
+});
+/* La galería de inicio agrupa por arco sin romperse */
+assert(typeof Under.RETIRO.NOMBRES_ARCO.under === "string", "NOMBRES_ARCO incompleto");
 
 if (failures.length === 0) {
   console.log("SMOKE TEST OK ✔");

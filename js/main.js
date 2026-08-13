@@ -8,6 +8,7 @@ window.Under = window.Under || {};
 Under.SAVE = {
   clave: function () { return Under.DATA.CONFIG.SAVE_KEY; },
   claveFinales: function () { return "under_finales_descubiertos"; },
+  claveDesbloqueos: function () { return "under_desbloqueos"; },
 
   guardar: function (estado) {
     try {
@@ -61,6 +62,44 @@ Under.SAVE = {
         localStorage.setItem(Under.SAVE.claveFinales(), JSON.stringify(arr));
       }
     } catch (e) { /* noop */ }
+  },
+
+  /* ---------- Desbloqueos (metaprogreso, PRIORIDAD 11) ----------
+     Cada arco de final desbloquea contenido para la próxima
+     partida (hoy, nuevas personalidades). Persiste entre
+     partidas, separado del save activo. */
+  desbloqueos: function () {
+    try {
+      var raw = localStorage.getItem(Under.SAVE.claveDesbloqueos());
+      if (!raw) return [];
+      var arr = JSON.parse(raw);
+      return Array.isArray(arr) ? arr : [];
+    } catch (e) {
+      return [];
+    }
+  },
+
+  /* ¿Este arco ya estaba desbloqueado antes de la partida actual?
+     Se pregunta ANTES de registrar, para saber si el desbloqueo es
+     nuevo para esa carrera. */
+  desbloqueoNuevo: function (arco) {
+    if (!arco) return false;
+    return Under.SAVE.desbloqueos().indexOf(arco) === -1;
+  },
+
+  registrarDesbloqueo: function (arco) {
+    if (!arco) return;
+    try {
+      var arr = Under.SAVE.desbloqueos();
+      if (arr.indexOf(arco) === -1) {
+        arr.push(arco);
+        localStorage.setItem(Under.SAVE.claveDesbloqueos(), JSON.stringify(arr));
+      }
+    } catch (e) { /* noop */ }
+  },
+
+  desbloqueado: function (arco) {
+    return !!arco && Under.SAVE.desbloqueos().indexOf(arco) !== -1;
   }
 };
 
@@ -171,6 +210,16 @@ Under.MAIN = {
   empezar: function () {
     var f = this.form;
     if (!f.nombre.trim() || !f.genero || !f.personalidad) return;
+    /* Guard (PRIORIDAD 11): si por alguma razón se eligió una
+       personalidad bloqueada (save viejo, tamper), se cae a una
+       base desbloqueada en vez de bloquear el arranque. */
+    var perDef = Under.DATA.PERSONALITIES[f.personalidad];
+    if (perDef && perDef.unlock && !Under.SAVE.desbloqueado(perDef.unlock)) {
+      var base = Object.keys(Under.DATA.PERSONALITIES).filter(function (k) {
+        return !Under.DATA.PERSONALITIES[k].unlock;
+      });
+      f.personalidad = base[0] || f.personalidad;
+    }
 
     var estado = Under.STATE.crearJuego({
       nombre: f.nombre.trim(),

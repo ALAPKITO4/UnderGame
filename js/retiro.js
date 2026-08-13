@@ -1,14 +1,16 @@
 /* ============================================================
-   UNDER — SISTEMA DE RETIRO Y FINALES (FASE 4 + FINALES 2.0)
+   UNDER — SISTEMA DE RETIRO Y FINALES (FASE 4 + FINALES 3.0)
    El final de la carrera depende del perfil completo: nivel,
    plata, energía, vida personal, inversiones, crisis, escándalos,
-   giras y catálogo. Cada final tiene un grado (legendario,
-   dorado, propio, trágico o discreto) que la pantalla final
-   muestra como un banner.
+   giras y catálogo. Cada final pertenece a un ARCO (camino) y
+   tiene un grado (legendario, dorado, propio, trágico o discreto).
 
-   simple de jugar: un título y un relato al terminar.
-   profundo por dentro: hay más de veinte finales distintos y
-   cada uno refleja una forma real de vivir la carrera.
+   FINALES 3.0 — los finales se agrupan en 5 arcos temáticos:
+   leyenda under, mainstream, productor tras bambalinas, olvidado
+   y tragedia (más un eje aparte de retiros elegidos por el
+   jugador). Alcanzar un arco desbloquea una personalidad nueva
+   para la próxima partida: el final no es solo un texto, es la
+   llave a otra forma de jugar.
    ============================================================ */
 
 window.Under = window.Under || {};
@@ -35,7 +37,7 @@ Under.RETIRO = {
     imperio:         { icono: "🏙️", titulo: "Empresario de la música" },
     familia:         { icono: "👨‍👩‍👧‍👦", titulo: "Fama y familia" },
     renacer:         { icono: "🌄", titulo: "El resurgido" },
-    estrella:        { icono: "⭐", titulo: "Estrella" },
+    estrella:        { icono: "⭐", titulo: "Superestrella" },
     sabio:           { icono: "🧙", titulo: "El sabio del sonido" },
     navegante:       { icono: "🧭", titulo: "Ciudadano del mundo" },
     maquina:         { icono: "⚙️", titulo: "Máquina de hits" },
@@ -45,7 +47,45 @@ Under.RETIRO = {
     escuela:         { icono: "🎓", titulo: "El maestro" },
     culto:           { icono: "🕯️", titulo: "Artista de culto" },
     underground:     { icono: "🎤", titulo: "Leyenda del under" },
-    discreta:        { icono: "🎵", titulo: "Carrera discreta" }
+    discreta:        { icono: "🎵", titulo: "Carrera discreta" },
+    vendido:         { icono: "🎫", titulo: "Se vendió" },
+    olvidado:        { icono: "🌫️", titulo: "El que nadie nombra" },
+    productor:       { icono: "🎚️", titulo: "Tras bambalinas" }
+  },
+
+  /* Los 5 arcos (caminos) + el eje de retiro. Cada final cae en
+     uno solo por su tipo. La galería de inicio agrupa por arco y
+     cada arco desbloquea contenido para la próxima partida. */
+  ARCOS: {
+    retiro_mito: "mainstream", retiro_cima: "mainstream", retiro_dorado: "mainstream",
+    retiro_vida: "retiro", retiro_temprano: "retiro", retiro_corto: "retiro",
+    burnout: "tragedia", quiebra: "tragedia", cancelado: "tragedia", fantasma: "tragedia",
+    supero_quiebra: "tragedia",
+    mito: "mainstream", leyenda: "mainstream", legado: "mainstream", imperio: "mainstream",
+    familia: "mainstream", renacer: "mainstream", estrella: "mainstream", navegante: "mainstream",
+    maquina: "mainstream", relevante: "mainstream", nacional: "mainstream", vendido: "mainstream",
+    sabio: "productor", escuela: "productor", productor: "productor",
+    culto: "under", underground: "under", discreta: "under",
+    olvidado: "olvidado"
+  },
+
+  NOMBRES_ARCO: {
+    under: "Leyenda under",
+    mainstream: "Mainstream",
+    productor: "Tras bambalinas",
+    olvidado: "Olvidado",
+    tragedia: "Trágico",
+    retiro: "Retiros"
+  },
+
+  /* Qué desbloquea cada arco para la próxima partida. Llegar a un
+     final de ese arco habilita una personalidad nueva en la
+    _creación. Los arcos oscuros (olvidado/tragedia) y los retiros
+     no dan desbloqueo de gameplay: son rarezas de la galería. */
+  DESBLOQUEOS: {
+    under: { idpers: "alma", emoji: "🎤", nombre: "Alma del under", desc: "Nueva personalidad: la escena te cría y vos la devolvés en canciones." },
+    mainstream: { idpers: "showman", emoji: "🔥", nombre: "Showman", desc: "Nueva personalidad: tu nombre está hecho para el escenario grande." },
+    productor: { idpers: "mente", emoji: "🧠", nombre: "Mente maestra", desc: "Nueva personalidad: pensás la canción antes de tocarla." }
   },
 
   /* Construye el resultado de un final.
@@ -56,9 +96,17 @@ Under.RETIRO = {
     return { titulo: titulo, historia: historia, nivel: nivel, tipo: tipo, grado: grado, icono: icono };
   },
 
-  /* Calcula el final según el perfil de la carrera.
-     opts.retiro = true → retiro temprano (decisión del jugador). */
+  /* Calcula el final según el perfil de la carrera y le adjunta su
+     arco y su desbloqueo. opts.retiro = true → retiro temprano. */
   calcularFinal: function (state, opts) {
+    var res = this._calcularBase(state, opts);
+    if (!res) return res;
+    if (!res.arco) res.arco = this.ARCOS[res.tipo] || "retiro";
+    if (!res.desbloqueo) res.desbloqueo = this.DESBLOQUEOS[res.arco] || null;
+    return res;
+  },
+
+  _calcularBase: function (state, opts) {
     opts = opts || {};
     var s = state;
     var nivel = Under.STATE.nivelCarrera(s).nivel;
@@ -68,6 +116,9 @@ Under.RETIRO = {
     var money = s.stats.money;
     var legado = s.legado || 0;
     var contadores = s.contadores || {};
+    var rep = s.reputacion || 50;
+    var haters = s.haters || 0;
+    var camMain = s.flags && s.flags.camino === "mainstream";
 
     /* ---------- Retiro temprano: el jugador elige su final ---------- */
     if (opts.retiro) {
@@ -111,11 +162,7 @@ Under.RETIRO = {
 
     /* ---------- Fin natural en el año 25 ---------- */
 
-    /* Finales trágicos: las carreras que se apagan de verdad.
-       Si la energía se consumió del todo, el dinero no alcanzó,
-       los escándalos comieron la música o la crisis se llevó el
-       nombre, la historia termina en voz baja por más que alguna
-       vez haya pesado. */
+    /* Finales trágicos: las carreras que se apagan de verdad. */
     if (energia <= 15) {
       return this._final("burnout", "tragico", "🕯️", "SE APAGÓ",
         "Llegaste lejos, pero la maquinaria te consumió.\n\nTu carrera terminó en silencio, agotado, con el mundo todavía pidiendo más. Hay nombres que el ritmo apaga.", nivel);
@@ -124,13 +171,30 @@ Under.RETIRO = {
       return this._final("quiebra", "tragico", "💸", "BANCARROTA",
         "La deuda te ganó la partida.\n\nLa música siguió sonando, pero tu nombre quedó como una advertencia para los que juegan con plata que no tienen.", nivel);
     }
-    if ((s.totalEscandalos || 0) >= 4 && (s.haters || 0) >= 60 && nivel < 4) {
+    if ((s.totalEscandalos || 0) >= 4 && haters >= 60 && nivel < 4) {
       return this._final("cancelado", "tragico", "🚫", "CANCELADO POR LA ESCENA",
         "Los escándalos terminaron comiéndose la música.\n\nLa escena que te aplaudía cambió de canal. Tu nombre pasó a ser una advertencia que nadie quiere seguir.", nivel);
     }
     if ((s.aniosEnCrisis || 0) >= 3 && nivel < 3) {
       return this._final("fantasma", "tragico", "👻", "EL FANTASMA DEL UNDER",
         "La escena te dejó de esperar y vos dejaste de aparecer.\n\nNadie sabe con certeza qué pasó: solo queda una leyenda urbana sobre un artista que se apagó sin despedirse.", nivel);
+    }
+
+    /* Mainstream vendido (PRIORIDAD 11): el arco ácido de quien cruzó
+       la puerta grande, llegó lejos y la escena que lo crió le dio la
+       espalda por eso. Antes que los finales positivos del estrellato. */
+    if (camMain && nivel >= 6 && (rep < 40 || haters >= 45)) {
+      return this._final("vendido", "propio", "🎫", "TE VENDISTE",
+        "Llenaste estadios y tu nombre suena en cada radio, pero el bar de la esquina bajó tu foto el día que firmaste con la multinacional.\n\nLa escena que te vio crecer ya no te nombra: te cuenta. Vos elegiste la cima y pagaste con la única gente que te bancó cuando no eras nadie. Te fuiste a lo más alto… solo.", nivel);
+    }
+
+    /* Olvidado (PRIORIDAD 11): la carrera que se apagó en silencio,
+      ni tragedia escandalosa ni leyenda — el que simplemente ya nadie
+      recuerda. A los que quedaron abajo el under los guarda; al que
+      persiguió la cima y no llegó, el mundo lo olvida. */
+    if ((!s.flags || s.flags.camino !== "under") && nivel <= 2 && s.stats.fans < 15000 && legado < 15) {
+      return this._final("olvidado", "tragico", "🌫️", "EL QUE NADIE NOMBRA",
+        "No te retiraste ni te cancelaron: te apagaste sin que nadie notara cuándo fue.\n\nTu nombre ya no se dice en ningún lado, ni para bien ni para mal. La escena que te abrazaba por momentos te enterró en silencio. Hay carreras que no terminan en un final: terminan en un olvido.", nivel);
     }
 
     /* Finales legendarios: la cima absoluta */
@@ -160,7 +224,7 @@ Under.RETIRO = {
     }
     if (nivel >= 7) {
       return this._final("estrella", "dorado", "⭐", "SUPERESTRELLA",
-        "Tu nombre cruza fronteras. Llenás escenarios, rompés récords y el planeta entero te escucha.", nivel);
+        "Tu nombre cruza fronteras. Llenás escenarios, rompés récords y el planeta entero te escucha.\n\nEl under ya te nombra en pasado y teorea desde abajo que un día fuiste de los suyos.", nivel);
     }
 
     /* Camino under (PRIORIDAD 10): quien eligió quedarse en la escena
@@ -184,6 +248,15 @@ Under.RETIRO = {
       }
       return this._final("discreta", "discreto", "🎵", "UNA CARRERA DISCRETA",
         "No todas las carreras terminan en estadios. Viviste la música a tu manera, y eso también es una historia.", nivel);
+    }
+
+    /* Productor tras bambalinas (PRIORIDAD 11): el arco del que pasó
+       del escenario al estudio. Talentazo, un sobrado de collabs y
+       créditos, y poco pelo por lo propio: formó los hits de otros. */
+    if (talento >= 65 && ((contadores.taller || 0) >= 3 || (s.totalColabs || 0) >= 6) && s.stats.popularity < 55) {
+      return this._final("productor", "propio", "🎚️", "TRAS BAMBALINAS",
+        "Tu nombre no encabeza el cartel, pero está en los créditos de media escena.\n\nTe fuiste del escenario al estudio: armaste el sonido de los que sí llegaron, les escribiendo los temas, les puliendo las maquetas. La fama es de otros; la canción, esa es tuya. Un día alguien descubre que tu huella está en todo lo que sonó.",
+        nivel);
     }
 
     /* Carreras con una forma propia: las define algo concreto */
@@ -239,10 +312,24 @@ Under.RETIRO = {
     state.retirado = true;
     state.añoRetiro = state.año;
     state.resultadoFinal = Under.RETIRO.calcularFinal(state, { retiro: true });
+    Under.RETIRO._registrar(state);
     state.terminada = true;
     state.fase = "final";
     state.historial.push({ año: state.año, texto: "Anunció su retiro de la música." });
-    Under.SAVE.registrarFinal(state.resultadoFinal.tipo);
     Under.SYSTEMS.chequearLogros(state);
+  },
+
+  /* Registra el final alcanzado y el desbloqueo de su arco, marcando
+     si el desbloqueo es nuevo para esa partida. */
+  _registrar: function (state) {
+    var rf = state.resultadoFinal;
+    if (!rf) return;
+    var arco = rf.arco;
+    rf.desbloqueoNuevo = false;
+    if (rf.desbloqueo && arco && Under.SAVE.desbloqueoNuevo(arco)) {
+      rf.desbloqueoNuevo = true;
+      Under.SAVE.registrarDesbloqueo(arco);
+    }
+    Under.SAVE.registrarFinal(rf.tipo);
   }
 };

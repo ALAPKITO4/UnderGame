@@ -150,6 +150,34 @@ Under.DATA = {
       emoji: "🛠️",
       desc: "Hacés todo a tu manera, sin ataduras.",
       stats: { talent: 2, money: 50 }
+    },
+    /* Personalidades desbloqueables (PRIORIDAD 11): cada arco de
+       final alcanzado habilita una personalidad nueva para la
+       próxima partida. La pantalla de creación las muestra
+       bloqueadas hasta llegar a ese final. */
+    alma: {
+      id: "alma",
+      nombre: "Alma del under",
+      emoji: "🎤",
+      desc: "La escena te cría; vos la devolvés en canciones.",
+      stats: { talent: 4, popularity: -2 },
+      unlock: "under"
+    },
+    showman: {
+      id: "showman",
+      nombre: "Showman",
+      emoji: "🔥",
+      desc: "Tu nombre está hecho para el escenario grande.",
+      stats: { popularity: 5, money: 100, talent: -2 },
+      unlock: "mainstream"
+    },
+    mente: {
+      id: "mente",
+      nombre: "Mente maestra",
+      emoji: "🧠",
+      desc: "Pensás la canción antes de tocarla.",
+      stats: { talent: 6, popularity: -4 },
+      unlock: "productor"
     }
   },
 
