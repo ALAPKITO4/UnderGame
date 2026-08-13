@@ -440,9 +440,9 @@ Under.UNDER = {
   /* ---------- Se filtra una maqueta ---------- */
   crearEventoFiltracion: function (state) {
     return Under.UNDER._crear("under_filtracion", "Una maqueta filtrada", [
-      "Se filtra una maqueta vieja tuya que nunca terminaste.",
-      "Alguien sube una demo de tus inicios a internet.",
-      "Una versión descartada de tu último tema aparece en un foro."
+      "Lucio filtró una maqueta vieja tuya que nunca terminaste.",
+      "Lucio sube a internet una demo de tus inicios sin avisarte.",
+      "Lucio filtra una versión descartada de tu último tema en un foro."
     ], [
       {
         texto: "Reclamarla como tuya",

@@ -2118,7 +2118,7 @@ Under.DATA = {
     {
       id: "tpl_fan",
       titulo: "Un fan se hizo viral con tu música",
-      texto: "Un fan filmó un video reaccionando a una de tus canciones y se está compartiendo de a poco.\n\nEl tipo te adora y no pide nada a cambio.",
+      texto: "benve, un fan, filmó un video reaccionando a una de tus canciones y se está compartiendo de a poco.\n\nTe adora y no pide nada a cambio.",
       opciones: [
         {
           texto: "Recompensarlo públicamente",
