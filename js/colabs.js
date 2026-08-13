@@ -37,7 +37,8 @@ Under.COLABS = {
     else if (nivel >= 3) tipo = "igual";
     else tipo = "emergente";
     var def2 = Under.DATA.PARTNERS[tipo];
-    var nombre = def2.nombres[Under.STATE.randInt(0, def2.nombres.length - 1)];
+    var escena = Under.DATA.ARTISTAS_ESCENA;
+    var nombre = escena[Under.STATE.randInt(0, escena.length - 1)];
     return {
       tipo: tipo,
       nombre: nombre,

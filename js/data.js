@@ -190,7 +190,7 @@ Under.DATA = {
     { nombre: "Fabrizio",       rol: "admin",              grupo: "undercba" },
     { nombre: "Benja Fuego",    rol: "admin",              grupo: "undercba" },
     { nombre: "Lucio Fuego",    rol: "admin",              grupo: "undercba" },
-    { nombre: "Kiwa El Distinto", rol: "admin",            grupo: "undercba" },
+    { nombre: "KIWA",            rol: "admin",            grupo: "undercba" },
     { nombre: "Drokerr",        rol: "artista",            grupo: "family racks" },
     { nombre: "EssKiff",        rol: "artista",            grupo: "family racks" },
     { nombre: "gk",             rol: "artista",            grupo: "family racks" },
@@ -350,7 +350,7 @@ Under.DATA = {
      referentes y caras nuevas de tu generación. Los eventos los
      usan para que la escena se sienta de verdad. */
   ARTISTAS_ESCENA: [
-    "Marti", "Fabrizio", "Benja Fuego", "Lucio Fuego", "Kiwa El Distinto",
+    "Marti", "Fabrizio", "Benja Fuego", "Lucio Fuego", "KIWA",
     "Drokerr", "EssKiff", "gk", "Ghosfe", "Vlempiree",
     "Caupiii", "Emile", "Pascu", "Pulmon1312", "Tuconeone",
     "Ivinn", "Burger", "Genaa", "Agus", "Agusfornite"
@@ -509,9 +509,9 @@ Under.DATA = {
     grave: {
       id: "grave", nombre: "Controversia seria", gravedad: "grave", nivelMin: 3, peso: 2, popularidad: -8, fans: -9000,
       textos: [
-        "Kiwa arma una controversia seria: habla mal de vos en un documental y los titulares te apuntan.",
-        "Kiwa arma la polémica y te cancelan la participación en una fecha del under.",
-        "Kiwa te acusa de plagio y la industria debate el tema durante semanas."
+        "KIWA arma una controversia seria: habla mal de vos en un documental y los titulares te apuntan.",
+        "KIWA arma la polémica y te cancelan la participación en una fecha del under.",
+        "KIWA te acusa de plagio y la industria debate el tema durante semanas."
       ]
     },
     crisis: {
@@ -903,7 +903,7 @@ Under.DATA = {
       generar: function (s) { return Under.UNDER.crearEventoFruity(s); }
     },
     /* La escena real que trae la amiga (PRIORIDAD 10): Family Racks,
-       Kiwa El Distinto, Marti, los lugares de verdad y Los Amigos. */
+       KIWA, Marti, los lugares de verdad y Los Amigos. */
     {
       id: "under_family_cypher", peso: 2,
       disponible: function (s) {

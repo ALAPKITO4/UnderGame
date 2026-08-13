@@ -1998,13 +1998,13 @@ Under.UNDER = {
     ]);
   },
 
-  /* ---------- Kiwa y una fecha de undercba ---------- */
+  /* ---------- KIWA y una fecha de undercba ---------- */
   crearEventoKiwa: function (state) {
     var tema = (state.ultimoLanzamiento && state.ultimoLanzamiento.nombre) || "tu último tema";
-    return Under.UNDER._crear("under_kiwa", "Kiwa te quiere en el cartel", [
-      "Kiwa, admin de undercba, escuchó «" + tema + "» y te quiere en la fecha grande de undercba. Un lugar con nombre y la escena entera mirando.",
-      "undercba arma una fecha fuerte y Kiwa te reserva un lugar. Dice que tu sonido es distinto y que eso se nota.",
-      "Kiwa te escribe: te sumás al cartel de undercba. Es una fecha que la escena no se pierde."
+    return Under.UNDER._crear("under_kiwa", "KIWA te quiere en el cartel", [
+      "KIWA, admin de undercba, escuchó «" + tema + "» y te quiere en la fecha grande de undercba. Un lugar con nombre y la escena entera mirando.",
+      "undercba arma una fecha fuerte y KIWA te reserva un lugar. Dice que tu sonido es distinto y que eso se nota.",
+      "KIWA te escribe: te sumás al cartel de undercba. Es una fecha que la escena no se pierde."
     ], [
       {
         texto: "Aceptar la fecha",
@@ -2014,8 +2014,8 @@ Under.UNDER = {
           Under.MISIONES.sumar(s, "toques", 1);
           return { talent: 1, fans: Under.SYSTEMS.fansEscala(s, 1000), popularity: 3, _energia: -12 };
         },
-        resultado: "Tocás en la fecha de undercba y Kiwa te presenta en persona. La escena te anota: no sos uno más.",
-        log: "Tocó en una fecha de undercba invitado por Kiwa."
+        resultado: "Tocás en la fecha de undercba y KIWA te presenta en persona. La escena te anota: no sos uno más.",
+        log: "Tocó en una fecha de undercba invitado por KIWA."
       },
       {
         texto: "Pedir el lugar central",
@@ -2025,13 +2025,13 @@ Under.UNDER = {
           Under.UNDER._limpiar("under_kiwa");
           return { fans: Under.SYSTEMS.fansEscala(s, 700), popularity: 2, _energia: -12 };
         },
-        resultado: "Kiwa te da un mejor horario. La fecha sale y tu nombre queda arriba en el flyer.",
+        resultado: "KIWA te da un mejor horario. La fecha sale y tu nombre queda arriba en el flyer.",
         log: "Consiguió un horario central en la fecha de undercba.",
         riesgoEfectos: function (s) {
           Under.UNDER._limpiar("under_kiwa");
           return { popularity: -2 };
         },
-        riesgoResultado: "Kiwa lo toma a mal y te deja fuera del cartel. La fecha de undercba sale sin vos.",
+        riesgoResultado: "KIWA lo toma a mal y te deja fuera del cartel. La fecha de undercba sale sin vos.",
         riesgoLog: "Perdió su lugar en la fecha de undercba por exigir."
       },
       {
@@ -2041,7 +2041,7 @@ Under.UNDER = {
           Under.UNDER._limpiar("under_kiwa");
           return {};
         },
-        resultado: "Le decís que no. Kiwa busca a otro y la fecha de undercba sale igual.",
+        resultado: "Le decís que no. KIWA busca a otro y la fecha de undercba sale igual.",
         log: "Dejó pasar la fecha de undercba."
       }
     ]);

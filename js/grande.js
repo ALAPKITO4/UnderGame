@@ -118,10 +118,10 @@ Under.GRANDE = {
 
   /* ---------- Colabo con una leyenda ---------- */
   crearEventoLeyenda: function (state) {
-    var p = Under.DATA.escena({ rol: "artista" });
+    var p = { nombre: "Tukone" };
     return Under.GRANDE._crear("grande_leyenda", "Una leyenda te busca", [
       p.nombre + ", una leyenda de la escena, quiere grabarte un verso para tu próximo tema.",
-      "Una leyenda de otra generación te invita a compartir escenario en su despedida.",
+      "Tukone, una leyenda de otra generación, te invita a compartir escenario en su despedida.",
       p.nombre + " te ofrece una sesión en su estudio para un tema conjunto: un productor que hizo historia."
     ], [
       {

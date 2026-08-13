@@ -215,42 +215,42 @@ Under.EXTRA = {
     ]);
   },
 
-  /* ---------- Un videojuego quiere tu música ---------- */
+  /* ---------- goujys quiere tu música ---------- */
   crearEventoVideojuego: function (state) {
-    return Under.EXTRA._crear("extra_videojuego", "Pq la sprite se llama lean?", [
-      "goujys te hizo la oferta: quiere tu tema para la banda sonora de su videojuego.",
-      "goujys, que está armando un juego con culto de fans, te ofrece incluir tu canción en su menú principal.",
-      "goujys te escribió por el desarrollo de su videojuego y quiere tu música de fondo para un nivel completo."
+    return Under.EXTRA._crear("extra_videojuego", "goujys quiere tu música", [
+      "goujys te escribió para pedirte tu música: la escuchó en una joda y no la puede sacar de la cabeza.",
+      "goujys te busca hace tiempo: quiere tu música para escucharla en su casa, sin vueltas.",
+      "goujys te pidió tus temas por mensaje. Dice que tu sonido lo atrapó y quiere tenerlo."
     ], [
       {
-        texto: "Cederlo al juego",
-        desc: "El público gamer descubre tu nombre.",
+        texto: "Cederle tu música",
+        desc: "Tu sonido encuentra oídos nuevos.",
         efectos: function (s) {
           Under.EXTRA._limpiar("extra_videojuego");
           return { fans: Under.SYSTEMS.fansEscala(s, 700), popularity: 2, _relaciones: 3 };
         },
-        resultado: "Tu tema se vuelve parte del juego. Los gamers te agradecen en cada video de su comunidad.",
-        log: "Cedió su música para un videojuego."
+        resultado: "Le pasás tus temas. goujys no deja de escucharlos y se los muestra a todo el que conoce.",
+        log: "Cedió su música a goujys."
       },
       {
-        texto: "Cobrar por él",
+        texto: "Cobrar por ella",
         desc: "La plata también es parte de la carrera.",
         efectos: function (s) {
           Under.EXTRA._limpiar("extra_videojuego");
           return { money: Under.SYSTEMS.efectivoEscala(s, 300), fans: Under.SYSTEMS.fansEscala(s, 200) };
         },
-        resultado: "Cobrás una cifra honesta y el tema entra igual. Justo y sano.",
-        log: "Cobró por su música para un videojuego."
+        resultado: "Cobrás una cifra honesta y el tema queda en sus manos. Justo y sano.",
+        log: "Cobró por ceder su música a goujys."
       },
       {
         texto: "No",
-        desc: "Tu música no es un power-up.",
+        desc: "Tu música es tuya.",
         efectos: function (s) {
           Under.EXTRA._limpiar("extra_videojuego");
           return {};
         },
-        resultado: "No cedés. El estudio usa otra cosa y la comunidad nunca te conoce.",
-        log: "No cedió música para un videojuego."
+        resultado: "No cedés. goujys te escucha igual, pero la puerta se cierra un poco.",
+        log: "No cedió su música a goujys."
       }
     ]);
   },
