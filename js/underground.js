@@ -2758,5 +2758,266 @@ Under.UNDER = {
         log: "Declinó ser jurado de Songwarts."
       }
     ]);
+  },
+
+  /* ---------- Marti y Agus invitan un martes a La Sobre ---------- */
+  crearEventoAmigasSobre: function (state) {
+    return Under.UNDER._crear("under_amigas_sobre", "Un martes en La Sobre", [
+      "Marti y Agus te invitan un martes a la noche a La Sobre. Mañana te despertás temprano, pero la anécdota va a ser muy buena.",
+      "Marti y Agus arman plan para el martes a la noche en La Sobre y te suman. Mañana te despertás temprano, aunque la anécdota lo vale."
+    ], [
+      {
+        texto: "Ir",
+        desc: "La anécdota va a ser muy buena.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_amigas_sobre");
+          return { popularity: 1, fans: Under.SYSTEMS.fansEscala(s, 150), _relaciones: 4, _energia: -6 };
+        },
+        resultado: "Vas a La Sobre con Marti y Agus. La anécdota es tan buena como prometían: te despertás temprano igual, con la noche entera en la cabeza.",
+        log: "Fue un martes a La Sobre con Marti y Agus."
+      },
+      {
+        texto: "Quedarte escribiendo",
+        desc: "La escena espera; el tema no.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_amigas_sobre");
+          return { talent: 1, _energia: 2 };
+        },
+        resultado: "Te quedás escribiendo. Marti y Agus te cuentan la anécdota al día siguiente y no parece inventada.",
+        log: "Se quedó escribiendo un martes a la noche."
+      },
+      {
+        texto: "Pasar a saludar y volver",
+        desc: "Quedás, pero sin quemar la noche.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_amigas_sobre");
+          return { _relaciones: 2, _energia: -2 };
+        },
+        resultado: "Pasás por La Sobre, saludás a todo el mundo y te vas temprano. La anécdota te llega entera igual.",
+        log: "Pasó a saludar por La Sobre un martes."
+      }
+    ]);
+  },
+
+  /* ---------- Lucio consigue la fecha en Club Paraguay (40k+ fans) ---------- */
+  crearEventoLucioParaguay: function (state) {
+    return Under.UNDER._crear("under_lucio_paraguay", "Club Paraguay, la noche que viene", [
+      "Lucio Fuego mueve sus contactos y te consigue una fecha en Club Paraguay. Más de mil personas cantando tus temas y los pogos no paran. Hay un antes y un después de esa noche.",
+      "Lucio te abre la puerta de Club Paraguay. Mil personas coreando y pogo en serio: esa noche marca un antes y un después en la escena."
+    ], [
+      {
+        texto: "Tocar",
+        desc: "La fecha grande del under.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_lucio_paraguay");
+          Under.MISIONES.sumar(s, "toques", 1);
+          return { money: Under.SYSTEMS.efectivoEscala(s, 1200), fans: Under.SYSTEMS.fansEscala(s, 4000), popularity: 5, _energia: -15 };
+        },
+        resultado: "Tocás en Club Paraguay con más de mil personas cantando de memoria. Los pogos sacuden el lugar entero. Esa noche queda en la historia de la escena.",
+        log: "Tocó en Club Paraguay con fecha de Lucio Fuego."
+      },
+      {
+        texto: "Tocar y grabar todo",
+        desc: "La noche queda grabada para siempre.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_lucio_paraguay");
+          Under.MISIONES.sumar(s, "toques", 1);
+          return { money: Under.SYSTEMS.efectivoEscala(s, 1000), fans: Under.SYSTEMS.fansEscala(s, 5000), popularity: 6, _energia: -18, _hype: 15 };
+        },
+        resultado: "Tocás con mil personas cantando y lo grabás todo. Los videos de los pogos vuelan por la escena: ese show se convierte en tu carta de presentación.",
+        log: "Tocó y grabó su noche en Club Paraguay."
+      },
+      {
+        texto: "Dejarla pasar",
+        desc: "La puerta queda abierta para otro momento.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_lucio_paraguay");
+          return {};
+        },
+        resultado: "Le agradecés a Lucio pero dejás la fecha. Club Paraguay va a volver a estar cuando sea el momento.",
+        log: "Dejó pasar la fecha que le consiguió Lucio en Club Paraguay."
+      }
+    ]);
+  },
+
+  /* ---------- Agusfornite propone una canción (30k+ fans) ---------- */
+  crearEventoAgusfornite: function (state) {
+    return Under.UNDER._crear("under_agusfornite", "Agusfornite te propone una canción", [
+      "Agusfornite te escribe: «hagamos una canción juntos, vos y yo». Su producción y tu voz pueden ser algo grande en la escena.",
+      "Agusfornite quiere armar un tema con vos: su beat, tu sonido. La propuesta queda sobre la mesa y la escena lo va a mirar."
+    ], [
+      {
+        texto: "Grabar con Agusfornite",
+        desc: "Su producción + tu voz.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_agusfornite");
+          var est = { calidad: 5, viral: 1, texto: "colab con Agusfornite" };
+          var L = Under.MUSIC._calcular(s, "La pista (feat. Agusfornite)", est);
+          Under.MUSIC._registrar(s, L, est, 0);
+          s.colaboraciones.push({ año: s.año, nombre: L.nombre, partner: "Agusfornite", tipo: "igual", tier: L.tier, repros: L.repros, fans: L.fans, dinero: L.dinero });
+          s.totalColabs += 1;
+          s.flags.colabEsteAnio = true;
+          if (Under.RELACIONES) Under.RELACIONES.agregar(s, "red_agusfornite", "Agusfornite", "colega", 30);
+          return { fans: L.fans, popularity: L.popularidad, talent: L.talento, money: L.dinero, _energia: -10, _lanzamiento: L };
+        },
+        resultado: function (s, efectos) {
+          var L = efectos._lanzamiento;
+          return "El tema con Agusfornite suena en los parlantes de la escena antes que en ningún lado.\n\n" + Under.MUSIC.TIER_FLAVOR[L.tier] +
+            "\n\n" + L.tierIcono + " " + L.tierNombre + " · " + Under.UI.fmtExacto(L.repros) + " reproducciones.";
+        },
+        log: "Colaboró con Agusfornite."
+      },
+      {
+        texto: "Pedirle beats para tus temas",
+        desc: "Su producción al servicio de tu sonido.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_agusfornite");
+          return { talent: 2, money: -Under.SYSTEMS.efectivoEscala(s, 100), _energia: -5 };
+        },
+        resultado: "Le comprás unos beats a Agusfornite para tus próximos temas. Buena madera para tu sonido.",
+        log: "Compró beats de Agusfornite."
+      },
+      {
+        texto: "Declinar",
+        desc: "No por ahora.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_agusfornite");
+          return {};
+        },
+        resultado: "Le decís que no por ahora. Agusfornite entiende: los tiempos en la escena se respetan.",
+        log: "Declinó la propuesta de Agusfornite."
+      }
+    ]);
+  },
+
+  /* ---------- Un cantante de 1.000 oyentes ofrece colaboración ---------- */
+  crearEventoCantante1k: function (state) {
+    return Under.UNDER._crear("under_cantante_1k", "Un cantante de mil oyentes", [
+      "En La Sobre se te acerca un cantante con mil oyentes mensuales. Le gusta tu música y te propone una colaboración: él pone su parte, vos la tuya.",
+      "Un pibe de mil oyentes mensuales te espera a la salida de La Sobre. Quiere grabar algo con vos y te deja la propuesta en la mano."
+    ], [
+      {
+        texto: "Aceptar la colaboración",
+        desc: "El que recién arranca puede sorprender.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_cantante_1k");
+          var est = { calidad: 3, viral: 0, texto: "colab con un cantante de mil oyentes" };
+          var L = Under.MUSIC._calcular(s, "Todavía (feat. el que recién arranca)", est);
+          Under.MUSIC._registrar(s, L, est, 0);
+          s.colaboraciones.push({ año: s.año, nombre: L.nombre, partner: "Un cantante de mil oyentes", tipo: "emergente", tier: L.tier, repros: L.repros, fans: L.fans, dinero: L.dinero });
+          s.totalColabs += 1;
+          s.flags.colabEsteAnio = true;
+          return { fans: L.fans, popularity: L.popularidad, talent: L.talento, money: L.dinero, _energia: -10, _lanzamiento: L };
+        },
+        resultado: function (s, efectos) {
+          var L = efectos._lanzamiento;
+          return "El tema con el cantante de mil oyentes sale mejor de lo que nadie esperaba.\n\n" + Under.MUSIC.TIER_FLAVOR[L.tier] +
+            "\n\n" + L.tierIcono + " " + L.tierNombre + " · " + Under.UI.fmtExacto(L.repros) + " reproducciones.";
+        },
+        log: "Colaboró con un cantante de mil oyentes."
+      },
+      {
+        texto: "Proponerle una fecha juntos",
+        desc: "Su gente + la tuya, en el mismo lugar.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_cantante_1k");
+          Under.MISIONES.sumar(s, "toques", 1);
+          return { money: Under.SYSTEMS.efectivoEscala(s, 300), fans: Under.SYSTEMS.fansEscala(s, 900), popularity: 3, _energia: -10 };
+        },
+        resultado: "Compartís fecha con el cantante de mil oyentes y su gente se queda. La Sobre junta dos públicos en una noche.",
+        log: "Compartió fecha con un cantante de mil oyentes."
+      },
+      {
+        texto: "Rechazar la propuesta",
+        desc: "Tu agenda no da para todo.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_cantante_1k");
+          return {};
+        },
+        resultado: "Le decís que no por ahora. Sigue siendo un cantante de mil oyentes, pero te vio a vos.",
+        log: "Rechazó la colaboración del cantante de mil oyentes."
+      }
+    ]);
+  },
+
+  /* ---------- La bebida dulce con sprite ---------- */
+  crearEventoSpriteDroga: function (state) {
+    return Under.UNDER._crear("under_sprite_droga", "La bebida de la joda", [
+      "Unos chicos de la escena te invitan una bebida con sprite, bien dulce. «Es la mejor del under», te dicen, y todos te miran esperando que la tomes.",
+      "En una joda te ofrecen una bebida con sprite que está raramente dulce. Te dicen que es lo mejor que vas a probar en tu vida."
+    ], [
+      {
+        texto: "La tomás",
+        desc: "Es dulce. Todos te miran.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_sprite_droga");
+          s.flags.proboLaMezcla = true;
+          return { _energia: -20, talent: -1, _relaciones: 1 };
+        },
+        resultado: "La tomás y en un rato el piso se mueve. Recién al día siguiente entendés bien qué era lo que tenías en la mano. Tu cuerpo lo sintió.",
+        log: "Tomó una bebida dulce de la que después se arrepintió."
+      },
+      {
+        texto: "La dejás",
+        desc: "No la tomás y punto.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_sprite_droga");
+          s.flags.aguantoLaPresion = true;
+          return { _energia: 2, talent: 1 };
+        },
+        resultado: "La dejás. Te insisten un rato pero no aflojás. A la mañana siguiente, los que la tomaron no pueden decir lo mismo.",
+        log: "No tomó la bebida dulce que le ofrecieron."
+      },
+      {
+        texto: "Preguntás qué es",
+        desc: "Querés saber antes de meterte.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_sprite_droga");
+          s.flags.laAmenazaron = true;
+          return { _energia: -10, _relaciones: -6 };
+        },
+        resultado: "Preguntás qué tiene adentro y el clima se congela. Te dicen que no es para vos y te amenazan con que no hables del tema. Salís de la joda con el estómago apretado.",
+        log: "Preguntó qué era la bebida y lo amenazaron."
+      }
+    ]);
+  },
+
+  /* ---------- Joda en Cayo: te reconocen ---------- */
+  crearEventoJodaCayo: function (state) {
+    return Under.UNDER._crear("under_joda_cayo", "Te reconocen en la joda", [
+      "En una joda en Cayo Makensi, unos pibes te reconocen y te piden una foto y una firma.",
+      "Unos pibes te cruzan en la joda de Cayo Makensi. Se dan cuenta de quién sos y se te acercan a pedirte una foto y una firma."
+    ], [
+      {
+        texto: "Aceptás",
+        desc: "Fotos y firma, un ratito.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_joda_cayo");
+          return { fans: Under.SYSTEMS.fansEscala(s, 500), popularity: 3, _relaciones: 2, _energia: -5 };
+        },
+        resultado: "Firmás y te sacás las fotos. Los pibes se van contentos y tu nombre sigue dando vueltas por Cayo Makensi.",
+        log: "Se sacó fotos y firmó autógrafos en una joda de Cayo."
+      },
+      {
+        texto: "Rechazás",
+        desc: "Preferís pasar desapercibido.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_joda_cayo");
+          return { _relaciones: -3, _energia: 2 };
+        },
+        resultado: "Preferís no llamar la atención esta noche. Los pibes se van un poco decepcionados, pero vos guardás la noche.",
+        log: "Rechazó pedirles fotos en una joda de Cayo."
+      },
+      {
+        texto: "Pasás toda la noche con ellos",
+        desc: "La joda se va a contar.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_joda_cayo");
+          return { fans: Under.SYSTEMS.fansEscala(s, 1500), popularity: 5, _relaciones: 5, _energia: -18 };
+        },
+        resultado: "Te quedás hasta que cierra. Se arma una joda que se cuenta en la escena, y los pibes se van diciendo que sos de verdad.",
+        log: "Pasó toda la noche con pibes que lo reconocieron en Cayo."
+      }
+    ]);
   }
 };

@@ -265,13 +265,15 @@ Under.STATE = {
     return eras[eras.length - 1];
   },
 
-  /* Tope de fama (PRIORIDAD 10): los primeros años son del under.
-     Año 1 ≈ 6k fans · año 2 ≈ 14k · año 3 ≈ 22k · año 4 ≈ 30k.
-     Recién desde el año 5 la carrera puede explotar. */
+  /* Tope de fama (PRIORIDAD 10): el under crece lento y se queda
+     abajo mucho tiempo. Los fans se frenan en el techo del año:
+     2k · 4k · 7k · 11k · 16k · 24k · 34k · 46k. Salir de la escena
+     es cosa de años (en promedio 6 a 8); recién desde el año 9
+     la carrera puede explotar. */
   topeFama: function (state) {
     var año = state.año || 1;
-    if (año < 1 || año >= 5) return null;
-    return [0, 6000, 14000, 22000, 30000][año];
+    if (año < 1 || año >= 9) return null;
+    return [0, 2000, 4000, 7000, 11000, 16000, 24000, 34000, 46000][año];
   },
 
   /* Etapa de la carrera según la madurez artística (PRIORIDAD 1) */

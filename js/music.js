@@ -70,6 +70,20 @@ Under.MUSIC = {
     else if (base >= 40) tier = "normal";
     else tier = "fracaso";
 
+    /* Under (PRIORIDAD 10): mientras tu nivel es de underground,
+       un alcance global es casi imposible. Quedarte en el under no
+       te deja sin carrera, pero sí sin replicar lo de afuera: la
+       excepción existe (UNDER_GLOBAL_CHANCE, rarísima), el resto
+       se cae a viral y el alcance queda acotado al techo del under. */
+    var underGlobal = false;
+    if (nivel <= 3 && tier === "global") {
+      if (Math.random() < (Under.DATA.CONFIG.UNDER_GLOBAL_CHANCE || 0.01)) {
+        underGlobal = true;
+      } else {
+        tier = "viral";
+      }
+    }
+
     /* Cult classic: la excepción artística. Poco masivo,
        pero enorme para el talento. */
     if (base >= 48 && t >= 70 && p < 60 && Math.random() < 0.35) tier = "cult";
@@ -95,6 +109,12 @@ Under.MUSIC = {
        con otra vara (más abajo). */
     var genComercial = Under.GENEROS ? Under.GENEROS.comercial(state) : 1;
     var repros = Math.round(data.repros * eraMult * multRepros * distMult * genComercial * (0.75 + Math.random() * 0.5));
+    /* Under: el alcance no pasa del techo de la escena (salvo la
+       excepción descomunal). Un tema bajo tierra puede sumar
+       decenas de millones SOLO en esa tirada rarísima. */
+    if (nivel <= 3 && !underGlobal) {
+      repros = Math.min(repros, Under.DATA.CONFIG.UNDER_REPROS_TECHO || 2000000);
+    }
     var multFans = 1 + nivel * 0.15;
     /* El público (PRIORIDAD 3): los haters encarecen cada oído
        nuevo. El odio no frena los streams del todo, pero sí

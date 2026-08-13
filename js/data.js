@@ -28,6 +28,16 @@ Under.DATA = {
        popularidad sube y se desinfla solo si no la alimentás. */
     EXPERIENCIA_POR_DECISION: 1.5,
     EXPERIENCIA_POR_ANIO: 5,
+    /* Mientras estás bajo tierra (PRIORIDAD 10), cada salto de
+       popularidad rinde menos: la fama de la escena se gana de a
+       poco, año a año. 1 = sin freno. */
+    UNDER_POP_FACTOR: 1,
+    /* Bajo tierra, la música no cruza fronteras: un tema del under
+       rara vez supera este techo de reproducciones, y el tier
+       global es una excepción casi imposible (1 en 100 por defecto).
+       Si te quedás en el under no te va a seguir yendo excelente. */
+    UNDER_REPROS_TECHO: 2000000,
+    UNDER_GLOBAL_CHANCE: 0.01,
     MOMENTUM_INICIAL: 5,
     MOMENTUM_DECAY: 6,     /* inercia que se pierde cada año */
     MOMENTUM_FRIO: 20,     /* por debajo: el nombre se enfría */
@@ -156,13 +166,14 @@ Under.DATA = {
   /* ---------- Niveles de carrera (FASE 6) ----------
      Salir del underground es MUY difícil: los niveles 0 a 3
      son toda la escena bajo tierra (chicos y algunos medianos).
-     Cruzar al nivel 4 significa que ya sos un artista grande.
+     Cruzar al nivel 4 significa que ya sos un artista grande:
+     se cruza en promedio recién entre el año 6 y el 8 de escena.
      El nivel se calcula combinando popularidad + fans (state.js). */
   CAREER_LEVELS: [
     { nivel: 0, puntaje: 0,   nombre: "Desconocido",              desc: "Nadie conoce tu nombre todavía." },
     { nivel: 1, puntaje: 10,  nombre: "Promesa local",            desc: "En tu barrio ya hablan de vos." },
     { nivel: 2, puntaje: 26,  nombre: "Underground",              desc: "Estás adentro. La escena te conoce." },
-    { nivel: 3, puntaje: 44,  nombre: "Referente del underground", desc: "Los grandes del under te respetan. Todavía no saliste." },
+    { nivel: 3, puntaje: 48,  nombre: "Referente del underground", desc: "Los grandes del under te respetan. Todavía no saliste." },
     { nivel: 4, puntaje: 62,  nombre: "Artista grande",           desc: "Saliste del underground. La industria te mira." },
     { nivel: 5, puntaje: 74,  nombre: "Estrella nacional",        desc: "Tu país conoce tu nombre." },
     { nivel: 6, puntaje: 84,  nombre: "Estrella internacional",   desc: "Tu nombre cruza fronteras." },
@@ -371,7 +382,7 @@ Under.DATA = {
     "Marti", "Fabrizio", "Benja Fuego", "Lucio Fuego", "Kiwa El Distinto",
     "Drokerr", "EssKiff", "gk", "I Love Swag", "Vlempiree",
     "Caupiii", "Emile", "Pascu", "Pulmon1312", "Tuconeone",
-    "Ivinn", "Burger", "Genaa", "roro", "Agus"
+    "Ivinn", "Burger", "Genaa", "roro", "Agus", "Agusfornite"
   ],
 
   /* ---------- Lanzamientos (FASE 2) ----------
@@ -1006,6 +1017,52 @@ Under.DATA = {
       id: "under_songwarts_jurado", peso: 2,
       disponible: function (s) { return s.lanzamientos >= 1 && s.año >= 2; },
       generar: function (s) { return Under.UNDER.crearEventoSongwarts(s); }
+    },
+    {
+      id: "under_amigas_sobre", peso: 2,
+      disponible: function (s) {
+        var n = Under.STATE.nivelCarrera(s).nivel;
+        return s.año >= 1 && s.lanzamientos >= 1 && n <= 3;
+      },
+      generar: function (s) { return Under.UNDER.crearEventoAmigasSobre(s); }
+    },
+    {
+      id: "under_lucio_paraguay", peso: 2,
+      disponible: function (s) {
+        return s.lanzamientos >= 1 && s.stats.fans >= 40000;
+      },
+      generar: function (s) { return Under.UNDER.crearEventoLucioParaguay(s); }
+    },
+    {
+      id: "under_agusfornite", peso: 2,
+      disponible: function (s) {
+        return s.lanzamientos >= 1 && s.stats.fans >= 30000;
+      },
+      generar: function (s) { return Under.UNDER.crearEventoAgusfornite(s); }
+    },
+    {
+      id: "under_cantante_1k", peso: 2,
+      disponible: function (s) {
+        var n = Under.STATE.nivelCarrera(s).nivel;
+        return s.año >= 1 && s.lanzamientos >= 1 && n <= 3;
+      },
+      generar: function (s) { return Under.UNDER.crearEventoCantante1k(s); }
+    },
+    {
+      id: "under_sprite_droga", peso: 2,
+      disponible: function (s) {
+        var n = Under.STATE.nivelCarrera(s).nivel;
+        return s.año >= 2 && s.lanzamientos >= 1 && n <= 3;
+      },
+      generar: function (s) { return Under.UNDER.crearEventoSpriteDroga(s); }
+    },
+    {
+      id: "under_joda_cayo", peso: 2,
+      disponible: function (s) {
+        var n = Under.STATE.nivelCarrera(s).nivel;
+        return s.año >= 2 && s.lanzamientos >= 1 && n <= 3;
+      },
+      generar: function (s) { return Under.UNDER.crearEventoJodaCayo(s); }
     },
     /* Los nombres de la escena cuando ya saliste del underground:
        Ivinn, Pulmon1312 y Drokerr crecen con el mainstream. */

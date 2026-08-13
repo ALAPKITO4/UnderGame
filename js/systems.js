@@ -178,7 +178,11 @@ Under.SYSTEMS = {
   /* ---------- Resolución de efectos ---------- */
   resolverEfecto: function (state, efecto) {
     if (typeof efecto === "function") return efecto(state);
-    return efecto || {};
+    /* Copia (nunca la referencia): los efectos de las opciones se
+       suman y pueden mutarse al aplicarlos; si devolvemos el objeto
+       original, el mismo evento duplicaría efectos en la siguiente
+       partida (y a lo largo de una sesión del navegador). */
+    return Object.assign({}, efecto || {});
   },
 
   resolverEspecial: function (state, id) {
@@ -215,7 +219,15 @@ Under.SYSTEMS = {
         continue;
       }
       if (!(k in stats)) continue;
-      stats[k] += efectos[k];
+      var v = efectos[k];
+      /* Mientras estás bajo tierra (PRIORIDAD 10), tu nombre llega
+         a poca gente: los saltos de popularidad rinden menos hasta
+         que salís. Acá viven todas las vías (decisiones, misiones,
+         premios…), así el freno es parejo. */
+      if (k === "popularity" && v > 0 && !state.flags.salioDelUnderground) {
+        v = Math.max(1, Math.round(v * (Under.DATA.CONFIG.UNDER_POP_FACTOR || 1)));
+      }
+      stats[k] += v;
       if (k === "fans") {
         /* Tope de fama (PRIORIDAD 10): en los primeros años el
            under no crece de golpe: los fans se frenan en el techo
