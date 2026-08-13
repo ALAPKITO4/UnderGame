@@ -128,6 +128,11 @@ Under.STATE = {
       totalEscandalos: 0,
       retirado: false,
       añoRetiro: null,
+      /* Mini-juegos (PRIORIDAD 13): resultado y bonus del último
+         mini-juego creativo. Se aplica al próximo lanzamiento y
+         se limpia después. */
+      minijuegoResultado: null,
+      minijuegoBonus: null,
       /* Fase 5: plataformas, mercados, shows, legado y economía */
       plataforma: null,
       mercados: [],
@@ -217,6 +222,8 @@ Under.STATE = {
     if (s.totalEscandalos === undefined) s.totalEscandalos = 0;
     if (s.retirado === undefined) s.retirado = false;
     if (s.añoRetiro === undefined) s.añoRetiro = null;
+    if (s.minijuegoResultado === undefined) s.minijuegoResultado = null;
+    if (s.minijuegoBonus === undefined) s.minijuegoBonus = null;
     if (s.plataforma === undefined) s.plataforma = null;
     if (s.mercados === undefined) s.mercados = [];
     if (s.festivales === undefined) s.festivales = [];

@@ -148,6 +148,34 @@ Under.MUSIC = {
     };
   },
 
+  /* ---------- Mini-juegos (PRIORIDAD 13) ----------
+     Si el jugador viene de un mini-juego, se aplica el bonus
+     o penalty al resultado del lanzamiento. El bonus se limpia
+     después de usarse. */
+  _aplicarMinijuego: function (state, L) {
+    if (!state.minijuegoResultado) return L;
+    var bonus = state.minijuegoBonus || 1;
+    L.repros = Math.round(L.repros * bonus);
+    L.fans = Math.round(L.fans * bonus);
+    L.dinero = Math.round(L.dinero * bonus);
+    L.popularidad = Math.round(L.popularidad * bonus);
+    if (state.minijuegoResultado === "perdido") {
+      /* Si fallaste el mini-juego, el tema baja un tier si estaba
+         en exito o más, y la crítica se resiente. */
+      var tierOrder = ["fracaso", "normal", "exito", "hit", "viral", "global", "cult"];
+      var idx = tierOrder.indexOf(L.tier);
+      if (idx > 0) {
+        L.tier = tierOrder[idx - 1];
+        L.tierNombre = Under.DATA.TIERS[L.tier].nombre;
+        L.tierIcono = Under.DATA.TIERS[L.tier].icono;
+      }
+      L.critica = Math.max(1, L.critica - 1);
+    }
+    state.minijuegoResultado = null;
+    state.minijuegoBonus = null;
+    return L;
+  },
+
   /* ---------- Registra el lanzamiento en el estado ---------- */
   _registrar: function (state, L, est, costo) {
     state.lanzamientos += 1;
@@ -207,6 +235,7 @@ Under.MUSIC = {
     var costo = mejor ? mejor.costo : 0;
 
     var L = Under.MUSIC._calcular(state, nombre, est);
+    Under.MUSIC._aplicarMinijuego(state, L);
     Under.MUSIC._registrar(state, L, est, costo);
     state.stats.money = Math.max(0, state.stats.money + L.dinero - costo);
     state.energia = Under.STATE.clamp(state.energia - 6, 0, 100);
@@ -246,6 +275,7 @@ Under.MUSIC = {
         soloSi: function (s) { return s.stats.money >= costo; },
         efectos: function (s) {
           var L = Under.MUSIC._calcular(s, nombre, est);
+          Under.MUSIC._aplicarMinijuego(s, L);
           Under.MUSIC._registrar(s, L, est, costo);
           Under.MUSIC._pendiente = null;
           return {

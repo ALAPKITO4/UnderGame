@@ -1623,6 +1623,17 @@ Under.DATA = {
         return s.año >= 4 && Under.STATE.nivelCarrera(s).nivel >= 4 && !s.flags.msmEsteAnio;
       },
       generar: function (s) { return Under.MAINSTREAM.crear(s); }
+    },
+    /* PRIORIDAD 13: mini-juegos creativos. Antes de lanzar un tema,
+       el jugador enfrenta una decisión: letra, beat, video, portada
+       o estrategia. 3 opciones, 2 buenas y 1 mala. Si acierta, el
+       próximo tema rinde un 10% más. Si falla, el tema fracasa. */
+    {
+      id: "minijuego", peso: 1,
+      disponible: function (s) {
+        return !s.minijuegoResultado && s.lanzamientos >= 1;
+      },
+      generar: function (s) { return Under.MINIGAMES.crear(s); }
     }
   ],
 

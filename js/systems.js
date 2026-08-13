@@ -686,6 +686,14 @@ Under.SYSTEMS = {
   /* Los finales alternos (retiro, burnout, imperio, familia…) los
      decide Under.RETIRO según el perfil de la carrera. */
   finalizarCarrera: function (state) {
+    /* Si hay una gira activa sin resolver, se cierra con un resultado
+       neutro para que no quede inconsistencia en los contadores. */
+    if (state.giraActiva && Under.GIRAS && Under.GIRAS._resolverFecha) {
+      var ga = state.giraActiva;
+      Under.GIRAS._resolverFecha(state, ga, {
+        multMoney: 1, multFans: 1, extraPop: 0, energia: -10, extraLegado: 0
+      });
+    }
     state.resultadoFinal = Under.RETIRO.calcularFinal(state, { retiro: false });
     state.terminada = true;
     state.fase = "final";
