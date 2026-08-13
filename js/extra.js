@@ -300,9 +300,9 @@ Under.EXTRA = {
   /* ---------- Streamers te invitan a un Discord ---------- */
   crearEventoReality: function (state) {
     return Under.EXTRA._crear("extra_reality", "Un Discord con streamers", [
-      "Unos streamers que viste varias veces en La Sobre te invitan a una noche de Discord con ellos y su comunidad.",
-      "Los pibes que streamean, a los que cruzás seguido en La Sobre, te invitan a sumarte a un Discord en vivo y a charlar de música.",
-      "Un grupo de streamers de la escena (los viste rondando La Sobre) te invita a pasar una noche en su Discord, con tu música de fondo."
+      "Unos streamers que viste varias veces rondando por pqs te invitan a una noche de Discord con ellos y su comunidad.",
+      "Los pibes que streamean, a los que cruzás seguido por pqs, te invitan a sumarte a un Discord en vivo y a charlar de música.",
+      "Un grupo de streamers de la escena (los viste rondando por pqs) te invita a pasar una noche en su Discord, con tu música de fondo."
     ], [
       {
         texto: "Sumarte al Discord",
@@ -321,7 +321,7 @@ Under.EXTRA = {
           Under.EXTRA._limpiar("extra_reality");
           return { popularity: 2, fans: Under.SYSTEMS.fansEscala(s, 350), _relaciones: 1 };
         },
-        resultado: "Entrás al Discord, saludás, dejas caer una anécdota de La Sobre y te vas. Alcanza para que te tengan presente.",
+        resultado: "Entrás al Discord, saludás, dejas caer una anécdota de pqs y te vas. Alcanza para que te tengan presente.",
         log: "Se pasó un rato por un Discord de streamers."
       },
       {
