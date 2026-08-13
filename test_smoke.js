@@ -201,7 +201,7 @@ function jugar(gen, per) {
          "under_blake", "under_hongo_tv", "under_galperin", "under_fruity", "camino_carrera",
          "under_family_cypher", "under_kiwa", "under_marti", "under_club_paraguay", "under_990",
          "under_undersc", "under_la_sobre", "under_pascu", "main_ivinn", "main_pulmon", "main_drokerr",
-         "under_lil_naue", "under_cero", "under_zell", "under_oepta_gira",
+         "under_lil_naue", "under_cero", "under_zell", "under_skydenn_gira",
          "under_doblef_catalogo", "under_doblef_circulo", "under_songwarts_jurado",
          "under_amigas_sobre", "under_lucio_paraguay", "under_agusfornite",
          "under_cantante_1k", "under_sprite_droga", "under_joda_cayo", "under_casa_3flip",

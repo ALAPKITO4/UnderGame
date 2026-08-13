@@ -216,7 +216,7 @@ Under.DATA = {
     { nombre: "Genaa",          rol: "público activo",     grupo: null },
     { nombre: "roro",           rol: "público activo",     grupo: null },
     { nombre: "Agus",           rol: "público activo",     grupo: null },
-    { nombre: "Oedta",          rol: "artista",            grupo: null },
+    { nombre: "Skydenn",         rol: "artista",            grupo: null },
     { nombre: "Los de Doble F", rol: "colectivo",          grupo: "doble f" },
     /* Los grandes del under (PRIORIDAD 10): mientras más te va,
        más te cruzás con ellos. fansMin marca el piso para que
@@ -941,7 +941,8 @@ Under.DATA = {
     {
       id: "under_club_paraguay", peso: 2,
       disponible: function (s) {
-        return s.año >= 2 && s.lanzamientos >= 1 && Under.STATE.nivelCarrera(s).nivel <= 3;
+        return s.año >= 2 && s.lanzamientos >= 1 && Under.STATE.nivelCarrera(s).nivel <= 3
+          && s.stats.fans >= 30000;
       },
       generar: function (s) { return Under.UNDER.crearEventoClubParaguay(s); }
     },
@@ -998,12 +999,12 @@ Under.DATA = {
       },
       generar: function (s) { return Under.UNDER.crearEventoZell(s); }
     },
-    /* La gira del under con Oedta y la puerta de Doble F: nombres
+    /* La gira del under con Skydenn y la puerta de Doble F: nombres
        de la escena que empujan tu carrera sin salir de ella. */
     {
-      id: "under_oepta_gira", peso: 2,
+      id: "under_skydenn_gira", peso: 2,
       disponible: function (s) { return s.lanzamientos >= 1; },
-      generar: function (s) { return Under.UNDER.crearEventoOedtaGira(s); }
+      generar: function (s) { return Under.UNDER.crearEventoSkydennGira(s); }
     },
     {
       id: "under_doblef_catalogo", peso: 2,
@@ -1031,7 +1032,7 @@ Under.DATA = {
     {
       id: "under_lucio_paraguay", peso: 2,
       disponible: function (s) {
-        return s.lanzamientos >= 1 && s.stats.fans >= 40000;
+        return s.lanzamientos >= 1 && s.stats.fans >= 30000;
       },
       generar: function (s) { return Under.UNDER.crearEventoLucioParaguay(s); }
     },

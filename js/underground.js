@@ -84,10 +84,10 @@ Under.UNDER = {
     var esc2 = Under.UNDER._escenario();
     var esc3 = Under.UNDER._escenario();
     return Under.UNDER._crear("under_ciudad", "Un toque en la escena", [
-      "Un bar del bajo te ofrece un viernes en " + esc.nombre + ". Poca gente, cero escenario: un rincón con dos parlantes y una puerta que no cierra del todo.",
-      "Un ciclo de artistas nuevos arranca en " + esc2.nombre + ". Te ofrecen la primera fecha.",
-      "En " + esc3.nombre + " arman un toque entre amigos. Entrada a la gorra y mucho ruido.",
-      "Los amigos con la 3flip te ofrecen tu primera fecha."
+      "Lucio, el organizador, te llama: un bar del bajo te ofrece un viernes en " + esc.nombre + ". Poca gente, cero escenario: un rincón con dos parlantes y una puerta que no cierra del todo.",
+      "Lucio te consigue un hueco en el ciclo de artistas nuevos que arranca en " + esc2.nombre + ". Te ofrecen la primera fecha.",
+      "Lucio arma un toque en " + esc3.nombre + " y te llama. Entrada a la gorra y mucho ruido.",
+      "Lucio te pasa el dato: los amigos con la 3flip te ofrecen tu primera fecha."
     ], [
       {
         texto: "Aceptar el toque",
@@ -603,9 +603,9 @@ Under.UNDER = {
     var esc = Under.UNDER._escenario();
     var esc2 = Under.UNDER._escenario();
     return Under.UNDER._crear("under_sala", "Una sala te da una fecha", [
-      "En " + esc.nombre + " te ofrecen una fecha suelta. Poco caché, pero un lugar con nombre para que te conozcan.",
-      "Un ciclo de la escena arranca en " + esc2.nombre + " y te dan un hueco en la grilla para una noche.",
-      "El dueño de " + esc.nombre + " vio tu último toque y te invita a tocar una noche en su lugar."
+      "Lucio consigue que en " + esc.nombre + " te ofrezcan una fecha suelta. Poco caché, pero un lugar con nombre para que te conozcan.",
+      "Lucio te anota en el ciclo de la escena que arranca en " + esc2.nombre + " y te dan un hueco en la grilla para una noche.",
+      "Lucio te avisa: el dueño de " + esc.nombre + " vio tu último toque y te invita a tocar una noche en su lugar."
     ], [
       {
         texto: "Tomar la fecha",
@@ -798,9 +798,9 @@ Under.UNDER = {
   /* ---------- Telonero en Pétalos del Sol ---------- */
   crearEventoPetalos: function (state) {
     return Under.UNDER._crear("under_petalos", "Telonero en Pétalos del Sol", [
-      "En Pétalos del Sol, un lugar chico pero con nombre, te ofrecen tocar como telonero un viernes con La Family Racks de cabeza de fecha. Es tu primer escenario real frente a gente que no te conoce.",
-      "La Family Racks llena Pétalos del Sol los viernes y busca telonero. Lugar chico, gente que no te conoce: la primera prueba de verdad.",
-      "Pétalos del Sol te abre la puerta: tocás de telonero antes de La Family Racks. Lugar chico, pero es tu primer escenario real."
+      "Lucio te consigue el telonero de La Family Racks en Pétalos del Sol, un lugar chico pero con nombre. Es tu primer escenario real frente a gente que no te conoce.",
+      "La Family Racks llena Pétalos del Sol los viernes y Lucio te propone como telonero. Lugar chico, gente que no te conoce: la primera prueba de verdad.",
+      "Lucio te abre la puerta de Pétalos del Sol: tocás de telonero antes de La Family Racks. Lugar chico, pero es tu primer escenario real."
     ], [
       {
         texto: "Aceptar y tocar sin red",
@@ -890,9 +890,9 @@ Under.UNDER = {
   /* ---------- Una noche en Cayo Makensi ---------- */
   crearEventoMakensi: function (state) {
     return Under.UNDER._crear("under_makensi", "Una noche en Cayo Makensi", [
-      "En Larrañaga 67, Cayo Makensi: esta noche toca un artista muy conocido y alabado por todos. Hay tres teloneros, y Lucio y Benja trajeron un puñado de gente que no te conoce. A último momento te avisan que hay lugar en la fecha.",
-      "Te avisan a último momento: quedó lugar en la fecha de Cayo Makensi, Larrañaga 67. Un artista muy conocido toca esta noche, con tres teloneros; Lucio y Benja llevan un puñado de gente que no te conoce.",
-      "Cayo Makensi, Larrañaga 67: el show de esta noche es de un artista alabado por todos. Tres teloneros, un lugar libre a último momento, y Lucio y Benja con su gente, que no te conoce."
+      "Lucio te llama a último momento: quedó lugar en la fecha de Cayo Makensi, Larrañaga 67. Un artista muy conocido toca esta noche, con tres teloneros, y Lucio y Benja llevan un puñado de gente que no te conoce.",
+      "Te avisan a último momento, por el teléfono de Lucio: hay lugar en Cayo Makensi, Larrañaga 67. Un artista muy conocido toca esta noche, con tres teloneros, y Lucio y Benja llevan un puñado de gente que no te conoce.",
+      "Cayo Makensi, Larrañaga 67: el show de esta noche es de un artista alabado por todos. Tres teloneros, un lugar libre a último momento, y Lucio te llama para que entres, con Benja y su gente, que no te conoce."
     ], [
       {
         texto: "Aceptar y tocar esa misma noche",
@@ -2086,9 +2086,9 @@ Under.UNDER = {
   /* ---------- Club Paraguay: la cima del under ---------- */
   crearEventoClubParaguay: function (state) {
     return Under.UNDER._crear("under_club_paraguay", "Una fecha en Club Paraguay", [
-      "Club Paraguay, la cima del under, te ofrece una fecha. Ahí se juega de verdad: el lugar donde la escena se pone seria.",
-      "Los de Club Paraguay vieron tu último toque y te quieren en su cartel. Es el mejor lugar del under y lo sabés.",
-      "Una fecha en Club Paraguay: el lugar con más nombre de la escena. Te la ofrecen y no podés creerlo."
+      "Lucio te consigue una fecha en Club Paraguay, la cima del under. Ahí se juega de verdad: el lugar donde la escena se pone seria.",
+      "Lucio vio tu último toque y te consigue un lugar en el cartel de Club Paraguay. Es el mejor lugar del under y lo sabés.",
+      "Lucio te ofrece una fecha en Club Paraguay: el lugar con más nombre de la escena. Te la consigue y no podés creerlo."
     ], [
       {
         texto: "Tocar en Club Paraguay",
@@ -2128,9 +2128,9 @@ Under.UNDER = {
   /* ---------- 990 Club ---------- */
   crearEvento990: function (state) {
     return Under.UNDER._crear("under_990", "Una noche en el 990 Club", [
-      "El 990 Club arma una fecha de artistas nuevos y te quieren en el line-up.",
-      "990 Club te ofrece una noche para presentar tu material. Un lugar con buena gente y buen sonido.",
-      "Los del 990 Club te anotaron en su fecha de artistas nuevos. La escena de los nuevos pasa por ahí."
+      "Lucio arma una fecha de artistas nuevos en el 990 Club y te quiere en el line-up.",
+      "Lucio consigue que el 990 Club te ofrezca una noche para presentar tu material. Un lugar con buena gente y buen sonido.",
+      "Lucio te anotó en la fecha de artistas nuevos del 990 Club. La escena de los nuevos pasa por ahí."
     ], [
       {
         texto: "Tocar en el 990",
@@ -2213,9 +2213,9 @@ Under.UNDER = {
   /* ---------- La Sobre: el lugar más crudo ---------- */
   crearEventoLaSobre: function (state) {
     return Under.UNDER._crear("under_la_sobre", "La Sobre te abre el sótano", [
-      "La Sobre, el lugar más crudo del under, te abre una noche. Ahí no hay escenario ni red: es la prueba de los de verdad.",
-      "Te ofrecen una fecha en La Sobre: el antro donde el under se mide sin vueltas.",
-      "La Sobre te quiere en su cartel. El lugar más básico de la escena, y por eso el más respetado."
+      "Lucio te abre una noche en La Sobre, el lugar más crudo del under. Ahí no hay escenario ni red: es la prueba de los de verdad.",
+      "Lucio te ofrece una fecha en La Sobre: el antro donde el under se mide sin vueltas.",
+      "Lucio te quiere en el cartel de La Sobre. El lugar más básico de la escena, y por eso el más respetado."
     ], [
       {
         texto: "Tocar en La Sobre",
@@ -2601,49 +2601,49 @@ Under.UNDER = {
     ]);
   },
 
-  /* ---------- Oedta y la gira por el under ---------- */
-  crearEventoOedtaGira: function (state) {
-    return Under.UNDER._crear("under_oepta_gira", "La gira con Oedta", [
-      "Oedta, de la escena, arma una gira por los lugares del under y te quiere de la partida.",
-      "Oedta te propone salir de gira juntos: fechas chicas, público de verdad, el under de punta a punta.",
-      "Oedta dice que tu vivo engancha con el suyo. Te ofrece una gira por el under, sin vueltas."
+  /* ---------- Skydenn y la gira por el under ---------- */
+  crearEventoSkydennGira: function (state) {
+    return Under.UNDER._crear("under_skydenn_gira", "La gira con Skydenn", [
+      "Skydenn, de la escena, arma una gira por los lugares del under y te quiere de la partida.",
+      "Skydenn te propone salir de gira juntos: fechas chicas, público de verdad, el under de punta a punta.",
+      "Skydenn dice que tu vivo engancha con el suyo. Te ofrece una gira por el under, sin vueltas."
     ], [
       {
-        texto: "Salir de gira con Oedta",
+        texto: "Salir de gira con Skydenn",
         desc: "Fechas chicas por el under, de punta a punta.",
         efectos: function (s) {
-          Under.UNDER._limpiar("under_oepta_gira");
+          Under.UNDER._limpiar("under_skydenn_gira");
           var costo = Under.SYSTEMS.efectivoEscala(s, 300);
           var bruto = Math.round(2000 * Under.SYSTEMS.escala(s) * (0.85 + Math.random() * 0.3));
           var neto = Math.round(bruto - costo);
           var fans = Math.round(Under.SYSTEMS.fansEscala(s, 2000));
-          s.giras.push({ año: s.año, nombre: "Gira con Oedta", costo: costo, bruto: bruto, neto: neto, fans: fans });
+          s.giras.push({ año: s.año, nombre: "Gira con Skydenn", costo: costo, bruto: bruto, neto: neto, fans: fans });
           s.totalGiras += 1;
           return { money: neto, fans: fans, popularity: 3, _energia: -14 };
         },
-        resultado: "La gira con Oedta recorre el under de punta a punta. En cada fecha, " + Under.DATA.publico(2) + " repite: los shows se cuentan de boca en boca.",
-        log: "Hizo una gira del under con Oedta."
+        resultado: "La gira con Skydenn recorre el under de punta a punta. En cada fecha, " + Under.DATA.publico(2) + " repite: los shows se cuentan de boca en boca.",
+        log: "Hizo una gira del under con Skydenn."
       },
       {
         texto: "Solo una fecha juntos",
-        desc: "Menos compromiso: un bolo con Oedta.",
+        desc: "Menos compromiso: un bolo con Skydenn.",
         efectos: function (s) {
-          Under.UNDER._limpiar("under_oepta_gira");
+          Under.UNDER._limpiar("under_skydenn_gira");
           Under.MISIONES.sumar(s, "toques", 1);
           return { money: Under.SYSTEMS.efectivoEscala(s, 350), fans: Under.SYSTEMS.fansEscala(s, 800), popularity: 2, _energia: -8 };
         },
-        resultado: "Una noche con Oedta en el mismo cartel. Su público te escucha y el tuyo descubre algo nuevo.",
-        log: "Compartió una fecha con Oedta."
+        resultado: "Una noche con Skydenn en el mismo cartel. Su público te escucha y el tuyo descubre algo nuevo.",
+        log: "Compartió una fecha con Skydenn."
       },
       {
         texto: "Declinar",
         desc: "La gira queda para otra temporada.",
         efectos: function (s) {
-          Under.UNDER._limpiar("under_oepta_gira");
+          Under.UNDER._limpiar("under_skydenn_gira");
           return { _relaciones: 2 };
         },
-        resultado: "Le decís que este año no. Oedta asiente y te deja la puerta abierta: «cuando quieras, el under nos espera».",
-        log: "Declinó la gira con Oedta."
+        resultado: "Le decís que este año no. Skydenn asiente y te deja la puerta abierta: «cuando quieras, el under nos espera».",
+        log: "Declinó la gira con Skydenn."
       }
     ]);
   },

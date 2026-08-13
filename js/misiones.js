@@ -1008,9 +1008,9 @@ Under.MISIONES = (function () {
     "🎯 Misión completada: Veinticinco noches en vivo. El escenario es tu casa.");
 
   /* Red: la red del under */
-  m("m3_colega_4", "red", 1, 4, "🤝", "Cantar con los tuyos", "Grabá 4 temas con colegas de la escena", 4, "colega",
+  m("m3_colega_4", "red", 1, 4, "🤝", "Cantar con los tuyos", "Grabá 4 temas con Killpay, tu colega del under", 4, "colega",
     { talent: 3, popularity: 3, fans: 6000 },
-    "🎯 Misión completada: Cantar con los tuyos. Tu camada te cuenta como parte.");
+    "🎯 Misión completada: Cantar con los tuyos. Killpay y vos hacen sonar a la escena.");
   m("m3_referente_2", "red", 1, 4, "🧓", "Sabiduría de viejo", "Aprendé de 2 referentes de la escena", 2, "referente",
     { talent: 4, _relaciones: 5, popularity: 3 },
     "🎯 Misión completada: Sabiduría de viejo. Los veteranos te anotan en su radar.");

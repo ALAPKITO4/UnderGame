@@ -219,7 +219,7 @@ Under.EXTRA = {
     return Under.EXTRA._crear("extra_serie", "Tu tema entra en una serie", [
       p.nombre + ", de la escena, te consigue el oído de un productor de streaming: quiere usar tu tema en una escena clave de una serie.",
       "Una serie de tu país quiere tu canción para los créditos de su temporada, y " + p.nombre + " te pasó el dato.",
-      "Un director de cine te pide un tema para una escena de su película: " + p.nombre + " habló bien de vos."
+      "Un proyecto de la facu de cine te pide un tema para la escena central de su corto: " + p.nombre + " habló bien de vos."
     ], [
       {
         texto: "Ceder el tema",
@@ -550,9 +550,9 @@ Under.EXTRA = {
   /* ---------- Un toque en La Sobre ---------- */
   crearEventoPlaza: function (state) {
     return Under.EXTRA._crear("under_plaza", "Un toque en La Sobre", [
-      "Te ofrecen un escenario improvisado en La Sobre, el lugar más crudo de la escena, para un domingo.",
-      "La Sobre quiere música en vivo y piensan en vos: el lugar donde el under es under de verdad.",
-      "La Sobre arma un evento y te da el horario central. Ahí no hay escenario: hay hueco entre la gente."
+      "Lucio te ofrece un escenario improvisado en La Sobre, el lugar más crudo de la escena, para un domingo.",
+      "Lucio arma música en vivo en La Sobre y piensa en vos: el lugar donde el under es under de verdad.",
+      "Lucio arma un evento en La Sobre y te da el horario central. Ahí no hay escenario: hay hueco entre la gente."
     ], [
       {
         texto: "Tocar el domingo",
