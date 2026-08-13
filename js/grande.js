@@ -78,10 +78,10 @@ Under.GRANDE = {
 
   /* ---------- Una marca quiere tu rostro ---------- */
   crearEventoMarca: function (state) {
-    return Under.GRANDE._crear("grande_marca", "Una marca grande te quiere", [
-      "Una marca de ropa deportiva te ofrece ser la cara de su próxima campaña.",
-      "Una empresa de bebidas quiere tu imagen para el verano, con una cifra seria.",
-      "Una marca de tecnología te paga por una canción para su publicidad global."
+    return Under.GRANDE._crear("grande_marca", "Nike y Adidas te quieren", [
+      "Adidas te ofrece ser la cara de su próxima campaña deportiva.",
+      "Nike quiere tu imagen para el verano, con una cifra seria.",
+      "Adidas o Nike, una de las dos: te piden una canción para su publicidad global."
     ], [
       {
         texto: "Firmar la campaña",

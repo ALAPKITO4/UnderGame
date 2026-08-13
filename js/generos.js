@@ -196,7 +196,7 @@ Under.GENEROS = {
     return Under.GENEROS._crear("gen2_pop", "El mainstream te reclama", [
       "La radio grande de tu país quiere tu tema en rotación pesada toda la temporada.",
       "Una productora de un megashow te ofrece un puesto en su lineup principal.",
-      "Una marca global te ofrece ser la cara de su campaña del verano."
+      "Nike te ofrece ser la cara de su campaña del verano."
     ], [
       {
         texto: "Aceptar el trato grande",

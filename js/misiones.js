@@ -239,11 +239,15 @@ Under.MISIONES = (function () {
     function (s) { return (s.totalGiras || 0) + (s.totalFestivales || 0); },
     { fans: 15000, popularity: 4, money: 5000 },
     "🎯 Misión completada: Vivir el escenario. Cinco noches que valen oro.");
-  m("m_vivo_10", "escena", 4, 7, "🎤", "Nacido para el vivo", "Sumá 10 shows entre giras y fechas del under", 10,
+  m("m_vivo_10", "escena", 4, 7, "🎤", "Nacido para el vivo", function (s) {
+    return "Sumá 10 shows entre giras y fechas del under. " + Under.DATA.publico(2) + " ya saben tu setlist de memoria.";
+  }, 10,
     function (s) { return (s.totalGiras || 0) + (s.totalFestivales || 0); },
-    { fans: 40000, popularity: 5, money: 10000 },
-    "🎯 Misión completada: Nacido para el vivo. Diez shows y el público pide más.");
-  m("m_vivo_15", "escena", 5, 8, "🎤", "El show no para", "Sumá 15 shows entre giras y fechas del under", 15,
+    { money: 9000, popularity: 8, _relaciones: 5 },
+    "🎯 Misión completada: Nacido para el vivo. Diez shows y el escenario ya es tu casa."),
+  m("m_vivo_15", "escena", 5, 8, "🎤", "El show no para", function (s) {
+    return "Sumá 15 shows entre giras y fechas del under. " + Under.DATA.publico(2) + " te siguen de fecha en fecha.";
+  }, 15,
     function (s) { return (s.totalGiras || 0) + (s.totalFestivales || 0); },
     { fans: 70000, popularity: 6, money: 20000 },
     "🎯 Misión completada: El show no para. Quince shows y el escenario te necesita.");

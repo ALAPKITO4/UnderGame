@@ -205,10 +205,12 @@ Under.DATA = {
     { nombre: "Genaa",          rol: "público activo",     grupo: null },
     { nombre: "roro",           rol: "público activo",     grupo: null },
     { nombre: "Agus",           rol: "público activo",     grupo: null },
+    { nombre: "Oedta",          rol: "artista",            grupo: null },
+    { nombre: "Los de Doble F", rol: "colectivo",          grupo: "doble f" },
     /* Los grandes del under (PRIORIDAD 10): mientras más te va,
        más te cruzás con ellos. fansMin marca el piso para que
        aparezcan en la escena. */
-    { nombre: "lil naue",       rol: "artista",            grupo: null, fansMin: 20000 },
+    { nombre: "Lil Nahue",      rol: "artista",            grupo: null, fansMin: 20000 },
     { nombre: "cero",           rol: "artista",            grupo: null, fansMin: 50000 },
     { nombre: "zell",           rol: "artista",            grupo: null, fansMin: 200000 }
   ],
@@ -228,7 +230,7 @@ Under.DATA = {
 
   /* Elige una persona de la escena. Puede filtrarse por grupo o rol
      y alterna para no repetir el último nombre usado. Si pasás
-     state, los grandes del under (lil naue, cero, zell) solo
+     state, los grandes del under (Lil Nahue, cero, zell) solo
      aparecen cuando tu fama llegó a su piso. */
   escena: function (opts) {
     opts = opts || {};
@@ -254,6 +256,12 @@ Under.DATA = {
     var pool = Under.DATA.LUGARES.filter(function (l) { return l.nivel >= (minNivel || 0); });
     if (!pool.length) pool = Under.DATA.LUGARES;
     return pool[Math.floor(Math.random() * pool.length)];
+  },
+
+  /* Un estudio de grabación de la escena, al azar. */
+  estudio: function () {
+    var pool = Under.DATA.ESCENARIOS.filter(function (e) { return e.tipo === "estudio"; });
+    return pool[Math.floor(Math.random() * pool.length)].nombre;
   },
 
   /* Un par de nombres del público activo de la escena, para que los
@@ -348,6 +356,9 @@ Under.DATA = {
     { nombre: "Salón del Club Italiano", tipo: "salón", capacidad: 100 },
     { nombre: "Parada del Ómnibus 4", tipo: "espacio",  capacidad: 0 },
     { nombre: "Estudio Don Beats",    tipo: "estudio",  capacidad: 20 },
+    { nombre: "Sanmaja Studio",       tipo: "estudio",  capacidad: 40 },
+    { nombre: "Joma Studio",          tipo: "estudio",  capacidad: 30 },
+    { nombre: "Traslacortina Studio", tipo: "estudio",  capacidad: 60 },
     { nombre: "Techo del Edificio Comunal", tipo: "azotea", capacidad: 60 },
     { nombre: "Bar La Bicicleta",     tipo: "bar",      capacidad: 70 }
   ],
@@ -412,7 +423,7 @@ Under.DATA = {
   SELLOS: {
     pequeno: {
       retencion: 0.75, distribucion: 1.2, adelanto: 1000, duracion: 2,
-      nombres: ["Sello Nexo", "Fábrica de Sueños", "Ritmo Sur", "Casa Fuego"]
+      nombres: ["Sello Nexo", "Fábrica de Sueños", "La OBS de los Amigos", "Casa Fuego"]
     },
     medio: {
       retencion: 0.65, distribucion: 1.35, adelanto: 4000, duracion: 3,
@@ -465,7 +476,7 @@ Under.DATA = {
   PREMIOS: [
     { id: "nuevo",       nombre: "Mejor Artista Nuevo",        nivelMin: 1, añoMin: 2, premio: 1500,  popularidad: 4,  fans: 1500 },
     { id: "cancion",     nombre: "Canción del Año",            nivelMin: 3, añoMin: 2, premio: 3000,  popularidad: 5,  fans: 3000 },
-    { id: "nacional",    nombre: "Mejor Artista Nacional",     nivelMin: 4, añoMin: 3, premio: 4000,  popularidad: 5,  fans: 2500 },
+    { id: "nacional",    nombre: "Mejor Artista Underground", nivelMin: 4, añoMin: 3, premio: 4000,  popularidad: 5,  fans: 2500 },
     { id: "album",       nombre: "Álbum del Año",              nivelMin: 6, añoMin: 4, premio: 8000,  popularidad: 6,  fans: 5000 },
     { id: "latino",      nombre: "Mejor Artista Latino",       nivelMin: 6, añoMin: 5, premio: 10000, popularidad: 7,  fans: 4000 },
     { id: "trayectoria", nombre: "Premio a la Trayectoria",    nivelMin: 8, añoMin: 10, premio: 20000, popularidad: 6,  fans: 3000 },
@@ -949,7 +960,7 @@ Under.DATA = {
       },
       generar: function (s) { return Under.UNDER.crearEventoPascu(s); }
     },
-    /* Los grandes del under (PRIORIDAD 10): lil naue, cero y zell.
+    /* Los grandes del under (PRIORIDAD 10): Lil Nahue, cero y zell.
        Cuanto mejor te va (más fans), más se te abren. Están
        disponibles para el que se quedó en el under y para el
        que salió pero sigue manteniendo la escena cerca. */
@@ -973,6 +984,28 @@ Under.DATA = {
         return s.stats.fans >= 200000 && s.lanzamientos >= 1;
       },
       generar: function (s) { return Under.UNDER.crearEventoZell(s); }
+    },
+    /* La gira del under con Oedta y la puerta de Doble F: nombres
+       de la escena que empujan tu carrera sin salir de ella. */
+    {
+      id: "under_oepta_gira", peso: 2,
+      disponible: function (s) { return s.lanzamientos >= 1; },
+      generar: function (s) { return Under.UNDER.crearEventoOedtaGira(s); }
+    },
+    {
+      id: "under_doblef_catalogo", peso: 2,
+      disponible: function (s) { return s.lanzamientos >= 1 && s.año >= 2; },
+      generar: function (s) { return Under.UNDER.crearEventoDobleFCatalogo(s); }
+    },
+    {
+      id: "under_doblef_circulo", peso: 2,
+      disponible: function (s) { return s.lanzamientos >= 1 && s.año >= 3; },
+      generar: function (s) { return Under.UNDER.crearEventoDobleFCirculo(s); }
+    },
+    {
+      id: "under_songwarts_jurado", peso: 2,
+      disponible: function (s) { return s.lanzamientos >= 1 && s.año >= 2; },
+      generar: function (s) { return Under.UNDER.crearEventoSongwarts(s); }
     },
     /* Los nombres de la escena cuando ya saliste del underground:
        Ivinn, Pulmon1312 y Drokerr crecen con el mainstream. */
@@ -1818,8 +1851,8 @@ Under.DATA = {
       era: ["consolidacion", "cima", "legado"],
       añoMin: 7, añoMax: 22,
       importante: true,
-      titulo: "Una marca grande te llama",
-      texto: "Una marca importante te ofrece ser la cara de su campaña publicitaria. Paga MUY bien.\n\nPero sabés que tu público va a hablar de 'vendido'.",
+      titulo: "Nike y Adidas te quieren",
+      texto: "Nike y Adidas se pelean por tu cara: te ofrecen ser la imagen de la próxima campaña. Paga MUY bien.\n\nPero sabés que tu público va a hablar de 'vendido'.",
       opciones: [
         {
           texto: "Aceptar el contrato",

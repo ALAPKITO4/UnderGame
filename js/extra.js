@@ -419,12 +419,12 @@ Under.EXTRA = {
     ]);
   },
 
-  /* ---------- Un hater te persigue ---------- */
+  /* ---------- Ferrocbaa te persigue ---------- */
   crearEventoFanHater: function (state) {
-    return Under.EXTRA._crear("fan_hater", "Un hater te persigue", [
-      "Hay un tipo que se dedica a comentar mal cada cosa que publicás.",
-      "Un video tuyo se llena de comentarios negativos de la misma gente.",
-      "Un hater te hizo una cuenta parodia que acumula seguidores."
+    return Under.EXTRA._crear("fan_hater", "Ferrocbaa te persigue", [
+      "Ferrocbaa — ferro, para los suyos — se dedica a comentar mal cada cosa que publicás.",
+      "Un video tuyo se llena de comentarios negativos de Ferrocbaa y su gente.",
+      "Ferrocbaa te hizo una cuenta parodia que acumula seguidores. Te persigue desde que pisaste el under."
     ], [
       {
         texto: "Ignorarlo",
@@ -433,7 +433,7 @@ Under.EXTRA = {
           Under.EXTRA._limpiar("fan_hater");
           return { _relaciones: 2 };
         },
-        resultado: "No le das pelota. El hater se cansa y el fandom termina defendiéndote solo.",
+        resultado: "No le das pelota. Ferrocbaa se cansa y el fandom termina defendiéndote solo.",
         log: "Ignoró a un hater persistente."
       },
       {
@@ -443,7 +443,7 @@ Under.EXTRA = {
           Under.EXTRA._limpiar("fan_hater");
           return { popularity: 2, fans: Under.SYSTEMS.fansEscala(s, 300), _energia: -5 };
         },
-        resultado: "Le respondés con un chiste y hasta sus seguidores se ríen. El hater queda expuesto.",
+        resultado: "Le respondés con un chiste y hasta los seguidores de la parodia se ríen. Ferrocbaa queda expuesto.",
         log: "Respondió con gracia a un hater."
       },
       {
@@ -669,10 +669,11 @@ Under.EXTRA = {
 
   /* ---------- El estudio de la escena ---------- */
   crearEventoEstudio: function (state) {
+    var est = Under.DATA.estudio();
     return Under.EXTRA._crear("under_estudio", "El estudio de la escena", [
-      "En Undersc te ofrecen una sesión barata para probar sonido nuevo.",
-      "Un productor local te invita a una tarde de estudio en Undersc para experimentar.",
-      "Undersc, el espacio de la escena, tiene un hueco en la agenda y te lo ofrecen."
+      "En " + est + " te ofrecen una sesión barata para probar sonido nuevo.",
+      "Un productor local te invita a una tarde de estudio en " + est + " para experimentar.",
+      est + ", el estudio de la escena, tiene un hueco en la agenda y te lo ofrecen."
     ], [
       {
         texto: "Grabar un tema",
@@ -681,8 +682,8 @@ Under.EXTRA = {
           Under.EXTRA._limpiar("under_estudio");
           return { money: -Under.SYSTEMS.efectivoEscala(s, 80), talent: 1, fans: Under.SYSTEMS.fansEscala(s, 200) };
         },
-        resultado: "Grabás un tema nuevo en Undersc en una tarde. El resultado crudo, honesto y listo para el mundo.",
-        log: "Grabó un tema en Undersc."
+        resultado: "Grabás un tema nuevo en " + est + " en una tarde. El resultado crudo, honesto y listo para el mundo.",
+        log: "Grabó un tema en " + est + "."
       },
       {
         texto: "Probar sonido nuevo",
@@ -691,8 +692,8 @@ Under.EXTRA = {
           Under.EXTRA._limpiar("under_estudio");
           return { talent: 2, _energia: -5 };
         },
-        resultado: "Pasás la tarde en Undersc probando sonidos que no conocías. Tu música se ensancha un poco más.",
-        log: "Experimentó con sonido nuevo en Undersc."
+        resultado: "Pasás la tarde en " + est + " probando sonidos que no conocías. Tu música se ensancha un poco más.",
+        log: "Experimentó con sonido nuevo en " + est + "."
       },
       {
         texto: "No ir",
@@ -701,8 +702,8 @@ Under.EXTRA = {
           Under.EXTRA._limpiar("under_estudio");
           return {};
         },
-        resultado: "No vas. El hueco de Undersc se lo dan a otro y la tarde pasa sin tu sonido.",
-        log: "No fue al estudio de Undersc."
+        resultado: "No vas. El hueco en " + est + " se lo dan a otro y la tarde pasa sin tu sonido.",
+        log: "No fue al estudio " + est + "."
       }
     ]);
   }

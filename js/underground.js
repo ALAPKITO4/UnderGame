@@ -694,7 +694,7 @@ Under.UNDER = {
   /* ---------- Kilpatay y La OBS ---------- */
   crearEventoObs: function (state) {
     return Under.UNDER._crear("under_obs", "Kilpatay te abre La OBS", [
-      "Kilpatay escuchó tu tema y no se quedó callado: te ofrece grabar en La OBS, con un sonido profesional.",
+      "Kilpatay escuchó tu tema y no se quedó callado: te ofrece grabar en La OBS, el estudio de Los Amigos, con un sonido profesional.",
       "El estudio La OBS te abre sus puertas de noche. Kilpatay escuchó tu tema y quiere grabarte con un sonido profesional.",
       "Kilpatay te escribe: 'La OBS es tuya esta noche'. Estudio de verdad, con ingeniero de sonido y todo."
     ], [
@@ -976,12 +976,12 @@ Under.UNDER = {
     ]);
   },
 
-  /* ---------- Kilpatay y el estudio grande ---------- */
+  /* ---------- Kilpatay y Traslacortina ---------- */
   crearEventoEstudioGrande: function (state) {
-    return Under.UNDER._crear("under_estudio_grande", "Kilpatay te abre un estudio grande", [
-      "Kilpatay, el productor con el que laburaste años atrás, ahora trabaja en un estudio grande. Te recomienda grabar una sesión ahí.",
-      "El estudio grande donde labura Kilpatay tiene un hueco en la agenda, y él te propone para esa sesión. La recomendación pesa.",
-      "Kilpatay no se olvidó de vos: ahora está en un estudio grande y te empuja para que grabes una sesión de verdad."
+    return Under.UNDER._crear("under_estudio_grande", "Kilpatay te abre Traslacortina", [
+      "Kilpatay, el productor con el que laburaste años atrás, ahora trabaja en Traslacortina Studio — donde se grabó «Wanda Nara» de Duki y Neo. Te recomienda grabar una sesión ahí.",
+      "Traslacortina Studio, el estudio donde labura Kilpatay, tiene un hueco en la agenda, y él te propone para esa sesión. La recomendación pesa.",
+      "Kilpatay no se olvidó de vos: ahora está en Traslacortina y te empuja para que grabes una sesión de verdad."
     ], [
       {
         texto: "Agarrar la sesión",
@@ -991,8 +991,8 @@ Under.UNDER = {
           Under.MISIONES.sumar(s, "ensayo", 1);
           return { money: -Under.SYSTEMS.efectivoEscala(s, 80), talent: 2, fans: Under.SYSTEMS.fansEscala(s, 1200), popularity: 3, _energia: -10 };
         },
-        resultado: "Grabás una sesión en el estudio grande. El sonido te queda de otro planeta y los ingenieros se acuerdan de tu nombre.",
-        log: "Grabó una sesión en el estudio grande recomendado por Kilpatay."
+        resultado: "Grabás una sesión en Traslacortina. El sonido te queda de otro planeta y los ingenieros se acuerdan de tu nombre.",
+        log: "Grabó una sesión en Traslacortina recomendado por Kilpatay."
       },
       {
         texto: "Pedir una sesión con más horas",
@@ -1004,13 +1004,13 @@ Under.UNDER = {
           return { money: -Under.SYSTEMS.efectivoEscala(s, 180), talent: 3, fans: Under.SYSTEMS.fansEscala(s, 1500), popularity: 3, _energia: -12 };
         },
         resultado: "Conseguís más horas y la sesión sale redonda. Kilpatay te la anota como la que te puso en otro nivel.",
-        log: "Grabó una sesión extendida en el estudio grande.",
+        log: "Grabó una sesión extendida en Traslacortina.",
         riesgoEfectos: function (s) {
           Under.UNDER._limpiar("under_estudio_grande");
           return { popularity: -1, money: -Under.SYSTEMS.efectivoEscala(s, 120) };
         },
         riesgoResultado: "El pedido extra enfría la recomendación. La sesión se achica y Kilpatay queda medio en evidencia.",
-        riesgoLog: "Se pasó de exigencia y perdió la sesión en el estudio grande."
+        riesgoLog: "Se pasó de exigencia y perdió la sesión en Traslacortina."
       },
       {
         texto: "Agradecerle a Kilpatay y pasar",
@@ -1019,7 +1019,7 @@ Under.UNDER = {
           Under.UNDER._limpiar("under_estudio_grande");
           return { _relaciones: 2 };
         },
-        resultado: "Le agradecés a Kilpatay y dejás pasar la sesión. Él entiende: 'cuando estés listo, el estudio sigue acá'.",
+        resultado: "Le agradecés a Kilpatay y dejás pasar la sesión. Él entiende: 'cuando estés listo, Traslacortina sigue acá'.",
         log: "Agradeció la recomendación de Kilpatay y dejó pasar la sesión."
       }
     ]);
@@ -2437,25 +2437,25 @@ Under.UNDER = {
     ]);
   },
 
-  /* ---------- lil naue (20k+ fans): el puente del under ---------- */
+  /* ---------- Lil Nahue (20k+ fans): el puente del under ---------- */
   crearEventoLilNaue: function (state) {
-    return Under.UNDER._crear("under_lil_naue", "lil naue quiere tu oído", [
-      "lil naue, que ya es nombre en el under, te escribe: «Pasate por mi casa, tengo un beat que necesita tu voz».",
-      "lil naue armó una sesión en su estudio y te convida la mitad: quiere que su sonido y el tuyo se crucen.",
-      "El under habla de vos en los pasillos y lil naue quiere aprovechar el momento: un tema a medias, 50/50."
+    return Under.UNDER._crear("under_lil_naue", "Lil Nahue quiere tu oído", [
+      "Lil Nahue, que ya es nombre en el under, te escribe: «Pasate por mi casa, tengo un beat que necesita tu voz».",
+      "Lil Nahue armó una sesión en su estudio y te convida la mitad: quiere que su sonido y el tuyo se crucen.",
+      "El under habla de vos en los pasillos y Lil Nahue quiere aprovechar el momento: un tema a medias, 50/50."
     ], [
       {
-        texto: "Grabar el tema con lil naue",
+        texto: "Grabar el tema con Lil Nahue",
         desc: "Su flow callejero + tu sonido.",
         efectos: function (s) {
           Under.UNDER._limpiar("under_lil_naue");
-          var est = { calidad: 4, viral: 0, texto: "colab con lil naue" };
-          var L = Under.MUSIC._calcular(s, "Puente 20 (feat. lil naue)", est);
+          var est = { calidad: 4, viral: 0, texto: "colab con Lil Nahue" };
+          var L = Under.MUSIC._calcular(s, "Puente 20 (feat. Lil Nahue)", est);
           Under.MUSIC._registrar(s, L, est, 0);
-          s.colaboraciones.push({ año: s.año, nombre: L.nombre, partner: "lil naue", tipo: "igual", tier: L.tier, repros: L.repros, fans: L.fans, dinero: L.dinero });
+          s.colaboraciones.push({ año: s.año, nombre: L.nombre, partner: "Lil Nahue", tipo: "igual", tier: L.tier, repros: L.repros, fans: L.fans, dinero: L.dinero });
           s.totalColabs += 1;
           s.flags.colabEsteAnio = true;
-          if (Under.RELACIONES) Under.RELACIONES.agregar(s, "red_lil_naue", "lil naue", "colega", 30);
+          if (Under.RELACIONES) Under.RELACIONES.agregar(s, "red_lil_naue", "Lil Nahue", "colega", 30);
           return { fans: L.fans, popularity: L.popularidad, talent: L.talento, money: L.dinero, _energia: -10, _lanzamiento: L };
         },
         resultado: function (s, efectos) {
@@ -2463,7 +2463,7 @@ Under.UNDER = {
           return "El tema de los dos suena en los parlantes del under antes que en cualquier lado.\n\n" + Under.MUSIC.TIER_FLAVOR[L.tier] +
             "\n\n" + L.tierIcono + " " + L.tierNombre + " · " + Under.UI.fmtExacto(L.repros) + " reproducciones.";
         },
-        log: "Colaboró con lil naue."
+        log: "Colaboró con Lil Nahue."
       },
       {
         texto: "Aceptar una fecha en su circuito",
@@ -2473,8 +2473,8 @@ Under.UNDER = {
           Under.MISIONES.sumar(s, "toques", 1);
           return { money: Under.SYSTEMS.efectivoEscala(s, 400), fans: Under.SYSTEMS.fansEscala(s, 1800), popularity: 3, _energia: -12 };
         },
-        resultado: "Compartís fecha con lil naue y su gente queda con tu nombre en la boca. El under suma un cruce más.",
-        log: "Compartió fecha con lil naue."
+        resultado: "Compartís fecha con Lil Nahue y su gente queda con tu nombre en la boca. El under suma un cruce más.",
+        log: "Compartió fecha con Lil Nahue."
       },
       {
         texto: "Declinar",
@@ -2483,8 +2483,8 @@ Under.UNDER = {
           Under.UNDER._limpiar("under_lil_naue");
           return {};
         },
-        resultado: "Le decís que no por ahora. lil naue asiente: en el under los tiempos se respetan.",
-        log: "Declinó la propuesta de lil naue."
+        resultado: "Le decís que no por ahora. Lil Nahue asiente: en el under los tiempos se respetan.",
+        log: "Declinó la propuesta de Lil Nahue."
       }
     ]);
   },
@@ -2589,6 +2589,173 @@ Under.UNDER = {
         },
         resultado: "Le decís que no con respeto. zell asiente y la escena anota que tuviste coraje para decir que no.",
         log: "Declinó la propuesta de zell."
+      }
+    ]);
+  },
+
+  /* ---------- Oedta y la gira por el under ---------- */
+  crearEventoOedtaGira: function (state) {
+    return Under.UNDER._crear("under_oepta_gira", "La gira con Oedta", [
+      "Oedta, de la escena, arma una gira por los lugares del under y te quiere de la partida.",
+      "Oedta te propone salir de gira juntos: fechas chicas, público de verdad, el under de punta a punta.",
+      "Oedta dice que tu vivo engancha con el suyo. Te ofrece una gira por el under, sin vueltas."
+    ], [
+      {
+        texto: "Salir de gira con Oedta",
+        desc: "Fechas chicas por el under, de punta a punta.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_oepta_gira");
+          var costo = Under.SYSTEMS.efectivoEscala(s, 300);
+          var bruto = Math.round(2000 * Under.SYSTEMS.escala(s) * (0.85 + Math.random() * 0.3));
+          var neto = Math.round(bruto - costo);
+          var fans = Math.round(Under.SYSTEMS.fansEscala(s, 2000));
+          s.giras.push({ año: s.año, nombre: "Gira con Oedta", costo: costo, bruto: bruto, neto: neto, fans: fans });
+          s.totalGiras += 1;
+          return { money: neto, fans: fans, popularity: 3, _energia: -14 };
+        },
+        resultado: "La gira con Oedta recorre el under de punta a punta. En cada fecha, " + Under.DATA.publico(2) + " repite: los shows se cuentan de boca en boca.",
+        log: "Hizo una gira del under con Oedta."
+      },
+      {
+        texto: "Solo una fecha juntos",
+        desc: "Menos compromiso: un bolo con Oedta.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_oepta_gira");
+          Under.MISIONES.sumar(s, "toques", 1);
+          return { money: Under.SYSTEMS.efectivoEscala(s, 350), fans: Under.SYSTEMS.fansEscala(s, 800), popularity: 2, _energia: -8 };
+        },
+        resultado: "Una noche con Oedta en el mismo cartel. Su público te escucha y el tuyo descubre algo nuevo.",
+        log: "Compartió una fecha con Oedta."
+      },
+      {
+        texto: "Declinar",
+        desc: "La gira queda para otra temporada.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_oepta_gira");
+          return { _relaciones: 2 };
+        },
+        resultado: "Le decís que este año no. Oedta asiente y te deja la puerta abierta: «cuando quieras, el under nos espera».",
+        log: "Declinó la gira con Oedta."
+      }
+    ]);
+  },
+
+  /* ---------- Los de Doble F y tu catálogo ---------- */
+  crearEventoDobleFCatalogo: function (state) {
+    return Under.UNDER._crear("under_doblef_catalogo", "Los de Doble F y tu catálogo", [
+      "Los de Doble F te pasan un informe de tu catálogo: qué temas aguantan, cuáles mueren en las playlists y a qué hora te escucha tu gente.",
+      "Conocen tu catálogo como nadie. Te muestran cómo se comporta cada tema y qué está tirando tu carrera.",
+      "Los de Doble F hacen una lectura fina de tu música: dónde estás fuerte y dónde perdés gente."
+    ], [
+      {
+        texto: "Escuchar la lectura completa",
+        desc: "Saber cómo se comporta tu catálogo es plata y tiempo.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_doblef_catalogo");
+          return { talent: 2, popularity: 1, _energia: -5 };
+        },
+        resultado: "Escuchás la lectura completa. Ahora sabés qué temas bancar y cuáles dejar descansar. Doble F tiene razón en cada línea.",
+        log: "Escuchó el análisis de su catálogo hecho por Doble F."
+      },
+      {
+        texto: "Pedirles que laburen tu próximo lanzamiento",
+        desc: "Su ojo puesto en tu música.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_doblef_catalogo");
+          return { money: -Under.SYSTEMS.efectivoEscala(s, 120), talent: 1, fans: Under.SYSTEMS.fansEscala(s, 700), popularity: 2, _energia: -6 };
+        },
+        resultado: "Los de Doble F meten mano en tu próximo lanzamiento. El tema sale más afilado y la escena lo nota.",
+        log: "Laburó su próximo lanzamiento con Doble F."
+      },
+      {
+        texto: "Agradecer y seguir",
+        desc: "El informe queda en tu cabeza.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_doblef_catalogo");
+          return { talent: 1 };
+        },
+        resultado: "Agradecés el gesto. Algo de esa lectura se te queda para siempre.",
+        log: "Agradeció el análisis de Doble F."
+      }
+    ]);
+  },
+
+  /* ---------- La puerta de Doble F ---------- */
+  crearEventoDobleFCirculo: function (state) {
+    return Under.UNDER._crear("under_doblef_circulo", "La puerta de Doble F", [
+      "Los de Doble F te invitaron a su círculo. Está puerta vale más que cualquier promoción: adentro se hacen las cosas que después todo el under repite.",
+      "El círculo de Doble F no se abre para cualquiera. Te abren la puerta y te dicen: «entrá cuando quieras».",
+      "Los de Doble F te hicieron un lugar en su círculo. Dicen que esa puerta vale más que cualquier promoción."
+    ], [
+      {
+        texto: "Entrar al círculo",
+        desc: "Estar adentro es otra liga.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_doblef_circulo");
+          return { popularity: 3, fans: Under.SYSTEMS.fansEscala(s, 1500), _relaciones: 5 };
+        },
+        resultado: "Estás adentro. Las puertas que se te abren desde el círculo de Doble F no se compran con plata.",
+        log: "Entró al círculo de Doble F."
+      },
+      {
+        texto: "Pedir tiempo",
+        desc: "Querés pensarlo bien.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_doblef_circulo");
+          return { _relaciones: 2 };
+        },
+        resultado: "Pedís un tiempo. Doble F asiente: las puertas que se abren de verdad esperan.",
+        log: "Pidió tiempo antes de entrar al círculo de Doble F."
+      },
+      {
+        texto: "Quedarte afuera",
+        desc: "Tu camino no pasa por ahí.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_doblef_circulo");
+          return { talent: 1 };
+        },
+        resultado: "Agradecés el gesto y te quedás afuera. A veces la distancia también es una decisión.",
+        log: "Declinó entrar al círculo de Doble F."
+      }
+    ]);
+  },
+
+  /* ---------- Songwarts y el panel de jurados ---------- */
+  crearEventoSongwarts: function (state) {
+    return Under.UNDER._crear("under_songwarts_jurado", "Songwarts te convoca como jurado", [
+      "Songwarts, el canal que arma la competencia de canciones del under, te propone formar parte del panel de jurados.",
+      "Songwarts arma el certamen de la temporada y te quiere en el jurado: la escena va a escuchar tu palabra.",
+      "El panel de jurados de Songwarts tiene un lugar para vos. Tu voto pesa en el futuro de los que recién arrancan."
+    ], [
+      {
+        texto: "Aceptar ser jurado",
+        desc: "Tu voto define el certamen.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_songwarts_jurado");
+          return { popularity: 3, fans: Under.SYSTEMS.fansEscala(s, 1000), talent: 1, _energia: -8 };
+        },
+        resultado: "Te sentás en el panel de Songwarts. Tu voto define el certamen y la escena empieza a mirarte distinto.",
+        log: "Fue jurado de Songwarts."
+      },
+      {
+        texto: "Ser jurado sin dar notas altas",
+        desc: "La posta antes que los aplausos.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_songwarts_jurado");
+          return { popularity: 2, _energia: -6 };
+        },
+        resultado: "Vas de jurado y no regalás notas. Algunos te critican, pero la escena respeta que no te dejes comprar.",
+        log: "Fue jurado estricto de Songwarts."
+      },
+      {
+        texto: "Declinar el asiento",
+        desc: "Tu música primero.",
+        efectos: function (s) {
+          Under.UNDER._limpiar("under_songwarts_jurado");
+          return {};
+        },
+        resultado: "Dejás el asiento. Songwarts busca otro jurado y la competencia sigue sin tu voto.",
+        log: "Declinó ser jurado de Songwarts."
       }
     ]);
   }
