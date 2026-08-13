@@ -519,11 +519,10 @@ Under.UNDER = {
 
   /* ---------- Grabar tu primera maqueta ---------- */
   crearEventoMaqueta: function (state) {
-    var nombre = Under.UNDER._artista();
     return Under.UNDER._crear("under_maqueta", "Una maqueta en puerta", [
-      nombre + ", un productor de la escena, te propone grabar tu primera maqueta, con 5 temas.",
-      "Te invitan a una sesión colectiva para grabar un compilado de la escena.",
-      "Un estudio de barrio te ofrece un paquete barato para grabar tus temas."
+      "Barro studio te ofrece un paquete barato para grabar tus temas.",
+      "Barro studio arma un paquete barato para que grabes tus temas sin vueltas.",
+      "Barro studio te propone un paquete barato: horas de sala para grabar tus temas."
     ], [
       {
         texto: "Grabar la maqueta",

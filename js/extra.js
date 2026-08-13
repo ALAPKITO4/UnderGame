@@ -729,7 +729,7 @@ Under.EXTRA = {
   crearEventoDemoVieja: function (state) {
     return Under.EXTRA._crear("extra_demo", "Una demo que vuelve", [
       "Revolviendo la carpeta de demos encontrás una grabación de tus comienzos. Todavía tiene algo.",
-      "Un amigo te manda un audio viejo que grabaron juntos en el estudio de la escena.",
+      "tukone te manda un audio viejo que grabaron juntos en el estudio de la escena.",
       "La carpeta 'demos' tiene un tema que nunca terminaste. Hoy suena mejor de lo que recordabas."
     ], [
       {
