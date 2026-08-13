@@ -559,6 +559,7 @@ Under.EXTRA = {
         desc: "El barrio entero pasa por La Sobre.",
         efectos: function (s) {
           Under.EXTRA._limpiar("under_plaza");
+          Under.MISIONES.sumar(s, "sobre", 1);
           return { fans: Under.SYSTEMS.fansEscala(s, 350), popularity: 3, _energia: -8 };
         },
         resultado: "Tocás en La Sobre con los pibes sentados alrededor. Las familias se quedan a escuchar y el barrio te adopta.",
@@ -569,6 +570,7 @@ Under.EXTRA = {
         desc: "El domingo también es feria.",
         efectos: function (s) {
           Under.EXTRA._limpiar("under_plaza");
+          Under.MISIONES.sumar(s, "sobre", 1);
           return { money: Under.SYSTEMS.efectivoEscala(s, 120), fans: Under.SYSTEMS.fansEscala(s, 200), _energia: -10 };
         },
         resultado: "Tocás en La Sobre y vendés remeras desde una valija. El barrio compra y tu nombre queda sonando.",

@@ -116,6 +116,21 @@ Under.MISIONES = (function () {
     },
     { talent: 3, popularity: 4, fans: 6000 },
     "🎯 Misión completada: Bar y La Sobre. Dueño de los dos escenarios del under.");
+  m("m_sobre_3", "grind", 1, 3, "🏞️", "La plaza te vio", "Viví 3 momentos en La Sobre", 3, "sobre",
+    { popularity: 3, _relaciones: 3, fans: 1500 },
+    "🎯 Misión completada: La plaza te vio. Ya sos parte del paisaje de La Sobre.");
+  m("m_sobre_8", "grind", 2, 4, "🏞️", "Cara de La Sobre", "Viví 8 momentos en La Sobre", 8, "sobre",
+    { talent: 2, popularity: 4, fans: 5000 },
+    "🎯 Misión completada: Cara de La Sobre. En la plaza ya te saludan por tu nombre.");
+  m("m_sobre_15", "grind", 2, 5, "🏞️", "Sangre de la plaza", "Viví 15 momentos en La Sobre", 15, "sobre",
+    { popularity: 5, talent: 2, money: 2000 },
+    "🎯 Misión completada: Sangre de la plaza. La Sobre te cuenta entre los suyos.");
+  m("m_sobre_25", "grind", 3, 6, "🏞️", "Referente de La Sobre", "Viví 25 momentos en La Sobre", 25, "sobre",
+    { popularity: 6, talent: 3, fans: 12000 },
+    "🎯 Misión completada: Referente de La Sobre. Los pibes de la plaza esperan tu próxima movida.");
+  m("m_sobre_40", "grind", 3, 7, "🏞️", "Dueño de La Sobre", "Viví 40 momentos en La Sobre", 40, "sobre",
+    { popularity: 7, talent: 3, money: 5000 },
+    "🎯 Misión completada: Dueño de La Sobre. La plaza entera para cuando llegás.");
 
   /* ============================================================
      SECCIÓN 2 — HACER MÚSICA (etapa 1-8)

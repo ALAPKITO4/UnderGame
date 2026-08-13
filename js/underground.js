@@ -274,12 +274,14 @@ Under.UNDER = {
         efectos: function (s) {
           Under.UNDER._limpiar("under_freestyle");
           Under.MISIONES.sumar(s, "freestyle", 1);
+          Under.MISIONES.sumar(s, "sobre", 1);
           return { talent: 2, popularity: 5, fans: Under.SYSTEMS.fansEscala(s, 400), _energia: -10 };
         },
         resultado: "Batallás y la rompés. La Sobre estalla y te anotan como el que no se achica.",
         log: "Ganó una batalla de freestyle.",
         riesgoEfectos: function (s) {
           Under.UNDER._limpiar("under_freestyle");
+          Under.MISIONES.sumar(s, "sobre", 1);
           return { popularity: -2, fans: -Under.SYSTEMS.fansEscala(s, 100), _energia: -10 };
         },
         riesgoResultado: "Batallás y te quedás en blanco. La Sobre lo vio todo, y el video corre por los grupos.",
@@ -290,6 +292,7 @@ Under.UNDER = {
         desc: "Un gesto, sin arriesgar la noche.",
         efectos: function (s) {
           Under.UNDER._limpiar("under_freestyle");
+          Under.MISIONES.sumar(s, "sobre", 1);
           return { popularity: 1, talent: 1 };
         },
         resultado: "Solás una barra afilada y te vas antes de que te toque el turno. Deja intriga.",
@@ -320,6 +323,7 @@ Under.UNDER = {
         efectos: function (s) {
           Under.UNDER._limpiar("under_cypher");
           Under.MISIONES.sumar(s, "cypher", 1);
+          Under.MISIONES.sumar(s, "sobre", 1);
           return { talent: 2, fans: Under.SYSTEMS.fansEscala(s, 500), popularity: 3, _energia: -8 };
         },
         resultado: "Tu parte del cypher es la más repetida. La escena te suma a su círculo.",
@@ -1038,6 +1042,7 @@ Under.UNDER = {
         efectos: function (s) {
           Under.UNDER._limpiar("under_viral_sobre");
           Under.MISIONES.sumar(s, "contenido", 1);
+          Under.MISIONES.sumar(s, "sobre", 1);
           return { fans: Under.SYSTEMS.fansEscala(s, 1500), popularity: 4, _energia: -8 };
         },
         resultado: "Aprovechás el momento: subís contenido, respondés comentarios, y el video te lleva una audiencia que ayer no existía.",
@@ -1048,6 +1053,7 @@ Under.UNDER = {
         desc: "No forzar nada.",
         efectos: function (s) {
           Under.UNDER._limpiar("under_viral_sobre");
+          Under.MISIONES.sumar(s, "sobre", 1);
           return { fans: Under.SYSTEMS.fansEscala(s, 600), popularity: 2 };
         },
         resultado: "No tocás nada. El video sigue sumando y tu nombre queda en el aire, esperando el próximo paso.",
@@ -2217,6 +2223,7 @@ Under.UNDER = {
         efectos: function (s) {
           Under.UNDER._limpiar("under_la_sobre");
           Under.MISIONES.sumar(s, "toques", 1);
+          Under.MISIONES.sumar(s, "sobre", 1);
           return { talent: 2, fans: Under.SYSTEMS.fansEscala(s, 500), popularity: 3, _energia: -14 };
         },
         resultado: "Tocás en La Sobre a un metro de la gente. Los puristas del under lo registran: bancaste la fecha más difícil.",
@@ -2228,6 +2235,7 @@ Under.UNDER = {
         efectos: function (s) {
           Under.UNDER._limpiar("under_la_sobre");
           Under.MISIONES.sumar(s, "contenido", 1);
+          Under.MISIONES.sumar(s, "sobre", 1);
           return { talent: 1, fans: Under.SYSTEMS.fansEscala(s, 800), popularity: 3, _energia: -14 };
         },
         resultado: "Grabás la noche en La Sobre y la subís. La crudeza se comparte sola: la escena valora a quien bancó la Sobre.",
@@ -2771,6 +2779,7 @@ Under.UNDER = {
         desc: "La anécdota va a ser muy buena.",
         efectos: function (s) {
           Under.UNDER._limpiar("under_amigas_sobre");
+          Under.MISIONES.sumar(s, "sobre", 1);
           return { popularity: 1, fans: Under.SYSTEMS.fansEscala(s, 150), _relaciones: 4, _energia: -6 };
         },
         resultado: "Vas a La Sobre con Marti y Agus. La anécdota es tan buena como prometían: te despertás temprano igual, con la noche entera en la cabeza.",
@@ -2791,6 +2800,7 @@ Under.UNDER = {
         desc: "Quedás, pero sin quemar la noche.",
         efectos: function (s) {
           Under.UNDER._limpiar("under_amigas_sobre");
+          Under.MISIONES.sumar(s, "sobre", 1);
           return { _relaciones: 2, _energia: -2 };
         },
         resultado: "Pasás por La Sobre, saludás a todo el mundo y te vas temprano. La anécdota te llega entera igual.",
@@ -2922,6 +2932,7 @@ Under.UNDER = {
         efectos: function (s) {
           Under.UNDER._limpiar("under_cantante_1k");
           Under.MISIONES.sumar(s, "toques", 1);
+          Under.MISIONES.sumar(s, "sobre", 1);
           return { money: Under.SYSTEMS.efectivoEscala(s, 300), fans: Under.SYSTEMS.fansEscala(s, 900), popularity: 3, _energia: -10 };
         },
         resultado: "Compartís fecha con el cantante de mil oyentes y su gente se queda. La Sobre junta dos públicos en una noche.",
