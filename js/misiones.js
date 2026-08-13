@@ -135,6 +135,10 @@ Under.MISIONES = (function () {
   m("m_sobre_40", "grind", 3, 7, "🏞️", "Dueño de La Sobre", "Viví 40 momentos en La Sobre", 40, "sobre",
     { popularity: 7, talent: 3, money: 5000 },
     "🎯 Misión completada: Dueño de La Sobre. La plaza entera para cuando llegás.");
+  m("m_ref_smi_sobre", "grind", 4, 8, "🏞️", "El sótano de smi", "Ya sos referente del under: viví 30 momentos en La Sobre, el sótano que te abrió smi", 30, "sobre",
+    { _relaciones: 6, _legado: 5, popularity: 4 },
+    "🎯 Misión completada: El sótano de smi. La Sobre te cuenta entre los suyos para siempre.",
+    function (s) { return s.reputacion >= 55 && Under.MISIONES._decidio(s, "under_la_sobre"); });
 
   /* La plaza te vio: momentos con Marti, Agus y Lucio. El artista
      todavía es chico y su vida pasa por la plaza, los mates y las
@@ -308,12 +312,20 @@ Under.MISIONES = (function () {
   m("m_musica_sesiones_10", "musica", 3, 6, "🎛️", "El que vive en el estudio", "Grabá 10 sesiones de estudio", 10, "sesion",
     { talent: 3, popularity: 4, money: 4000 },
     "🎯 Misión completada: El que vive en el estudio. Los ingenieros te guardan tu horario.");
+  m("m_ref_medusa_sesion", "musica", 4, 8, "🎛️", "Medusa no termina", "Ya sos referente del under: jameá 15 sesiones de estudio, como la 67ª que armó enzocerobulto", 15, "sesion",
+    { talent: 3, _legado: 4, popularity: 3 },
+    "🎯 Misión completada: Medusa no termina. enzocerobulto te llama por la 68ª, la 69ª... y el estudio es tu casa.",
+    function (s) { return Under.MISIONES._decidio(s, "extra_jam_estudio"); });
   m("m_musica_letras_6", "musica", 2, 5, "✍️", "Pluma que no para", "Escribí 6 letras nuevas", 6, "letras",
     { talent: 3, popularity: 2, _relaciones: 2 },
     "🎯 Misión completada: Pluma que no para. Las frases se te caen de los bolsillos.");
   m("m_musica_demo_3", "musica", 2, 5, "📼", "De demo a tema", "Convertí 3 demos en temas", 3, "demo",
     { fans: 6000, popularity: 3, money: 1500 },
     "🎯 Misión completada: De demo a tema. Ningún pedacito de tu sonido queda en la carpeta.");
+  m("m_ref_tukone_demo", "musica", 4, 8, "📼", "El pasado que vuelve", "Ya sos referente del under: convertí 5 demos en temas, de las que te manda tukone", 5, "demo",
+    { talent: 2, fans: 15000, _legado: 3 },
+    "🎯 Misión completada: El pasado que vuelve. tukone y su audio viejo: el pasado también lanza.",
+    function (s) { return Under.MISIONES._decidio(s, "extra_demo"); });
   m("m_musica_productor_2", "musica", 3, 6, "🎧", "Oído por oído", "Grabá 2 temas con productores de la escena", 2, "productor_estudio",
     { talent: 2, _relaciones: 4, popularity: 3 },
     "🎯 Misión completada: Oído por oído. Los productores del under ya hablan bien de vos.");
@@ -1018,6 +1030,10 @@ Under.MISIONES = (function () {
   m("m2_fieles_100k", "publico", 7, 8, "🤝", "Cien mil que nunca se van", "Tené 100.000 fans fieles", 100000, function (s) { return s.fansFieles || 0; },
     { fans: 50000, _relaciones: 7, popularity: 5 },
     "🎯 Misión completada: Cien mil que nunca se van. Tu base es una familia.");
+  m("m_ref_benve_fieles", "publico", 6, 8, "💜", "La generación que formaste", "Ya sos referente del under: tené 200.000 fans fieles, los que te siguen desde La Sobre con benve a la cabeza", 200000, function (s) { return s.fansFieles || 0; },
+    { fans: 40000, popularity: 5, _legado: 6 },
+    "🎯 Misión completada: La generación que formaste. benve y los pibes que te seguían desde La Sobre hoy te llenan el estadio.",
+    function (s) { return s.reputacion >= 55; });
   m("m2_hype_90", "publico", 5, 8, "🔥", "Apagando el mundo", "Llevá tu hype a 90", 90, function (s) { return s.hype; },
     { fans: 25000, popularity: 6, money: 10000 },
     "🎯 Misión completada: Apagando el mundo. El planeta solo habla de vos.");
@@ -1152,9 +1168,9 @@ Under.MISIONES = (function () {
     "🎯 Misión completada: Veinticinco noches en vivo. El escenario es tu casa.");
 
   /* Red: la red del under */
-  m("m3_colega_4", "red", 1, 4, "🤝", "Cantar con los tuyos", "Grabá 4 temas con Killpay, tu colega del under", 4, "colega",
+  m("m3_colega_4", "red", 1, 4, "🤝", "Cantar con los tuyos", "Grabá 4 temas con Killpatay, tu colega del under", 4, "colega",
     { talent: 3, popularity: 3, fans: 6000 },
-    "🎯 Misión completada: Cantar con los tuyos. Killpay y vos hacen sonar a la escena.");
+    "🎯 Misión completada: Cantar con los tuyos. Killpatay y vos hacen sonar a la escena.");
   m("m3_referente_2", "red", 1, 4, "🧓", "Sabiduría de viejo", "Aprendé de 2 referentes de la escena", 2, "referente",
     { talent: 4, _relaciones: 5, popularity: 3 },
     "🎯 Misión completada: Sabiduría de viejo. Los veteranos te anotan en su radar.");
@@ -1167,6 +1183,10 @@ Under.MISIONES = (function () {
   m("m3_contenido_4", "red", 1, 4, "📱", "La máquina de contenido", "Colaborá 4 veces con creadores", 4, "contenido",
     { fans: 8000, popularity: 4, money: 1000 },
     "🎯 Misión completada: La máquina de contenido. Tu música ya vive en los reels.");
+  m("m_ref_demoniaka_remix", "red", 4, 8, "🎧", "Demoniaka DJ te remixea", "Ya sos referente del under: cedé 2 temas para los remixes de Demoniaka DJ", 2, "remix",
+    { fans: 20000, popularity: 4, _legado: 3 },
+    "🎯 Misión completada: Demoniaka DJ te remixea. Tus temas viven en la pista de cada fecha.",
+    function (s) { return s.reputacion >= 55; });
   m("m3_feria_3", "red", 1, 4, "🧺", "El que vende en la feria", "Vendé 3 veces en ferias del barrio", 3, "feria",
     { money: 2500, fans: 3000, _relaciones: 4 },
     "🎯 Misión completada: El que vende en la feria. Tu nombre corre por los puestos.");

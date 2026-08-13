@@ -398,7 +398,7 @@ Under.UNDER = {
 
   /* ---------- Un DJ quiere un remix ---------- */
   crearEventoRemix: function (state) {
-    var nombre = Under.UNDER._artista();
+    var nombre = "Demoniaka DJ";
     return Under.UNDER._crear("under_remix", "Te piden un remix", [
       nombre + ", un DJ de la escena, quiere un remix de tu último tema para sus sets.",
       nombre + " te propone llevar una de tus canciones a la pista.",
@@ -409,20 +409,22 @@ Under.UNDER = {
         desc: "Su pista lo toca en cada fecha: difusión pura.",
         efectos: function (s) {
           Under.UNDER._limpiar("under_remix");
+          Under.MISIONES.sumar(s, "remix", 1);
           return { fans: Under.SYSTEMS.fansEscala(s, 600), popularity: 2 };
         },
         resultado: "Lo cedés. El remix suena en sus sets y una parte de su público va a buscarte.",
-        log: "Cedió un tema para un remix."
+        log: "Cedió un tema para el remix de Demoniaka DJ."
       },
       {
         texto: "Cobrarlo",
         desc: "Menos difusión, pero plata en mano.",
         efectos: function (s) {
           Under.UNDER._limpiar("under_remix");
+          Under.MISIONES.sumar(s, "remix", 1);
           return { money: Under.SYSTEMS.efectivoEscala(s, 150), fans: Under.SYSTEMS.fansEscala(s, 250), popularity: 1 };
         },
         resultado: "Cobrás una cifra chica y el remix sale igual. Justo a medias.",
-        log: "Cobró por un remix de su tema."
+        log: "Cobró por un remix de su tema para Demoniaka DJ."
       },
       {
         texto: "Negarse",
@@ -698,12 +700,12 @@ Under.UNDER = {
     ]);
   },
 
-  /* ---------- Kilpatay y La OBS ---------- */
+  /* ---------- Killpatay y La OBS ---------- */
   crearEventoObs: function (state) {
-    return Under.UNDER._crear("under_obs", "Kilpatay te abre La OBS", [
-      "Kilpatay escuchó tu tema y no se quedó callado: te ofrece grabar en La OBS, el estudio de Los Amigos, con un sonido profesional.",
-      "El estudio La OBS te abre sus puertas de noche. Kilpatay escuchó tu tema y quiere grabarte con un sonido profesional.",
-      "Kilpatay te escribe: 'La OBS es tuya esta noche'. Estudio de verdad, con ingeniero de sonido y todo."
+    return Under.UNDER._crear("under_obs", "Killpatay te abre La OBS", [
+      "Killpatay escuchó tu tema y no se quedó callado: te ofrece grabar en La OBS, el estudio de Los Amigos, con un sonido profesional.",
+      "El estudio La OBS te abre sus puertas de noche. Killpatay escuchó tu tema y quiere grabarte con un sonido profesional.",
+      "Killpatay te escribe: 'La OBS es tuya esta noche'. Estudio de verdad, con ingeniero de sonido y todo."
     ], [
       {
         texto: "Grabar en La OBS",
@@ -718,21 +720,21 @@ Under.UNDER = {
       },
       {
         texto: "Pedirle que te produzca un tema completo",
-        desc: "Kilpatay no produce a cualquiera.",
+        desc: "Killpatay no produce a cualquiera.",
         riesgo: 0.4,
         efectos: function (s) {
           Under.UNDER._limpiar("under_obs");
           Under.MISIONES.sumar(s, "ensayo", 1);
           return { talent: 3, fans: Under.SYSTEMS.fansEscala(s, 900), _energia: -10 };
         },
-        resultado: "Kilpatay acepta y te produce el tema de punta a punta. El resultado vale la jugada.",
-        log: "Consiguió que Kilpatay le produzca un tema en La OBS.",
+        resultado: "Killpatay acepta y te produce el tema de punta a punta. El resultado vale la jugada.",
+        log: "Consiguió que Killpatay le produzca un tema en La OBS.",
         riesgoEfectos: function (s) {
           Under.UNDER._limpiar("under_obs");
           return { popularity: -1, _energia: -10 };
         },
-        riesgoResultado: "Kilpatay pone condiciones y la cosa se enfría. Quedás grabando solo, con la puerta medio cerrada.",
-        riesgoLog: "Falló en conseguir la producción de Kilpatay."
+        riesgoResultado: "Killpatay pone condiciones y la cosa se enfría. Quedás grabando solo, con la puerta medio cerrada.",
+        riesgoLog: "Falló en conseguir la producción de Killpatay."
       },
       {
         texto: "Agradecer y pasar",
@@ -985,12 +987,12 @@ Under.UNDER = {
     ]);
   },
 
-  /* ---------- Kilpatay y Traslacortina ---------- */
+  /* ---------- Killpatay y Traslacortina ---------- */
   crearEventoEstudioGrande: function (state) {
-    return Under.UNDER._crear("under_estudio_grande", "Kilpatay te abre Traslacortina", [
-      "Kilpatay, el productor con el que laburaste años atrás, ahora trabaja en Traslacortina Studio — donde se grabó «Wanda Nara» de Duki y Neo. Te recomienda grabar una sesión ahí.",
-      "Traslacortina Studio, el estudio donde labura Kilpatay, tiene un hueco en la agenda, y él te propone para esa sesión. La recomendación pesa.",
-      "Kilpatay no se olvidó de vos: ahora está en Traslacortina y te empuja para que grabes una sesión de verdad."
+    return Under.UNDER._crear("under_estudio_grande", "Killpatay te abre Traslacortina", [
+      "Killpatay, el productor con el que laburaste años atrás, ahora trabaja en Traslacortina Studio — donde se grabó «Wanda Nara» de Duki y Neo. Te recomienda grabar una sesión ahí.",
+      "Traslacortina Studio, el estudio donde labura Killpatay, tiene un hueco en la agenda, y él te propone para esa sesión. La recomendación pesa.",
+      "Killpatay no se olvidó de vos: ahora está en Traslacortina y te empuja para que grabes una sesión de verdad."
     ], [
       {
         texto: "Agarrar la sesión",
@@ -1001,7 +1003,7 @@ Under.UNDER = {
           return { money: -Under.SYSTEMS.efectivoEscala(s, 80), talent: 2, fans: Under.SYSTEMS.fansEscala(s, 1200), popularity: 3, _energia: -10 };
         },
         resultado: "Grabás una sesión en Traslacortina. El sonido te queda de otro planeta y los ingenieros se acuerdan de tu nombre.",
-        log: "Grabó una sesión en Traslacortina recomendado por Kilpatay."
+        log: "Grabó una sesión en Traslacortina recomendado por Killpatay."
       },
       {
         texto: "Pedir una sesión con más horas",
@@ -1012,24 +1014,24 @@ Under.UNDER = {
           Under.MISIONES.sumar(s, "ensayo", 1);
           return { money: -Under.SYSTEMS.efectivoEscala(s, 180), talent: 3, fans: Under.SYSTEMS.fansEscala(s, 1500), popularity: 3, _energia: -12 };
         },
-        resultado: "Conseguís más horas y la sesión sale redonda. Kilpatay te la anota como la que te puso en otro nivel.",
+        resultado: "Conseguís más horas y la sesión sale redonda. Killpatay te la anota como la que te puso en otro nivel.",
         log: "Grabó una sesión extendida en Traslacortina.",
         riesgoEfectos: function (s) {
           Under.UNDER._limpiar("under_estudio_grande");
           return { popularity: -1, money: -Under.SYSTEMS.efectivoEscala(s, 120) };
         },
-        riesgoResultado: "El pedido extra enfría la recomendación. La sesión se achica y Kilpatay queda medio en evidencia.",
+        riesgoResultado: "El pedido extra enfría la recomendación. La sesión se achica y Killpatay queda medio en evidencia.",
         riesgoLog: "Se pasó de exigencia y perdió la sesión en Traslacortina."
       },
       {
-        texto: "Agradecerle a Kilpatay y pasar",
+        texto: "Agradecerle a Killpatay y pasar",
         desc: "No querés saltar etapas.",
         efectos: function (s) {
           Under.UNDER._limpiar("under_estudio_grande");
           return { _relaciones: 2 };
         },
-        resultado: "Le agradecés a Kilpatay y dejás pasar la sesión. Él entiende: 'cuando estés listo, Traslacortina sigue acá'.",
-        log: "Agradeció la recomendación de Kilpatay y dejó pasar la sesión."
+        resultado: "Le agradecés a Killpatay y dejás pasar la sesión. Él entiende: 'cuando estés listo, Traslacortina sigue acá'.",
+        log: "Agradeció la recomendación de Killpatay y dejó pasar la sesión."
       }
     ]);
   },

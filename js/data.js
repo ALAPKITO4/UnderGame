@@ -429,6 +429,18 @@ Under.DATA = {
     { id: "mundial",        nombre: "Gira mundial",        desc: "El planeta entero. Estadios y récords.",          nivel: 8, costo: 40000, base: 300000, precio: 90, fans: 50000, popularidad: 6 }
   ],
 
+  /* ---------- Estadios grandes (FASE 5) ----------
+     Los estadios de 50.000 o más de capacidad. Solo te abren
+     las puertas cuando tu público ya es gigante: 600.000 fans
+     o más para llenar un estadio de verdad. */
+  ESTADIOS: [
+    { id: "monumental",        nombre: "Estadio Monumental (River)",      ciudad: "Buenos Aires",  capacidad: 83000, fansMin: 600000, costo: 60000, base: 900000, precio: 120, fans: 90000,  popularidad: 7 },
+    { id: "kempes",            nombre: "Estadio Mario Alberto Kempes",    ciudad: "Córdoba",       capacidad: 57000, fansMin: 600000, costo: 45000, base: 700000, precio: 110, fans: 70000,  popularidad: 6 },
+    { id: "bombonera",         nombre: "La Bombonera (Boca)",             ciudad: "Buenos Aires",  capacidad: 54000, fansMin: 600000, costo: 42000, base: 650000, precio: 105, fans: 65000,  popularidad: 6 },
+    { id: "unico_la_plata",    nombre: "Estadio Único de La Plata",       ciudad: "La Plata",      capacidad: 53000, fansMin: 600000, costo: 40000, base: 620000, precio: 100, fans: 60000,  popularidad: 6 },
+    { id: "cilindro",          nombre: "Cilindro de Avellaneda (Racing)", ciudad: "Avellaneda",    capacidad: 51000, fansMin: 600000, costo: 38000, base: 580000, precio: 95,  fans: 58000,  popularidad: 6 }
+  ],
+
   /* ---------- Colaboraciones (FASE 3) ----------
      audiencia: multiplicador de reproducciones/fans del tema.
      retencion: % del dinero que te queda (el resto va al partner).
@@ -659,6 +671,11 @@ Under.DATA = {
       id: "festival", peso: 2,
       disponible: function (s) { return !s.flags.festivalEsteAnio && !!Under.FESTIVALES._mejorOfrecible(s); },
       generar: function (s) { return Under.FESTIVALES.crearEventoFestival(s); }
+    },
+    {
+      id: "estadio", peso: 2,
+      disponible: function (s) { return !s.flags.estadioEsteAnio && !!Under.ESTADIOS._mejorOfrecible(s); },
+      generar: function (s) { return Under.ESTADIOS.crearEventoEstadio(s); }
     },
     {
       id: "evolucion", peso: 1,
@@ -1809,20 +1826,20 @@ Under.DATA = {
       condiciones: { flags: { trabajoConProductor: true } },
       importante: true,
       titulo: "Una recomendación que vale oro",
-      texto: "Killpay, el productor con el que trabajaste años atrás, ahora labura con un estudio grande.\n\nTe recomienda para grabar una sesión ahí.",
+      texto: "Killpatay, el productor con el que trabajaste años atrás, ahora labura con un estudio grande.\n\nTe recomienda para grabar una sesión ahí.",
       opciones: [
         {
           texto: "Aceptar la recomendación",
-          resultado: "Grabás en un estudio de primer nivel gracias a Killpay. Los ingenieros quedan sorprendidos. Tu música entra en otra liga.",
+          resultado: "Grabás en un estudio de primer nivel gracias a Killpatay. Los ingenieros quedan sorprendidos. Tu música entra en otra liga.",
           efectos: { money: -100, talent: 3, fans: 1500, popularity: 5 },
           flags: { estudioGrande: true },
-          log: "Grabaste en un estudio grande gracias a la recomendación de Killpay."
+          log: "Grabaste en un estudio grande gracias a la recomendación de Killpatay."
         },
         {
           texto: "Agradecer pero seguir tu camino",
-          resultado: "Agradecés el gesto de Killpay, pero preferís seguir grabando donde ya tenés confianza. Él respeta tu decisión.",
+          resultado: "Agradecés el gesto de Killpatay, pero preferís seguir grabando donde ya tenés confianza. Él respeta tu decisión.",
           efectos: { talent: 1 },
-          log: "Declinaste la recomendación de Killpay."
+          log: "Declinaste la recomendación de Killpatay."
         }
       ]
     },

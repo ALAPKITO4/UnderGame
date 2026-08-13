@@ -190,7 +190,7 @@ Under.RELACIONES = {
       desc: "El colega suma a tu sonido y la red crece.",
       efectos: function (s) {
         var idC = colega ? colega.id : "colega_" + Under.STATE.randInt(100, 999);
-        var nombre = colega ? colega.nombre : "Killpay";
+        var nombre = colega ? colega.nombre : "Killpatay";
         if (!colega) Under.RELACIONES.agregar(s, idC, nombre, "colega", 30);
         Under.RELACIONES.mover(s, idC, 10);
         s.flags.relColegaEsteAnio = true;
@@ -206,7 +206,7 @@ Under.RELACIONES = {
       desc: "Menos música, más presencia compartida.",
       efectos: function (s) {
         var idC = colega ? colega.id : "colega_" + Under.STATE.randInt(100, 999);
-        var nombre = colega ? colega.nombre : "Killpay";
+        var nombre = colega ? colega.nombre : "Killpatay";
         if (!colega) Under.RELACIONES.agregar(s, idC, nombre, "colega", 20);
         Under.RELACIONES.mover(s, idC, 8);
         s.flags.relColegaEsteAnio = true;

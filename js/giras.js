@@ -86,3 +86,102 @@ Under.GIRAS = {
     return ev;
   }
 };
+
+/* ============================================================
+   UNDER — ESTADIOS GRANDES (FASE 5)
+   Cuando tu público ya es gigante (600.000 fans o más) los
+   estadios de 50.000+ de capacidad te abren las puertas.
+   ============================================================ */
+
+Under.ESTADIOS = {
+
+  _pendiente: null,
+
+  /* El estadio que tu público puede llenar: con 600.000 fans o
+     más, cualquiera de los grandes (todos piden mínimo 600k). */
+  _mejorOfrecible: function (state) {
+    var fama = state.stats && state.stats.fans;
+    var pool = Under.DATA.ESTADIOS.filter(function (e) { return fama >= e.fansMin; });
+    if (!pool.length) return null;
+    return pool[Math.floor(Math.random() * pool.length)];
+  },
+
+  crearEventoEstadio: function (state) {
+    if (Under.ESTADIOS._pendiente) return Under.ESTADIOS._pendiente;
+
+    var est = Under.ESTADIOS._mejorOfrecible(state);
+    if (!est) return null;
+
+    var opciones = [];
+
+    opciones.push({
+      texto: "🎫 Tocar en " + est.nombre,
+      desc: "Un estadio de " + est.capacidad + " personas, con tu nombre en el cartel.",
+      efectos: function (s) {
+        var costo = Under.SYSTEMS.efectivoEscala(s, est.costo);
+        var bruto = Math.round(est.base * Under.SYSTEMS.escala(s) * (0.85 + Math.random() * 0.3));
+        var neto = bruto - costo;
+        var fans = Under.SYSTEMS.fansEscala(s, est.fans);
+
+        if (!s.estadios) s.estadios = [];
+        s.estadios.push({ id: est.id, año: s.año, nombre: est.nombre, capacidad: est.capacidad, costo: costo, bruto: bruto, neto: neto, fans: fans });
+        s.totalEstadios = (s.totalEstadios || 0) + 1;
+        s.flags.estadioEsteAnio = true;
+
+        Under.ESTADIOS._pendiente = null;
+        return { money: neto, fans: fans, popularity: est.popularidad, _energia: -25, _legado: 8 };
+      },
+      resultado: function (s, efectos) {
+        return "Llenás " + est.nombre + " (" + Under.UI.fmtExacto(est.capacidad) + " de capacidad). Entre el público están " + Under.DATA.publico(2) + ", y el fotógrafo de undercba filma la noche que pasó a la historia.\n\nGanás " + Under.UI.fmtDinero(efectos.money) + " y sumás " + Under.UI.fmtExacto(efectos.fans) + " fans nuevos.";
+      },
+      log: "Tocó en " + est.nombre + "."
+    });
+
+    opciones.push({
+      texto: "🎤 Llevar invitados",
+      desc: "Sumás nombres al cartel y repartís el peso.",
+      efectos: function (s) {
+        var costo = Under.SYSTEMS.efectivoEscala(s, est.costo);
+        var bruto = Math.round(est.base * 0.6 * Under.SYSTEMS.escala(s) * (0.85 + Math.random() * 0.3));
+        var neto = bruto - costo;
+        var fans = Math.round(Under.SYSTEMS.fansEscala(s, est.fans) * 0.6);
+
+        if (!s.estadios) s.estadios = [];
+        s.estadios.push({ id: est.id, año: s.año, nombre: est.nombre, capacidad: est.capacidad, costo: costo, bruto: bruto, neto: neto, fans: fans, invitados: true });
+        s.totalEstadios = (s.totalEstadios || 0) + 1;
+        s.flags.estadioEsteAnio = true;
+
+        Under.ESTADIOS._pendiente = null;
+        return { money: neto, fans: fans, popularity: 5, _energia: -20, _legado: 5 };
+      },
+      resultado: function (s, efectos) {
+        return "Subís al escenario de " + est.nombre + " con invitados. La noche es una fiesta colectiva y tu nombre es el que llenó.\n\nGanás " + Under.UI.fmtDinero(efectos.money) + " y sumás " + Under.UI.fmtExacto(efectos.fans) + " fans nuevos.";
+      },
+      log: "Tocó en " + est.nombre + " con invitados."
+    });
+
+    opciones.push({
+      texto: "Dejarlo para otro momento",
+      desc: "Un estadio también puede esperar.",
+      efectos: function (s) {
+        s.flags.estadioEsteAnio = true;
+        Under.ESTADIOS._pendiente = null;
+        return {};
+      },
+      log: "Dejó pasar una fecha de estadio.",
+      resultado: "Decidís que todavía no. El estadio te va a esperar, y lo sabés."
+    });
+
+    var ev = {
+      id: "estadio",
+      recurrente: true,
+      importante: true,
+      titulo: "Un estadio te abre las puertas",
+      texto: "Con " + Under.UI.fmtExacto(state.stats.fans) + " de fans, " + est.nombre + " (" + est.ciudad + ", " + est.capacidad + " de capacidad) te ofrece una fecha.\n\nUn estadio de verdad. ¿Lo llenás?",
+      opciones: opciones
+    };
+
+    Under.ESTADIOS._pendiente = ev;
+    return ev;
+  }
+};

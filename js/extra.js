@@ -772,7 +772,7 @@ Under.EXTRA = {
     return Under.EXTRA._crear("extra_producir", "Una sesión con un productor de la escena", [
       "Un productor de la escena te propone una sesión para darle forma a tu próximo tema.",
       "Uno de los beats que te encanta es de un productor local que quiere laburar con vos.",
-      "Kilpatay te deja una tarde en La OBS para producir juntos lo que estás armando."
+      "Killpatay te deja una tarde en La OBS para producir juntos lo que estás armando."
     ], [
       {
         texto: "Grabar con él",
