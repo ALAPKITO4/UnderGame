@@ -356,6 +356,14 @@ Under.SYSTEMS = {
        activan flags de memoria se registran y ajustan la reputación. */
     if (Under.MEMORIA) Under.MEMORIA._decisión(state, opcion);
 
+    /* Diario de decisiones: toda opción elegida queda registrada
+       para que misiones y eventos futuros puedan referirse a ella
+       (Under.MISIONES._decidio / _decisiones). */
+    if (evento && evento.id) {
+      if (!state.decisiones) state.decisiones = [];
+      state.decisiones.push({ id: evento.id, opcion: opcion.texto, año: state.año });
+    }
+
     if (opcionReal.log) {
       state.historial.push({
         año: state.año,

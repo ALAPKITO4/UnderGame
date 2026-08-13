@@ -22,7 +22,7 @@ Under.MISIONES = (function () {
 
   var DEFS = [];
 
-  function m(id, seccion, etapaMin, etapaMax, icono, titulo, desc, meta, prog, rec, texto) {
+  function m(id, seccion, etapaMin, etapaMax, icono, titulo, desc, meta, prog, rec, texto, requiere) {
     var def = {
       id: id,
       seccion: seccion,
@@ -37,6 +37,10 @@ Under.MISIONES = (function () {
     };
     if (typeof prog === "function") def.actual = prog;
     else if (typeof prog === "string") def.contador = prog;
+    /* Condición para aparecer: decisiones previas (Under.MISIONES._decidio),
+       contadores o cualquier lectura del estado. Sin requiere, siempre
+       es elegible dentro de su sección y etapa. */
+    if (typeof requiere === "function") def.requiere = requiere;
     DEFS.push(def);
     return def;
   }
@@ -186,6 +190,36 @@ Under.MISIONES = (function () {
   m("m_grind_feria_5", "grind", 2, 5, "🧺", "El puesto que no para", "Vendé 5 veces en ferias del barrio", 5, "feria",
     { money: 1500, fans: 3000, _relaciones: 2 },
     "🎯 Misión completada: El puesto que no para. Tu nombre corre por todos los puestos.");
+
+  /* Las decisiones te siguen (PRIORIDAD 10): las relaciones que
+     elegiste construir en el under maduran con el tiempo. Estas
+     misiones solo aparecen si ya forjaste esa dupla (requiere) y
+     profundizan la misma historia con los mismos nombres. */
+  m("m_grind_burger_6", "grind", 3, 6, "🍔", "Burger hunter: la película", "Profundizá la dupla con Burger hunter", 6, "burger",
+    { fans: 6000, popularity: 3, money: 2000 },
+    "🎯 Misión completada: Burger hunter: la película. Tu historia y la de Burger ya son una sola.", function (s) {
+      return (s.contadores || {}).burger >= 3;
+    });
+  m("m_grind_cro_4", "grind", 3, 6, "🔥", "La posta de CRO", "Seguí ganando el respeto de CRO", 4, "cro",
+    { talent: 2, popularity: 4, fans: 5000 },
+    "🎯 Misión completada: La posta de CRO. El veterano ya te pasa la posta del micrófono.", function (s) {
+      return (s.contadores || {}).cro >= 2;
+    });
+  m("m_grind_blake_8", "grind", 3, 6, "📱", "El canal de Blake", "Profundizá la alianza con Blake", 8, "blake",
+    { fans: 6000, popularity: 4, _relaciones: 4 },
+    "🎯 Misión completada: El canal de Blake. Tu nombre ya es parte de su contenido.", function (s) {
+      return (s.contadores || {}).blake >= 4;
+    });
+  m("m_grind_naty_6", "grind", 3, 6, "🎙️", "La agencia de Naty vintage", "Componé más jingles con Naty vintage", 6, "naty",
+    { money: 4000, popularity: 2, talent: 2 },
+    "🎯 Misión completada: La agencia de Naty vintage. Tu sonido ya es parte de la publicidad del barrio.", function (s) {
+      return (s.contadores || {}).naty >= 3;
+    });
+  m("m_grind_domingo_8", "grind", 3, 6, "🏞️", "Los domingos son sagrados", "Seguí haciendo propios los domingos de La Sobre", 8, "sobre_domingo",
+    { fans: 5000, _relaciones: 4, popularity: 3 },
+    "🎯 Misión completada: Los domingos son sagrados. La Sobre sin tu domingo ya no es La Sobre.", function (s) {
+      return (s.contadores || {}).sobre_domingo >= 4;
+    });
 
   /* ============================================================
      SECCIÓN 2 — HACER MÚSICA (etapa 1-8)
@@ -705,6 +739,46 @@ Under.MISIONES = (function () {
         "🎯 Misión completada: Conquistaste " + mk.nombre + ".");
     });
   })();
+
+  /* La escena va con vos (PRIORIDAD 10): cuando sos mainstream,
+     la gente que elegiste construir en el under crece a tu lado.
+     Cada una solo aparece si forjaste esa relación antes (requiere)
+     y celebra lo que sembraste de decisiones. */
+  m("m_main_burger_estadio", "internacional", 5, 8, "🍔", "Burger hunter va al estadio", "Hacé 3 giras con Burger hunter de cámara", 3,
+    function (s) { return (s.giras || []).length; },
+    { fans: 25000, popularity: 5, money: 8000 },
+    "🎯 Misión completada: Burger hunter va al estadio. Tu cámara siempre estuvo: ahora filma países enteros.",
+    function (s) {
+      return (s.flags.salioDelUnderground && (s.contadores || {}).burger >= 3);
+    });
+  m("m_main_cro_abre", "internacional", 5, 8, "🔥", "CRO te abre la escena grande", "Hacé 3 colaboraciones en la etapa grande", 3,
+    function (s) { return s.totalColabs; },
+    { fans: 20000, popularity: 4, money: 10000 },
+    "🎯 Misión completada: CRO te abre la escena grande. El que te desafió de pibe ahora te presenta en el cartel.",
+    function (s) {
+      return (s.flags.salioDelUnderground && (s.contadores || {}).cro >= 2);
+    });
+  m("m_main_blake_programa", "internacional", 5, 8, "📱", "Blake te entrevista", "Ganá 2 premios con Blake cubriéndote", 2,
+    function (s) { return s.totalPremios; },
+    { fans: 30000, popularity: 6, _relaciones: 4 },
+    "🎯 Misión completada: Blake te entrevista. El que usaba tu tema en sus videos hoy te recibe como estrella.",
+    function (s) {
+      return (s.flags.salioDelUnderground && (s.contadores || {}).blake >= 4);
+    });
+  m("m_main_naty_campana", "internacional", 5, 8, "🎙️", "La campaña de Naty vintage", "Pasá 10 millones de reproducciones con la campaña grande", 10000000,
+    function (s) { return s.totalReproducciones; },
+    { fans: 35000, popularity: 5, money: 15000 },
+    "🎯 Misión completada: La campaña de Naty vintage. Del jingle del barrio a tu cara en la campaña nacional.",
+    function (s) {
+      return (s.flags.salioDelUnderground && (s.contadores || {}).naty >= 3);
+    });
+  m("m_main_sobre_homenaje", "internacional", 5, 8, "🏞️", "La Sobre te homenajea", "Acumulá 60 de legado para que la plaza te nombre", 60,
+    function (s) { return s.legado; },
+    { _relaciones: 6, popularity: 4, money: 10000 },
+    "🎯 Misión completada: La Sobre te homenajea. El barrio que te vio empezar te devuelve la plaza con tu nombre.",
+    function (s) {
+      return (s.flags.salioDelUnderground && (s.contadores || {}).sobre_domingo >= 4);
+    });
 
   /* ============================================================
      SECCIÓN 9 — CRISIS Y REINVENCIÓN (etapa 3-8)
@@ -1226,6 +1300,7 @@ Under.MISIONES = (function () {
         (def.seccion === "industria" || def.seccion === "internacional" || def.seccion === "crisis")) {
       return false;
     }
+    if (def.requiere && !def.requiere(state)) return false;
     if (def.etapaMin && nivel < def.etapaMin) return false;
     if (def.etapaMax && nivel > def.etapaMax) return false;
     return true;
@@ -1434,6 +1509,28 @@ Under.MISIONES = (function () {
     return res;
   }
 
+  /* ---------- Diario de decisiones (PRIORIDAD 10) ----------
+     Las opciones elegidas se guardan en state.decisiones cuando
+     se resuelve una decisión (systems.ejecutarDecision). Estos
+     helpers permiten que las misiones se abran o progresen según
+     lo que el jugador decidió en el pasado. */
+  function _decidio(state, id, opcion) {
+    var ds = (state && state.decisiones) || [];
+    for (var i = 0; i < ds.length; i++) {
+      if (ds[i].id === id && (opcion === undefined || ds[i].opcion === opcion)) return true;
+    }
+    return false;
+  }
+
+  function _decisiones(state, id) {
+    var ds = (state && state.decisiones) || [];
+    var n = 0;
+    for (var i = 0; i < ds.length; i++) {
+      if (ds[i].id === id) n++;
+    }
+    return n;
+  }
+
   return {
     DEFS: DEFS,
     SECCIONES: SECCIONES,
@@ -1449,6 +1546,8 @@ Under.MISIONES = (function () {
     _registrarVistas: _registrarVistas,
     rotar: rotar,
     sumar: sumar,
-    chequear: chequear
+    chequear: chequear,
+    _decidio: _decidio,
+    _decisiones: _decisiones
   };
 })();

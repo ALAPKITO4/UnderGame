@@ -129,47 +129,6 @@ Under.EXTRA = {
     ]);
   },
 
-  /* ---------- Pop: un productor quiere un himno ---------- */
-  crearEventoGeneroPop: function (state) {
-    var p = Under.DATA.escena({ grupo: "los amigos" });
-    return Under.EXTRA._crear("gen_pop", "Un productor pop te quiere", [
-      p.nombre + ", de Los Amigos, quiere que tu tema sea el himno del verano.",
-      "Una discográfica chica te propone un videoclip con coreografía completa.",
-      "Un estudio de pop te ofrece producir tu próximo tema para sonar en todas las radios."
-    ], [
-      {
-        texto: "Aceptar el sonido pop",
-        desc: "Masivo, pegadizo… y un poco menos tuyo.",
-        efectos: function (s) {
-          Under.EXTRA._limpiar("gen_pop");
-          return { money: Under.SYSTEMS.dineroEscala(s, 600), popularity: 5, fans: Under.SYSTEMS.fansEscala(s, 1500), talent: -1 };
-        },
-        resultado: "El tema sale con ese sonido redondo y masivo. Suena en todos lados, aunque sientas que algo quedó de más.",
-        log: "Grabó un tema con sonido pop masivo."
-      },
-      {
-        texto: "Pop con tu esencia",
-        desc: "El gancho comercial sin perder tu marca.",
-        efectos: function (s) {
-          Under.EXTRA._limpiar("gen_pop");
-          return { popularity: 2, talent: 2, fans: Under.SYSTEMS.fansEscala(s, 700) };
-        },
-        resultado: "Negociás con " + p.nombre + ": pegadizo, pero con tu sonido adentro. El productor queda conforme y vos también.",
-        log: "Hizo pop con su esencia intacta."
-      },
-      {
-        texto: "Rechazar",
-        desc: "Tu música no se moldea.",
-        efectos: function (s) {
-          Under.EXTRA._limpiar("gen_pop");
-          return { talent: 1 };
-        },
-        resultado: "Decís que no. " + p.nombre + " busca a otro y tu sonido queda a salvo.",
-        log: "Rechazó al productor pop."
-      }
-    ]);
-  },
-
   /* ---------- Urban: un productor internacional ---------- */
   crearEventoGeneroUrban: function (state) {
     var p = Under.DATA.escena({ grupo: "family racks" });

@@ -163,17 +163,6 @@ Under.UI = {
         '<input class="input" id="inp-nombre" maxlength="24" placeholder="Tu nombre artístico" value="' + Under.UI.esc(Under.MAIN.form.nombre) + '" oninput="Under.MAIN.nombreChanged(this.value)">' +
       '</div>';
 
-    /* Ciudad */
-    html +=
-      '<div class="field">' +
-        '<label>Ciudad de origen</label>' +
-        '<select class="input select" onchange="Under.MAIN.ciudadChanged(this.value)">';
-    for (var i = 0; i < Under.DATA.CIUDADES.length; i++) {
-      var c = Under.DATA.CIUDADES[i];
-      html += '<option value="' + Under.UI.esc(c) + '">' + Under.UI.esc(c) + '</option>';
-    }
-    html += '</select></div>';
-
     /* Géneros */
     html += '<div class="field"><label>Género principal</label><div class="grid-gen">';
     var gids = Object.keys(Under.DATA.GENRES);

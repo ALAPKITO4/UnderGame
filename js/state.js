@@ -61,6 +61,11 @@ Under.STATE = {
       stats: stats,
       año: 1,
       flags: {},
+      /* Diario de decisiones: cada opción elegida se registra con
+         su evento, su texto y el año. Las misiones y eventos
+         futuros pueden leerlo (Under.MISIONES._decidio) para que
+         las decisiones pasadas tengan consecuencias más adelante. */
+      decisiones: [],
       historial: [
         { año: 1, texto: "Arrancó su carrera como " + opciones.nombre + "." }
       ],
@@ -155,6 +160,12 @@ Under.STATE = {
      (les agrega los campos que faltan de fases nuevas). */
   migrar: function (s) {
     if (!s) return s;
+    if (s.decisiones === undefined) s.decisiones = [];
+    /* El género pop/electrónica se eliminó del juego: una partida
+       vieja con ese género se remapea al urbano (el más cercano). */
+    if (!s.artista || !Under.DATA.GENRES[s.artista.genero]) {
+      if (s.artista) s.artista.genero = "urban";
+    }
     if (s.giras === undefined) s.giras = [];
     if (s.totalGiras === undefined) s.totalGiras = 0;
     if (s.colaboraciones === undefined) s.colaboraciones = [];

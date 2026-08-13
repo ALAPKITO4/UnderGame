@@ -28,7 +28,7 @@ Under.MUSIC = {
 
   /* ---------- Elección de nombre (evita repetir seguidos) ---------- */
   _elegirNombre: function (state) {
-    var nombres = Under.DATA.SONG_NAMES[state.artista.genero] || Under.DATA.SONG_NAMES.pop;
+    var nombres = Under.DATA.SONG_NAMES[state.artista.genero] || Under.DATA.SONG_NAMES[Object.keys(Under.DATA.SONG_NAMES)[0]];
     var usados = {};
     for (var i = 0; i < state.discografia.length; i++) {
       usados[state.discografia[i].nombre] = true;
@@ -104,7 +104,7 @@ Under.MUSIC = {
 
     var multRepros = 1 + nivel * 0.5 + p / 250 + state.momentum / 300;
     /* Carreras por género (PRIORIDAD 5): cada escena convierte
-       oídos distinto. Urban/pop multiplican el alcance comercial;
+       oídos distinto. Urban multiplica el alcance comercial;
        rap/rock convierten más lento pero la crítica los juzga
        con otra vara (más abajo). */
     var genComercial = Under.GENEROS ? Under.GENEROS.comercial(state) : 1;
@@ -127,7 +127,7 @@ Under.MUSIC = {
 
     /* La crítica: responde al talento y a la apuesta artística.
        El género (PRIORIDAD 5) le pone su vara: la escena juzga
-       a un rapero o a un rockero distinto que a un pop. */
+       a un rapero o a un rockero con otra vara. */
     var genCritica = Under.GENEROS ? Under.GENEROS.criticaBonus(state) : 0;
     var critica = Under.STATE.clamp(2 + t * 0.045 + (tier === "cult" ? 2.5 : 0) + genCritica + Math.random() * 1.1, 1, 5);
     var talentoGanado = data.talento + (critica >= 4.5 ? 1 : 0);

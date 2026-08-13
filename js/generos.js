@@ -5,12 +5,12 @@
 
    - El perfil del género modula lo que te sale natural:
        critica   → el respeto artístico (rap/rock son más
-                   respetados por la crítica; urban/pop menos).
+                   respetados por la crítica; urban menos).
        comercial → la velocidad para convertir oídos en fans
-                   (urban/pop convierten más rápido).
+                   (urban convierte más rápido).
        escena    → cuánto te forma el under: rap/rock aprenden
                    más trabajando la escena y construyen una
-                   base más fiel; urban/pop una base más amplia
+                   base más fiel; urban una base más amplia
                    pero más volátil.
    - Con la madurez (experiencia) tu lugar dentro del género
      cambia: de aprendiz a referente.
@@ -48,7 +48,7 @@ Under.GENEROS = {
 
   /* ---------- Perfil del género actual ---------- */
   perfil: function (state) {
-    var gen = Under.DATA.GENRES[state.artista.genero] || Under.DATA.GENRES.pop;
+    var gen = Under.DATA.GENRES[state.artista.genero] || Under.DATA.GENRES[Object.keys(Under.DATA.GENRES)[0]];
     return gen.perfil || {};
   },
 
@@ -60,8 +60,8 @@ Under.GENEROS = {
   },
 
   /* ---------- Factor comercial ----------
-     Cuántos oídos nuevos convierte cada tema. Urban y pop
-     convierten más rápido; rap y rock más lento. */
+     Cuántos oídos nuevos convierte cada tema. Urban
+     convierte más rápido; rap y rock más lento. */
   comercial: function (state) {
     return Under.GENEROS.perfil(state).comercial || 1;
   },
@@ -187,48 +187,6 @@ Under.GENEROS = {
         },
         resultado: "No vas. La noche se hace igual y tu influencia se siente aunque no estés.",
         log: "No participó de la noche de versiones."
-      }
-    ]);
-  },
-
-  /* ---------- Pop: el mainstream te reclama ---------- */
-  crearEventoGeneroPop2: function (state) {
-    return Under.GENEROS._crear("gen2_pop", "El mainstream te reclama", [
-      "La radio grande de tu país quiere tu tema en rotación pesada toda la temporada.",
-      "Una productora de un megashow te ofrece un puesto en su lineup principal.",
-      "Nike te ofrece ser la cara de su campaña del verano."
-    ], [
-      {
-        texto: "Aceptar el trato grande",
-        desc: "Exposición total, aunque tu imagen quede un poco más manejada.",
-        efectos: function (s) {
-          Under.GENEROS._limpiar("gen2_pop");
-          s.reputacion = Under.STATE.clamp(s.reputacion + 2, 0, 100);
-          return { money: Under.SYSTEMS.dineroEscala(s, 3000), fans: Under.SYSTEMS.fansEscala(s, 8000), popularity: 6, _energia: -10 };
-        },
-        resultado: "Tu tema no sale del aire y tu cara está en todas partes. El mainstream ya no es un sueño: es tu casa.",
-        log: "Aceptó el gran trato del mainstream."
-      },
-      {
-        texto: "Aceptar a medias",
-        desc: "La exposición, sin entregar tu imagen del todo.",
-        efectos: function (s) {
-          Under.GENEROS._limpiar("gen2_pop");
-          s.reputacion = Under.STATE.clamp(s.reputacion + 3, 0, 100);
-          return { money: Under.SYSTEMS.dineroEscala(s, 1500), fans: Under.SYSTEMS.fansEscala(s, 4000), popularity: 4, talent: 1 };
-        },
-        resultado: "Negociás hasta el último detalle. Entrás al circuito grande sin perder el control de tu imagen.",
-        log: "Aceptó a medias el trato del mainstream."
-      },
-      {
-        texto: "Rechazar",
-        desc: "Tu música no se entrega a la rotación.",
-        efectos: function (s) {
-          Under.GENEROS._limpiar("gen2_pop");
-          return { talent: 1, fans: Under.SYSTEMS.fansEscala(s, 500) };
-        },
-        resultado: "Decís que no. El mainstream busca a otro, pero tu criterio queda intacto.",
-        log: "Rechazó el gran trato del mainstream."
       }
     ]);
   },

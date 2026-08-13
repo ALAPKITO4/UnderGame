@@ -71,7 +71,7 @@ Under.MAIN = {
   ultimaResultado: null,
   _confirmAccion: null,
   showMisiones: false,
-  form: { nombre: "", ciudad: "Tu ciudad", genero: null, personalidad: null },
+  form: { nombre: "", genero: null, personalidad: null },
 
   /* ---------- Arranque ---------- */
   init: function () {
@@ -86,7 +86,7 @@ Under.MAIN = {
     this.estado = null;
     this.ultimaResultado = null;
     this.showMisiones = false;
-    this.form = { nombre: "", ciudad: "Tu ciudad", genero: null, personalidad: null };
+    this.form = { nombre: "", genero: null, personalidad: null };
     document.body.style.removeProperty("--accent");
     Under.UI.render();
   },
@@ -153,9 +153,6 @@ Under.MAIN = {
     this.form.nombre = v;
     this.checkCreacion();
   },
-  ciudadChanged: function (v) {
-    this.form.ciudad = v || "Tu ciudad";
-  },
   pickGenero: function (v) {
     this.form.genero = v;
     document.body.style.setProperty("--accent", Under.DATA.GENRES[v].color);
@@ -177,7 +174,6 @@ Under.MAIN = {
 
     var estado = Under.STATE.crearJuego({
       nombre: f.nombre.trim(),
-      ciudad: f.ciudad,
       genero: f.genero,
       personalidad: f.personalidad
     });

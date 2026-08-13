@@ -190,8 +190,8 @@ function jugar(gen, per) {
          "rival_nuevo", "rival_duelo", "rival_reconciliar", "rival_colab",
          "under_feria", "under_escuela", "under_fiesta", "under_banda", "under_manifiesto",
          "grande_docuserie", "grande_banda", "grande_teatro", "grande_viral", "grande_verano",
-         "gen_rap", "gen_rock", "gen_pop", "gen_urban",
-         "gen2_rap", "gen2_rock", "gen2_pop", "gen2_urban",
+         "gen_rap", "gen_rock", "gen_urban",
+         "gen2_rap", "gen2_rock", "gen2_urban",
          "extra_serie", "extra_videojuego", "extra_publicidad", "extra_reality",
          "extra_letras", "extra_demo", "extra_producir", "extra_jam_estudio",
          "fan_club", "fan_hater", "fan_tatuaje",
@@ -662,7 +662,7 @@ function jugar(gen, per) {
 function jugarRetiro() {
   sembrar();
   Under.MAIN.nuevaCarrera();
-  Under.MAIN.form = { nombre: "RetiroTest", ciudad: "Buenos Aires, Argentina", genero: "pop", personalidad: "estrategico" };
+  Under.MAIN.form = { nombre: "RetiroTest", genero: "urban", personalidad: "estrategico" };
   Under.MAIN.empezar();
   var safety = 0;
 
@@ -761,10 +761,10 @@ Under.PREMIOS._forzarDerrota = 1;
 var combinaciones = [
   ["rap", "estrategico"],
   ["urban", "ambicioso"],
-  ["pop", "carismatico"],
+  ["rock", "carismatico"],
   ["rock", "artistico"],
   ["rap", "independiente"],
-  ["pop", "estrategico"],
+  ["urban", "estrategico"],
   ["urban", "carismatico"],
   ["rock", "ambicioso"]
 ];

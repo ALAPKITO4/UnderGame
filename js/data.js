@@ -111,16 +111,6 @@ Under.DATA = {
       desventaja: "El camino comercial es más lento.",
       stats: { talent: 5, popularity: -4 },
       perfil: { critica: 0.45, comercial: 0.95, escena: 1.2, fidelidad: 1.28, pico: "Fiel", afinidad: "El instrumento y el vivo" }
-    },
-    pop: {
-      id: "pop",
-      nombre: "Pop / Electrónica",
-      emoji: "✨",
-      color: "#22d3ee",
-      ventaja: "Gran facilidad para el éxito comercial.",
-      desventaja: "Pocas plata para arrancar es un problema menor: tu fuerza es la imagen.",
-      stats: { popularity: 6, money: 100 },
-      perfil: { critica: -0.1, comercial: 1.12, escena: 0.95, fidelidad: 0.98, pico: "Comercial", afinidad: "La imagen y el radio" }
     }
   },
 
@@ -306,25 +296,6 @@ Under.DATA = {
     { id: "leyenda_viva",   nombre: "Leyenda viva",   exp: 90 }
   ],
 
-  CIUDADES: [
-    "Tu ciudad",
-    "Buenos Aires, Argentina",
-    "Córdoba, Argentina",
-    "Rosario, Argentina",
-    "Ciudad de México",
-    "Bogotá, Colombia",
-    "Medellín, Colombia",
-    "Lima, Perú",
-    "Santiago, Chile",
-    "Montevideo, Uruguay",
-    "Quito, Ecuador",
-    "Caracas, Venezuela",
-    "Ciudad de Panamá",
-    "San Juan, Puerto Rico",
-    "São Paulo, Brasil",
-    "Madrid, España"
-  ],
-
   /* ---------- Rivales persistentes ----------
      Nombres de la escena para los rivales de la rivalidad
      larga. Se evita repetir dentro de la misma carrera. */
@@ -423,8 +394,7 @@ Under.DATA = {
   SONG_NAMES: {
     urban: ["Perreo a la carta", "La que se viene", "Bajón y azúcar", "En la disco", "Gato libre", "Flow de medianoche", "Maldita fiesta", "Playa virtual", "Ven a bailar", "Ritmo de la calle", "Candelita", "Se nota", "La foto del DNI", "Bailando en el colectivo", "El otro martes", "Chicle bajo la silla", "Tarde de piletón", "Fiesta en la vereda", "El perreo del domingo", "Cero stock", "La vuelta al pan"],
     rap: ["Ley del silencio", "Barrio dormido", "Plomo en la rima", "Vendaval", "Sin escalas", "Tinta en las manos", "Medianoche gris", "Ritual", "Antimateria", "Deuda pendiente", "Fuego lento", "Papel mojado", "El pibe de la esquina", "Dos panchos y un feat", "Rima en la ronda", "La Sobre no duerme", "Barra de andén", "Cuaderno mojado", "El verso del bondi", "Media pila", "La calle no llama"],
-    rock: ["Tormenta eléctrica", "Ciudad gris", "Noches de garaje", "Sirena rota", "Distorsión", "Laberinto", "Vía de escape", "Luna de hierro", "Incendio", "Bruma", "Adrenalina", "Última toma", "Garaje a oscuras", "El último cable", "Amplificador roto", "Batería de cocina", "Ensayo a las tres", "Cuerda floja", "El depto vacío", "Bajo tierra", "Púa prestada"],
-    pop: ["Bombón digital", "Luna de neón", "Corazón en modo avión", "Gravity", "Velocidad", "Azúcar en los labios", "Verano eterno", "Satélite", "Frío polar", "Como ayer", "Brillo", "Hora dorada", "Verano y ananá", "Brillo de cámara", "Postal de la playa", "Corazón en 4K", "Melodía de ascensor", "El pop de la plaza", "Lentes de sol en invierno", "Domingo de radio", "Confeti barato"]
+    rock: ["Tormenta eléctrica", "Ciudad gris", "Noches de garaje", "Sirena rota", "Distorsión", "Laberinto", "Vía de escape", "Luna de hierro", "Incendio", "Bruma", "Adrenalina", "Última toma", "Garaje a oscuras", "El último cable", "Amplificador roto", "Batería de cocina", "Ensayo a las tres", "Cuerda floja", "El depto vacío", "Bajo tierra", "Púa prestada"]
   },
 
   /* ---------- Sellos discográficos (FASE 3) ----------
@@ -1258,11 +1228,6 @@ Under.DATA = {
       generar: function (s) { return Under.EXTRA.crearEventoGeneroRock(s); }
     },
     {
-      id: "gen_pop", peso: 2,
-      disponible: function (s) { return s.artista.genero === "pop" && s.año >= 2; },
-      generar: function (s) { return Under.EXTRA.crearEventoGeneroPop(s); }
-    },
-    {
       id: "gen_urban", peso: 2,
       disponible: function (s) { return s.artista.genero === "urban" && s.año >= 2; },
       generar: function (s) { return Under.EXTRA.crearEventoGeneroUrban(s); }
@@ -1279,11 +1244,6 @@ Under.DATA = {
       id: "gen2_rock", peso: 2,
       disponible: function (s) { return s.artista.genero === "rock" && s.año >= 5; },
       generar: function (s) { return Under.GENEROS.crearEventoGeneroRock2(s); }
-    },
-    {
-      id: "gen2_pop", peso: 2,
-      disponible: function (s) { return s.artista.genero === "pop" && s.año >= 5; },
-      generar: function (s) { return Under.GENEROS.crearEventoGeneroPop2(s); }
     },
     {
       id: "gen2_urban", peso: 2,
