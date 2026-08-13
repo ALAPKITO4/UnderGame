@@ -810,12 +810,12 @@ Under.EXTRA = {
     ]);
   },
 
-  /* ---------- Jam en el estudio ---------- */
+  /* ---------- Medusa n°67 ---------- */
   crearEventoJamEstudio: function (state) {
-    return Under.EXTRA._crear("extra_jam_estudio", "Jam en el estudio", [
-      "Alguien arma una jam en un estudio del under y faltan voces. Te llaman.",
-      "Una sesión de ida y vuelta: músicos de la escena, un estudio prestado y ganas de sonar.",
-      "La jam de los martes en el estudio de la zona te abre un hueco esta semana."
+    return Under.EXTRA._crear("extra_jam_estudio", "Medusa n°67", [
+      "Quieren regrabar Medusa por 67ª vez en el estudio del under, falta una voz y enzocerobulto te llama.",
+      "enzocerobulto te llama: van por la 67ª grabación de Medusa y falta una voz. La tuya.",
+      "Falta una voz para la 67ª toma de Medusa en el estudio del under, y enzocerobulto te llama."
     ], [
       {
         texto: "Sumarte",
