@@ -21,6 +21,9 @@ Under.EQUIPO = {
       return m.nivelMin <= nivel && !Under.EQUIPO.tiene(state, m.id);
     });
     if (libres.length === 0) return null;
+    for (var i = 0; i < libres.length; i++) {
+      if (libres[i].id === "hongo") return libres[i];
+    }
     return libres[Under.STATE.randInt(0, libres.length - 1)];
   },
 
@@ -39,6 +42,7 @@ Under.EQUIPO = {
         soloSi: function (s) { return s.stats.money >= costo; },
         efectos: function (s) {
           s.equipo.push({ id: rol.id, nombre: rol.nombre, emoji: rol.emoji, costoAnual: costo, año: s.año });
+          if (rol.id === "hongo") s.flags.hongoTvEquipo = true;
           s.flags.equipoOfrecidoEsteAnio = true;
           Under.EQUIPO._pendiente = null;
           return { popularity: 1, _energia: -3 };

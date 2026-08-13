@@ -549,7 +549,8 @@ Under.DATA = {
     { id: "manager", nombre: "Manager", emoji: "💼", nivelMin: 2, costoAnual: 700, desc: "Mejora tus negocios: +10% de dinero en lanzamientos, giras y colaboraciones." },
     { id: "agente",  nombre: "Agente", emoji: "🎫", nivelMin: 3, costoAnual: 600, desc: "Consigue mejores fechas: +20% de fans en cada gira." },
     { id: "prensa",  nombre: "Jefe de prensa", emoji: "📰", nivelMin: 3, costoAnual: 500, desc: "Cuida tu imagen: reduce el daño de los escándalos." },
-    { id: "asesor",  nombre: "Asesor financiero", emoji: "📈", nivelMin: 4, costoAnual: 650, desc: "Mejora tus inversiones: más retorno y menos riesgo." }
+    { id: "asesor",  nombre: "Asesor financiero", emoji: "📈", nivelMin: 4, costoAnual: 650, desc: "Mejora tus inversiones: más retorno y menos riesgo." },
+    { id: "hongo",   nombre: "hongo TV", emoji: "📺", nivelMin: 2, costoAnual: 600, desc: "Consigue mejores fechas: +20% de fans en cada gira." }
   ],
 
   /* ---------- Inversiones (FASE 4) ----------
@@ -895,7 +896,8 @@ Under.DATA = {
     {
       id: "under_hongo_tv", peso: 2,
       disponible: function (s) {
-        return s.año >= 3 && s.lanzamientos >= 1 && Under.STATE.nivelCarrera(s).nivel <= 3;
+        return s.año >= 3 && s.lanzamientos >= 1 && Under.STATE.nivelCarrera(s).nivel <= 3
+          && !Under.EQUIPO.tiene(s, "hongo") && !(s.flags && s.flags.hongoTvEquipo);
       },
       generar: function (s) { return Under.UNDER.crearEventoHongoTv(s); }
     },

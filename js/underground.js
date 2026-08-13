@@ -1618,12 +1618,12 @@ Under.UNDER = {
     ]);
   },
 
-  /* ---------- Un taller en el centro cultural ---------- */
+  /* ---------- Un taller en Cayo Makensi ---------- */
   crearEventoEscuela: function (state) {
-    return Under.UNDER._crear("under_escuela", "Un taller en el barrio", [
-      "Un centro cultural del barrio te invita a dar un taller de escritura de rimas.",
-      "Una organización comunitaria te pide una charla sobre la escena local.",
-      "Un grupo de pibes de tu zona quiere que les enseñes a componer."
+    return Under.UNDER._crear("under_escuela", "Un taller en Cayo Makensi", [
+      "En Cayo Makensi arman un taller y te invitan a dar una charla sobre Fuego Live.",
+      "Te piden una charla sobre Fuego Live en un taller que se arma en Cayo Makensi.",
+      "En Cayo Makensi te esperan para un taller: una charla sobre Fuego Live frente a los pibes de la escena."
     ], [
       {
         texto: "Dar el taller",
@@ -1633,8 +1633,8 @@ Under.UNDER = {
           Under.MISIONES.sumar(s, "taller", 1);
           return { talent: 2, _relaciones: 4, fans: Under.SYSTEMS.fansEscala(s, 250), _energia: -8 };
         },
-        resultado: "El taller se llena y los pibes salen escribiendo cosas que te sorprenden. La zona te quiere un poco más.",
-        log: "Dio un taller de escritura en el barrio."
+        resultado: "La charla sobre Fuego Live en Cayo Makensi se llena. Los pibes repiten tus frases: tu conocimiento ya no es solo tuyo.",
+        log: "Dio una charla sobre Fuego Live en Cayo Makensi."
       },
       {
         texto: "Grabar con los pibes",
@@ -1643,8 +1643,8 @@ Under.UNDER = {
           Under.UNDER._limpiar("under_escuela");
           return { talent: 2, fans: Under.SYSTEMS.fansEscala(s, 400), money: -Under.SYSTEMS.efectivoEscala(s, 50), _energia: -10 };
         },
-        resultado: "Grabás con el grupo un tema colectivo. El resultado se comparte por la zona y tu nombre entra en las casas.",
-        log: "Grabó un tema colectivo con pibes del barrio."
+        resultado: "Grabás con el grupo un tema colectivo en Cayo Makensi. El resultado se comparte por la zona y tu nombre entra en las casas.",
+        log: "Grabó un tema colectivo con pibes en Cayo Makensi."
       },
       {
         texto: "No poder ir",
@@ -1653,8 +1653,8 @@ Under.UNDER = {
           Under.UNDER._limpiar("under_escuela");
           return {};
         },
-        resultado: "No vas. La organización lo entiende, pero la puerta queda un poco más fría.",
-        log: "No pudo dar un taller en el barrio."
+        resultado: "No vas. La organización lo entiende, pero la puerta de Cayo Makensi queda un poco más fría.",
+        log: "No pudo dar el taller en Cayo Makensi."
       }
     ]);
   },
