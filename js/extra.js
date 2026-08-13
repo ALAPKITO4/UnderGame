@@ -217,10 +217,10 @@ Under.EXTRA = {
 
   /* ---------- Un videojuego quiere tu música ---------- */
   crearEventoVideojuego: function (state) {
-    return Under.EXTRA._crear("extra_videojuego", "Un videojuego te quiere", [
-      "Un estudio indie de videojuegos quiere tu tema para la banda sonora de su juego.",
-      "Un juego con culto de fans te ofrece incluir tu canción en su menú principal.",
-      "Un desarrollador de tu país quiere tu música de fondo para un nivel completo."
+    return Under.EXTRA._crear("extra_videojuego", "Pq la sprite se llama lean?", [
+      "goujys te hizo la oferta: quiere tu tema para la banda sonora de su videojuego.",
+      "goujys, que está armando un juego con culto de fans, te ofrece incluir tu canción en su menú principal.",
+      "goujys te escribió por el desarrollo de su videojuego y quiere tu música de fondo para un nivel completo."
     ], [
       {
         texto: "Cederlo al juego",

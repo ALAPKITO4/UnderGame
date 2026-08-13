@@ -358,20 +358,20 @@ Under.UNDER = {
   /* ---------- Telonero de un artista más grande ---------- */
   crearEventoTelonero: function (state) {
     return Under.UNDER._crear("under_telonero", "Te ofrecen el telonero", [
-      "Un artista más grande de tu ciudad te elige para abrir su show.",
-      "Una banda de gira nacional para en tu provincia y te ofrecen la apertura.",
-      "Un evento con cabeza de cartel te ubica en la apertura, antes del plato fuerte."
+      "Los Amigos están organizando un show y te invitan a tocar antes de Pascu.",
+      "Los Amigos arman una fecha grande y quieren que la abras tocando antes de Pascu.",
+      "Pascu, de Los Amigos, te propone abrir el show que están organizando."
     ], [
       {
         texto: "Abrir el show",
-        desc: "Su público te ve por primera vez. Una paliza, pero enorme.",
+        desc: "El público de Los Amigos te ve por primera vez. Una paliza, pero enorme.",
         efectos: function (s) {
           Under.UNDER._limpiar("under_telonero");
           Under.MISIONES.sumar(s, "telonero", 1);
           return { money: Under.SYSTEMS.efectivoEscala(s, 100), fans: Under.SYSTEMS.fansEscala(s, 900), popularity: 4, _energia: -15 };
         },
-        resultado: "Abrís su show y su gente te recibe mejor de lo que esperabas. Salís del escenario con una fecha más en la lista.",
-        log: "Abrió un show de un artista más grande."
+        resultado: "Abrís antes de Pascu y la gente de Los Amigos te recibe mejor de lo que esperabas. Salís del escenario con una fecha más en la lista.",
+        log: "Abrió el show de Los Amigos antes de Pascu."
       },
       {
         texto: "Pedir más plata",

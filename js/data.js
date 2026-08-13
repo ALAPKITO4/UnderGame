@@ -337,7 +337,7 @@ Under.DATA = {
     { nombre: "Galpón de los Espejos", tipo: "galpón",  capacidad: 300 },
     { nombre: "Salón del Club Italiano", tipo: "salón", capacidad: 100 },
     { nombre: "Parada del Ómnibus 4", tipo: "espacio",  capacidad: 0 },
-    { nombre: "Estudio Don Beats",    tipo: "estudio",  capacidad: 20 },
+    { nombre: "Estudio Jortha",    tipo: "estudio",  capacidad: 20 },
     { nombre: "Sanmaja Studio",       tipo: "estudio",  capacidad: 40 },
     { nombre: "Joma Studio",          tipo: "estudio",  capacidad: 30 },
     { nombre: "Traslacortina Studio", tipo: "estudio",  capacidad: 60 },
@@ -1834,7 +1834,7 @@ Under.DATA = {
       añoMin: 3, añoMax: 6,
       importante: true,
       titulo: "Un video tuyo se está compartiendo",
-      texto: "Alguien grabó de cerca, con el celular, un video tuyo freestyleando en la ronda de La Sobre y se está compartiendo por los grupos. En dos días tiene miles de vistas y ya le suman memes.\n\nNadie sabe qué va a pasar.",
+      texto: "Alguien te grabó de cerca, con el celular, mientras freestyleabas, y se está compartiendo por los grupos. En dos días tiene miles de vistas y ya le suman memes.\n\nNadie sabe qué va a pasar.",
       opciones: [
         {
           texto: "Subirlo a tus plataformas",
