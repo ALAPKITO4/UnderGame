@@ -527,9 +527,9 @@ Under.DATA = {
     grave: {
       id: "grave", nombre: "Controversia seria", gravedad: "grave", nivelMin: 3, peso: 2, popularidad: -8, fans: -9000,
       textos: [
-        "Un ex socio habla mal de vos en un documental y los titulares te apuntan.",
-        "Cancelan tu participación en una fecha del under después de una polémica.",
-        "Te acusan de plagio y la industria debate el tema durante semanas."
+        "Kiwa arma una controversia seria: habla mal de vos en un documental y los titulares te apuntan.",
+        "Kiwa arma la polémica y te cancelan la participación en una fecha del under.",
+        "Kiwa te acusa de plagio y la industria debate el tema durante semanas."
       ]
     },
     crisis: {

@@ -46,10 +46,10 @@ Under.EXTRA = {
 
   /* ---------- Rap: un veterano te desafía ---------- */
   crearEventoGeneroRap: function (state) {
-    return Under.EXTRA._crear("gen_rap", "Un veterano del rap te desafía", [
-      "Un MC histórico de tu ciudad te bardeó en vivo y te cita para un duelo de rimas.",
-      "En un cypher con leyendas, el más viejo te mira y te dice que sueltes tu mejor barra.",
-      "Un veterano del rap local quiere probar si los nuevos tienen hambre. Arrancó por vos."
+    return Under.EXTRA._crear("gen_rap", "CRO te desafía", [
+      "CRO, un MC histórico de tu ciudad, te bardeó en vivo y te cita para un duelo de rimas.",
+      "En un cypher con leyendas, CRO te mira y te dice que sueltes tu mejor barra.",
+      "CRO, veterano del rap local, quiere probar si los nuevos tienen hambre. Arrancó por vos."
     ], [
       {
         texto: "Aceptar el duelo",
@@ -61,8 +61,8 @@ Under.EXTRA = {
           }
           return { popularity: -2, fans: -Under.SYSTEMS.fansEscala(s, 150), _energia: -10 };
         },
-        resultado: "El duelo es histórico. Cuando ganás, la escena entera lo repite; cuando perdés, perdiste contra una leyenda.",
-        log: "Aceptó un duelo de rimas con un veterano del rap."
+        resultado: "El duelo con CRO es histórico. Cuando ganás, la escena entera lo repite; cuando perdés, perdiste contra una leyenda.",
+        log: "Aceptó un duelo de rimas con CRO."
       },
       {
         texto: "Freestylear con respeto",
@@ -71,8 +71,8 @@ Under.EXTRA = {
           Under.EXTRA._limpiar("gen_rap");
           return { popularity: 2, talent: 1, fans: Under.SYSTEMS.fansEscala(s, 300) };
         },
-        resultado: "Le dedicás tu mejor barra como homenaje. El veterano asiente: te ganaste su respeto.",
-        log: "Dedicó un freestyle con respeto a un veterano del rap."
+        resultado: "Le dedicás a CRO tu mejor barra como homenaje. CRO asiente: te ganaste su respeto.",
+        log: "Dedicó un freestyle con respeto a CRO."
       },
       {
         texto: "Declinar",
@@ -81,8 +81,8 @@ Under.EXTRA = {
           Under.EXTRA._limpiar("gen_rap");
           return { talent: 1 };
         },
-        resultado: "No vas. El veterano sigue su camino y la escena no lo olvida del todo.",
-        log: "Declinó un duelo con un veterano del rap."
+        resultado: "No vas. CRO sigue su camino y la escena no lo olvida del todo.",
+        log: "Declinó un duelo con CRO."
       }
     ]);
   },
@@ -296,10 +296,10 @@ Under.EXTRA = {
 
   /* ---------- Música para una publicidad ---------- */
   crearEventoPublicidad: function (state) {
-    return Under.EXTRA._crear("extra_publicidad", "Una publicidad te llama", [
-      "Una marca local quiere un jingle para su publicidad de radio y tele.",
-      "Una empresa de barrio te pide una canción corta para su campaña.",
-      "Un spot institucional necesita música original y pensaron en vos."
+    return Under.EXTRA._crear("extra_publicidad", "Naty vintage te llama", [
+      "Naty vintage te llama: una marca local quiere un jingle para su publicidad de radio y tele.",
+      "Naty vintage te contacta por una empresa de barrio que te pide una canción corta para su campaña.",
+      "Naty vintage te ofrece un spot institucional que necesita música original y pensaron en vos."
     ], [
       {
         texto: "Componer el jingle",

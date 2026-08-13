@@ -159,10 +159,10 @@ Under.GRANDE = {
 
   /* ---------- Un estadio te invita ---------- */
   crearEventoEstadio: function (state) {
-    return Under.GRANDE._crear("grande_estadio", "Una fecha en el estadio", [
-      "Un estadio de tu ciudad te ofrece la fecha de apertura de su temporada.",
-      "Una fecha gigante te ubica en el escenario principal, antes del headliner.",
-      "Te proponen un show único en un estadio, con producción completa."
+    return Under.GRANDE._crear("grande_estadio", "Una fecha en el Monumental", [
+      "El estadio de River, el Monumental, te ofrece la fecha de apertura de su temporada.",
+      "Una fecha gigante en River te ubica en el escenario principal del Monumental, antes del headliner.",
+      "Te proponen un show único en el Monumental de River, con producción completa."
     ], [
       {
         texto: "Aceptar el desafío",
@@ -171,8 +171,8 @@ Under.GRANDE = {
           Under.GRANDE._limpiar("grande_estadio");
           return { money: Under.SYSTEMS.dineroEscala(s, 1200), fans: Under.SYSTEMS.fansEscala(s, 3000), popularity: 6, _energia: -20, _legado: 2 };
         },
-        resultado: "Subís a un escenario que parece un país. La gente corea tus temas y entendés por qué estás ahí.",
-        log: "Tocó en un estadio."
+        resultado: "Subís al escenario del Monumental, que parece un país. La gente corea tus temas y entendés por qué estás ahí.",
+        log: "Tocó en el estadio de River (El Monumental)."
       },
       {
         texto: "Llevar invitados",
@@ -181,8 +181,8 @@ Under.GRANDE = {
           Under.GRANDE._limpiar("grande_estadio");
           return { money: Under.SYSTEMS.dineroEscala(s, 700), fans: Under.SYSTEMS.fansEscala(s, 2000), popularity: 4, _energia: -15 };
         },
-        resultado: "El cartel suma nombres y la noche es una fiesta colectiva. Tu nombre, igual, es el que llenó.",
-        log: "Tocó en un estadio con invitados."
+        resultado: "El cartel suma nombres y la noche en el Monumental es una fiesta colectiva. Tu nombre, igual, es el que llenó.",
+        log: "Tocó en el Monumental con invitados."
       },
       {
         texto: "Dejarlo para más adelante",
@@ -191,7 +191,7 @@ Under.GRANDE = {
           Under.GRANDE._limpiar("grande_estadio");
           return {};
         },
-        resultado: "Decís que todavía no. La fecha se la dan a otro, y la revancha queda anotada.",
+        resultado: "Decís que todavía no. La fecha se la dan a otro, y la revancha en River queda anotada.",
         log: "Dejó pasar una fecha de estadio."
       }
     ]);
@@ -199,10 +199,11 @@ Under.GRANDE = {
 
   /* ---------- Un medio internacional te entrevista ---------- */
   crearEventoPrensaGrande: function (state) {
-    return Under.GRANDE._crear("grande_prensa", "Un medio internacional", [
-      "Una revista internacional quiere una entrevista de tapa.",
-      "Un periodista famoso te espera para una charla en profundidad.",
-      "Un medio extranjero te pregunta por tu sonido y tu país en un especial."
+    var tema = (state.ultimoLanzamiento && state.ultimoLanzamiento.nombre) || "tu última canción";
+    return Under.GRANDE._crear("grande_prensa", "Lolo Morales te espera en su stream", [
+      "Lolo Morales te espera para una charla en su stream de Kick sobre «" + tema + "» y el under.",
+      "Lolo Morales te invita a su stream de Kick a hablar sobre tu última canción y el under de donde saliste.",
+      "Un periodista famoso te espera para una charla en profundidad: Lolo Morales te abre su canal de Kick para hablar de tu música."
     ], [
       {
         texto: "Ser 100% honesto",
@@ -319,10 +320,10 @@ Under.GRANDE = {
 
   /* ---------- Un artista nuevo te admira ---------- */
   crearEventoProtector: function (state) {
-    return Under.GRANDE._crear("grande_protector", "Un artista nuevo te admira", [
-      "Un artista joven de tu ciudad te dice que tu música lo salvó y te manda su demo.",
-      "Una banda emergente te pide que escuches su primer material.",
-      "Un chico de la escena te escribe pidiéndote un consejo para grabar."
+    return Under.GRANDE._crear("grande_protector", "Blake te admira", [
+      "Blake, un artista joven de tu ciudad, te dice que tu música lo salvó y te manda su demo.",
+      "Blake, un artista emergente, te pide que escuches su primer material.",
+      "Blake, un chico de la escena, te escribe pidiéndote un consejo para grabar."
     ], [
       {
         texto: "Escucharlo y ayudarlo",
@@ -331,8 +332,8 @@ Under.GRANDE = {
           Under.GRANDE._limpiar("grande_protector");
           return { fans: Under.SYSTEMS.fansEscala(s, 400), popularity: 2, talent: 1 };
         },
-        resultado: "Lo escuchás y le das consejos de verdad. La escena te recuerda de dónde saliste.",
-        log: "Ayudó a un artista nuevo."
+        resultado: "Escuchás a Blake y le das consejos de verdad. La escena te recuerda de dónde saliste.",
+        log: "Ayudó a Blake, un artista nuevo."
       },
       {
         texto: "Darle una oportunidad en vivo",
@@ -341,8 +342,8 @@ Under.GRANDE = {
           Under.GRANDE._limpiar("grande_protector");
           return { fans: Under.SYSTEMS.fansEscala(s, 800), popularity: 3, _energia: -8 };
         },
-        resultado: "Le das una fecha de telonero. Su gente te lo agradece para siempre y la escena lo celebra.",
-        log: "Le dio una fecha de telonero a un artista nuevo."
+        resultado: "Le das a Blake una fecha de telonero. Su gente te lo agradece para siempre y la escena lo celebra.",
+        log: "Le dio una fecha de telonero a Blake."
       },
       {
         texto: "No tener tiempo",
@@ -351,8 +352,8 @@ Under.GRANDE = {
           Under.GRANDE._limpiar("grande_protector");
           return { popularity: -1 };
         },
-        resultado: "No le respondés. La puerta de la escena se enfría un poco con vos.",
-        log: "No ayudó a un artista nuevo."
+        resultado: "No le respondés a Blake. La puerta de la escena se enfría un poco con vos.",
+        log: "No ayudó a Blake, un artista nuevo."
       }
     ]);
   },

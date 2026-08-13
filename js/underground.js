@@ -175,10 +175,10 @@ Under.UNDER = {
 
   /* ---------- Un creador de contenido te menciona ---------- */
   crearEventoInfluencer: function (state) {
-    return Under.UNDER._crear("under_influencer", "Un creador te mencionó", [
-      "Un creador de tu ciudad usó tu tema en un video que viene sumando vistas.",
-      "Un tiktoker con 20.000 seguidores te pidió una canción para su próximo reel.",
-      "Un streamer con audiencia local quiere tu música de fondo para sus directos."
+    return Under.UNDER._crear("under_influencer", "Blake, un creador, te mencionó", [
+      "Blake, un creador de tu ciudad, usó tu tema en un video que viene sumando vistas.",
+      "Blake, un tiktoker con 20.000 seguidores, te pidió una canción para su próximo reel.",
+      "Blake, un streamer con audiencia local, quiere tu música de fondo para sus directos."
     ], [
       {
         texto: "Colaborar en contenido",
@@ -188,8 +188,8 @@ Under.UNDER = {
           Under.MISIONES.sumar(s, "contenido", 1);
           return { fans: Under.SYSTEMS.fansEscala(s, 500), popularity: 2, _energia: -5 };
         },
-        resultado: "El contenido sale y su gente se pasa a la tuya. Cada creador que te nombró, suma.",
-        log: "Colaboró con un creador de contenido."
+        resultado: "El contenido de Blake sale y su gente se pasa a la tuya. Cada creador que te nombró, suma.",
+        log: "Colaboró con Blake, un creador de contenido."
       },
       {
         texto: "Agradecer el gesto",
@@ -198,8 +198,8 @@ Under.UNDER = {
           Under.UNDER._limpiar("under_influencer");
           return { fans: Under.SYSTEMS.fansEscala(s, 150), popularity: 1 };
         },
-        resultado: "Le agradecés públicamente. Pequeño gesto, pequeño empujón.",
-        log: "Agradeció a un creador que usó su música."
+        resultado: "Le agradecés a Blake públicamente. Pequeño gesto, pequeño empujón.",
+        log: "Agradeció a Blake por usar su música."
       },
       {
         texto: "No responder",
@@ -1418,7 +1418,7 @@ Under.UNDER = {
             s.reputacion = Math.max(0, (s.reputacion || 50) - 10);
             return { popularity: 6, fans: Under.SYSTEMS.fansEscala(s, 4000), money: Under.SYSTEMS.dineroEscala(s, 2500), _relaciones: -8, _hype: 20 };
           },
-          resultado: "Elegís el mainstream. Tu nombre empieza a sonar en todos lados, pero el bar de la esquina ya no es tu casa. Crecer de verdad duele: cada oído nuevo te aleja de los que te bancaron desde el principio.",
+          resultado: "Elegís el mainstream. Tu nombre empieza a sonar en todos lados y las llamadas no paran: te invitan a estadios y lugares grandes, con producción completa. Pero el bar de la esquina ya no es tu casa. Crecer de verdad duele: cada oído nuevo te aleja de los que te bancaron desde el principio.",
           log: "Eligió el camino mainstream y dejó el under atrás."
         },
         {
