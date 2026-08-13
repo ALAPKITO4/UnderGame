@@ -1969,7 +1969,7 @@ Under.DATA = {
       añoMin: 3, añoMax: 6,
       importante: true,
       titulo: "Un video tuyo se está compartiendo",
-      texto: "Alguien te grabó de cerca, con el celular, mientras freestyleabas, y se está compartiendo por los grupos. En dos días tiene miles de vistas y ya le suman memes.\n\nNadie sabe qué va a pasar.",
+      texto: "Keneeth te grabó de cerca, con el celular, mientras freestyleabas, y se está compartiendo por los grupos. En dos días tiene miles de vistas y ya le suman memes.\n\nNadie sabe qué va a pasar.",
       opciones: [
         {
           texto: "Subirlo a tus plataformas",
