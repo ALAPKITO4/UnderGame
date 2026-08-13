@@ -1264,20 +1264,20 @@ Under.UNDER = {
     ]);
   },
 
-  /* ---------- Pulmón quiere regrabar «Galperin» ---------- */
+  /* ---------- Pulmón quiere regrabar «galpering LACONCHADETUTIA» ---------- */
   crearEventoGalperin: function (state) {
-    return Under.UNDER._crear("under_galperin", "Pulmón propone regrabar «Galperin»", [
-      "Tu amiga te pasa el mensaje de Pulmón: «LARECONCHADETUTIA». Su tema «Galperin» está re pegado en la escena y te propone regrabarlo juntos.",
-      "Pulmón te busca por la amiga: «Galperin» está explotando y cree que el tema queda mejor con los dos. Quiere regrabarlo a dúo.",
-      "La amiga te manda el texto de Pulmón: dice que «Galperin» se merece tu parte. El tema está re pegado y la propuesta es regrabarlo juntos."
+    return Under.UNDER._crear("under_galperin", "Pulmón propone regrabar «galpering LACONCHADETUTIA»", [
+      "Tu amiga te pasa el mensaje de Pulmón: «LARECONCHADETUTIA». Su tema «galpering LACONCHADETUTIA» está re pegado en la escena y te propone regrabarlo juntos.",
+      "Pulmón te busca por la amiga: «galpering LACONCHADETUTIA» está explotando y cree que el tema queda mejor con los dos. Quiere regrabarlo a dúo.",
+      "La amiga te manda el texto de Pulmón: dice que «galpering LACONCHADETUTIA» se merece tu parte. El tema está re pegado y la propuesta es regrabarlo juntos."
     ], [
       {
         texto: "Regrabarlo juntos",
         desc: "Un tema que ya suena, ahora con tu nombre.",
         efectos: function (s) {
           Under.UNDER._limpiar("under_galperin");
-          var est = { calidad: 6, viral: 0, texto: "regrabación de «Galperin» con Pulmón" };
-          var L = Under.MUSIC._calcular(s, "Galperin (feat. Pulmón)", est);
+          var est = { calidad: 6, viral: 0, texto: "regrabación de «galpering LACONCHADETUTIA» con Pulmón" };
+          var L = Under.MUSIC._calcular(s, "galpering LACONCHADETUTIA (feat. Pulmón)", est);
           L.repros = Math.round(L.repros * 1.4);
           L.fans = Math.round(L.fans * 1.4);
           L.dinero = Math.round(L.dinero * 0.7);
@@ -1296,7 +1296,7 @@ Under.UNDER = {
           return "Grabás «" + L.nombre + "» con Pulmón.\n\n" + Under.MUSIC.TIER_FLAVOR[L.tier] + "\n\n" +
             L.tierIcono + " " + L.tierNombre + " · " + Under.UI.fmtExacto(L.repros) + " reproducciones.";
         },
-        log: "Regrabó «Galperin» junto a Pulmón."
+        log: "Regrabó «galpering LACONCHADETUTIA» junto a Pulmón."
       },
       {
         texto: "Aceptar cobrando un buen pago",
@@ -1304,8 +1304,8 @@ Under.UNDER = {
         riesgo: 0.3,
         efectos: function (s) {
           Under.UNDER._limpiar("under_galperin");
-          var est = { calidad: 6, viral: 0, texto: "regrabación de «Galperin» con Pulmón" };
-          var L = Under.MUSIC._calcular(s, "Galperin (feat. Pulmón)", est);
+          var est = { calidad: 6, viral: 0, texto: "regrabación de «galpering LACONCHADETUTIA» con Pulmón" };
+          var L = Under.MUSIC._calcular(s, "galpering LACONCHADETUTIA (feat. Pulmón)", est);
           L.repros = Math.round(L.repros * 1.3);
           L.fans = Math.round(L.fans * 1.3);
           L.dinero = Math.round(L.dinero);
@@ -1324,7 +1324,7 @@ Under.UNDER = {
           return "Le ponés precio a tu parte y Pulmón acepta a regañadientes.\n\n" + Under.MUSIC.TIER_FLAVOR[L.tier] +
             "\n\n" + L.tierIcono + " " + L.tierNombre + " · " + Under.UI.fmtExacto(L.repros) + " reproducciones.";
         },
-        log: "Cobró caro su parte de «Galperin» con Pulmón.",
+        log: "Cobró caro su parte de «galpering LACONCHADETUTIA» con Pulmón.",
         riesgoEfectos: function (s) {
           Under.UNDER._limpiar("under_galperin");
           return { popularity: -1 };
@@ -1339,8 +1339,8 @@ Under.UNDER = {
           Under.UNDER._limpiar("under_galperin");
           return {};
         },
-        resultado: "Le decís que no. «Galperin» sigue sonando solo y vos seguís con lo tuyo.",
-        log: "Dejó pasar el regrabado de «Galperin» con Pulmón."
+        resultado: "Le decís que no. «galpering LACONCHADETUTIA» sigue sonando solo y vos seguís con lo tuyo.",
+        log: "Dejó pasar el regrabado de «galpering LACONCHADETUTIA» con Pulmón."
       }
     ]);
   },
