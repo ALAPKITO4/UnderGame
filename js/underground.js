@@ -95,6 +95,7 @@ Under.UNDER = {
         efectos: function (s) {
           Under.UNDER._limpiar("under_ciudad");
           Under.MISIONES.sumar(s, "toques", 1);
+          Under.MISIONES.sumar(s, "lucio", 1);
           return { money: Under.SYSTEMS.efectivoEscala(s, 120), fans: Under.SYSTEMS.fansEscala(s, 150), popularity: 2, _energia: -10 };
         },
         resultado: "Tocás para un puñado de gente. No cambia el mundo, pero cada persona que miró ahora sabe tu nombre.",
@@ -614,6 +615,7 @@ Under.UNDER = {
           Under.UNDER._limpiar("under_sala");
           Under.MISIONES.sumar(s, "salas", 1);
           Under.MISIONES.sumar(s, "artistas", 1);
+          Under.MISIONES.sumar(s, "lucio", 1);
           return { money: Under.SYSTEMS.efectivoEscala(s, 150), fans: Under.SYSTEMS.fansEscala(s, 450), popularity: 3, _energia: -15 };
         },
         resultado: "Tocás una noche en " + esc.nombre + " y la sala se llena con tu nombre. Un lugar con nombre en la escena.",
@@ -809,6 +811,7 @@ Under.UNDER = {
           Under.UNDER._limpiar("under_petalos");
           Under.MISIONES.sumar(s, "telonero", 1);
           Under.MISIONES.sumar(s, "toques", 1);
+          Under.MISIONES.sumar(s, "lucio", 1);
           return { talent: 2, fans: Under.SYSTEMS.fansEscala(s, 800), popularity: 3, _energia: -15 };
         },
         resultado: "Subís y hay un silencio que no conocés: nadie está obligado a aplaudirte. Para cuando terminás, una parte de esa gente ya te buscó en redes.",
@@ -901,6 +904,7 @@ Under.UNDER = {
           Under.UNDER._limpiar("under_makensi");
           Under.MISIONES.sumar(s, "telonero", 1);
           Under.MISIONES.sumar(s, "toques", 1);
+          Under.MISIONES.sumar(s, "lucio", 1);
           return { talent: 1, fans: Under.SYSTEMS.fansEscala(s, 500), popularity: 3, _energia: -18 };
         },
         resultado: "Subís entre tres teloneros y el headliner que todos alaban. Lucio y Benja están adelante con su gente. Tocás sin red, y cuando terminás, algunos que no te conocían se van hablando de vos.",
@@ -2054,6 +2058,7 @@ Under.UNDER = {
         efectos: function (s) {
           Under.UNDER._limpiar("under_marti");
           Under.MISIONES.sumar(s, "toques", 1);
+          Under.MISIONES.sumar(s, "marti", 1);
           return { fans: Under.SYSTEMS.fansEscala(s, 600), popularity: 3, _relaciones: 3, _energia: -10 };
         },
         resultado: "Vas y tocás para el grupo de Marti. Ella te presenta a todos y la fecha se siente como de la familia.",
@@ -2065,6 +2070,7 @@ Under.UNDER = {
         efectos: function (s) {
           Under.UNDER._limpiar("under_marti");
           Under.MISIONES.sumar(s, "contenido", 1);
+          Under.MISIONES.sumar(s, "marti", 1);
           return { fans: Under.SYSTEMS.fansEscala(s, 300), popularity: 2, _relaciones: 4 };
         },
         resultado: "Grabás un video agradeciéndole a Marti y a los que la bancan. El gesto circula y tu nombre gana la buena fama.",
@@ -2096,6 +2102,7 @@ Under.UNDER = {
         efectos: function (s) {
           Under.UNDER._limpiar("under_club_paraguay");
           Under.MISIONES.sumar(s, "toques", 1);
+          Under.MISIONES.sumar(s, "lucio", 1);
           return { money: Under.SYSTEMS.efectivoEscala(s, 250), fans: Under.SYSTEMS.fansEscala(s, 1500), popularity: 5, _energia: -15 };
         },
         resultado: "Tocás en Club Paraguay y la fecha se siente grande. La escena entera habla de tu show al día siguiente.",
@@ -2138,6 +2145,7 @@ Under.UNDER = {
         efectos: function (s) {
           Under.UNDER._limpiar("under_990");
           Under.MISIONES.sumar(s, "toques", 1);
+          Under.MISIONES.sumar(s, "lucio", 1);
           return { money: Under.SYSTEMS.efectivoEscala(s, 150), fans: Under.SYSTEMS.fansEscala(s, 900), popularity: 3, _energia: -12 };
         },
         resultado: "La fecha del 990 sale bien: el público nuevo te descubre y el lugar te invita a volver.",
@@ -2224,6 +2232,7 @@ Under.UNDER = {
           Under.UNDER._limpiar("under_la_sobre");
           Under.MISIONES.sumar(s, "toques", 1);
           Under.MISIONES.sumar(s, "sobre", 1);
+          Under.MISIONES.sumar(s, "lucio", 1);
           return { talent: 2, fans: Under.SYSTEMS.fansEscala(s, 500), popularity: 3, _energia: -14 };
         },
         resultado: "Tocás en La Sobre a un metro de la gente. Los puristas del under lo registran: bancaste la fecha más difícil.",
@@ -2780,6 +2789,8 @@ Under.UNDER = {
         efectos: function (s) {
           Under.UNDER._limpiar("under_amigas_sobre");
           Under.MISIONES.sumar(s, "sobre", 1);
+          Under.MISIONES.sumar(s, "marti", 1);
+          Under.MISIONES.sumar(s, "agus", 1);
           return { popularity: 1, fans: Under.SYSTEMS.fansEscala(s, 150), _relaciones: 4, _energia: -6 };
         },
         resultado: "Vas a La Sobre con Marti y Agus. La anécdota es tan buena como prometían: te despertás temprano igual, con la noche entera en la cabeza.",
@@ -2801,6 +2812,8 @@ Under.UNDER = {
         efectos: function (s) {
           Under.UNDER._limpiar("under_amigas_sobre");
           Under.MISIONES.sumar(s, "sobre", 1);
+          Under.MISIONES.sumar(s, "marti", 1);
+          Under.MISIONES.sumar(s, "agus", 1);
           return { _relaciones: 2, _energia: -2 };
         },
         resultado: "Pasás por La Sobre, saludás a todo el mundo y te vas temprano. La anécdota te llega entera igual.",
@@ -2821,6 +2834,7 @@ Under.UNDER = {
         efectos: function (s) {
           Under.UNDER._limpiar("under_lucio_paraguay");
           Under.MISIONES.sumar(s, "toques", 1);
+          Under.MISIONES.sumar(s, "lucio", 1);
           return { money: Under.SYSTEMS.efectivoEscala(s, 1200), fans: Under.SYSTEMS.fansEscala(s, 4000), popularity: 5, _energia: -15 };
         },
         resultado: "Tocás en Club Paraguay con más de mil personas cantando de memoria. Los pogos sacuden el lugar entero. Esa noche queda en la historia de la escena.",
@@ -2832,6 +2846,7 @@ Under.UNDER = {
         efectos: function (s) {
           Under.UNDER._limpiar("under_lucio_paraguay");
           Under.MISIONES.sumar(s, "toques", 1);
+          Under.MISIONES.sumar(s, "lucio", 1);
           return { money: Under.SYSTEMS.efectivoEscala(s, 1000), fans: Under.SYSTEMS.fansEscala(s, 5000), popularity: 6, _energia: -18, _hype: 15 };
         },
         resultado: "Tocás con mil personas cantando y lo grabás todo. Los videos de los pogos vuelan por la escena: ese show se convierte en tu carta de presentación.",

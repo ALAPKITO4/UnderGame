@@ -132,6 +132,34 @@ Under.MISIONES = (function () {
     { popularity: 7, talent: 3, money: 5000 },
     "🎯 Misión completada: Dueño de La Sobre. La plaza entera para cuando llegás.");
 
+  /* La plaza te vio: momentos con Marti, Agus y Lucio. El artista
+     todavía es chico y su vida pasa por la plaza, los mates y las
+     fechas que arma el organizador. */
+  m("m_marti_2", "grind", 1, 3, "👯", "Un mate con Marti", "Compartí 2 momentos con Marti", 2, "marti",
+    { _relaciones: 5, popularity: 2 },
+    "🎯 Misión completada: Un mate con Marti. Ella te cuenta todo lo que se mueve en la escena.");
+  m("m_marti_4", "grind", 1, 4, "👯", "Marti te hace la segunda", "Compartí 4 momentos con Marti", 4, "marti",
+    { _relaciones: 6, fans: 3000, popularity: 3 },
+    "🎯 Misión completada: Marti te hace la segunda. Tu amiga te mete en todos los círculos.");
+  m("m_marti_6", "grind", 2, 5, "👯", "Marti y vos, de la plaza", "Compartí 6 momentos con Marti", 6, "marti",
+    { _relaciones: 8, fans: 6000, popularity: 4 },
+    "🎯 Misión completada: Marti y vos, de la plaza. En la escena ya saben que van juntos.");
+  m("m_agus_2", "grind", 1, 3, "🍕", "Con Agus en la plaza", "Compartí 2 momentos con Agus", 2, "agus",
+    { _relaciones: 4, popularity: 1 },
+    "🎯 Misión completada: Con Agus en la plaza. El barrio te ve con los pibes.");
+  m("m_agus_4", "grind", 2, 4, "🍕", "La dupla de La Sobre", "Compartí 4 momentos con Agus", 4, "agus",
+    { _relaciones: 5, fans: 2000, popularity: 2 },
+    "🎯 Misión completada: La dupla de La Sobre. Marti, Agus y vos, siempre en la plaza.");
+  m("m_lucio_2", "grind", 1, 3, "📞", "Lucio te llama", "Tocá en 2 fechas que consigue Lucio", 2, "lucio",
+    { fans: 2500, popularity: 3, money: 800 },
+    "🎯 Misión completada: Lucio te llama. El organizador ya cuenta con vos.");
+  m("m_lucio_5", "grind", 2, 4, "📞", "El pibe de Lucio", "Tocá en 5 fechas que consigue Lucio", 5, "lucio",
+    { fans: 8000, popularity: 4, money: 2000 },
+    "🎯 Misión completada: El pibe de Lucio. Cuando algo se mueve, Lucio piensa en vos.");
+  m("m_lucio_8", "grind", 2, 5, "📞", "La agenda de Lucio", "Tocá en 8 fechas que consigue Lucio", 8, "lucio",
+    { fans: 15000, popularity: 5, money: 4000 },
+    "🎯 Misión completada: La agenda de Lucio. Estás en el mapa de la escena.");
+
   /* ============================================================
      SECCIÓN 2 — HACER MÚSICA (etapa 1-8)
      ============================================================ */
