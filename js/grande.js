@@ -330,6 +330,7 @@ Under.GRANDE = {
         desc: "El under que te hizo a vos.",
         efectos: function (s) {
           Under.GRANDE._limpiar("grande_protector");
+          Under.MISIONES.sumar(s, "blake", 1);
           return { fans: Under.SYSTEMS.fansEscala(s, 400), popularity: 2, talent: 1 };
         },
         resultado: "Escuchás a Blake y le das consejos de verdad. La escena te recuerda de dónde saliste.",
@@ -340,6 +341,7 @@ Under.GRANDE = {
         desc: "Lo sumás de telonero.",
         efectos: function (s) {
           Under.GRANDE._limpiar("grande_protector");
+          Under.MISIONES.sumar(s, "blake", 1);
           return { fans: Under.SYSTEMS.fansEscala(s, 800), popularity: 3, _energia: -8 };
         },
         resultado: "Le das a Blake una fecha de telonero. Su gente te lo agradece para siempre y la escena lo celebra.",

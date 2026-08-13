@@ -56,6 +56,7 @@ Under.EXTRA = {
         desc: "Todo el respeto se gana en La Sobre.",
         efectos: function (s) {
           Under.EXTRA._limpiar("gen_rap");
+          Under.MISIONES.sumar(s, "cro", 1);
           if (Math.random() < 0.5) {
             return { talent: 2, popularity: 4, fans: Under.SYSTEMS.fansEscala(s, 800), _energia: -10 };
           }
@@ -69,6 +70,7 @@ Under.EXTRA = {
         desc: "Mostrar el respeto también es arte.",
         efectos: function (s) {
           Under.EXTRA._limpiar("gen_rap");
+          Under.MISIONES.sumar(s, "cro", 1);
           return { popularity: 2, talent: 1, fans: Under.SYSTEMS.fansEscala(s, 300) };
         },
         resultado: "Le dedicás a CRO tu mejor barra como homenaje. CRO asiente: te ganaste su respeto.",
@@ -306,6 +308,7 @@ Under.EXTRA = {
         desc: "Poco glamour, plata segura y oficio.",
         efectos: function (s) {
           Under.EXTRA._limpiar("extra_publicidad");
+          Under.MISIONES.sumar(s, "naty", 1);
           return { money: Under.SYSTEMS.efectivoEscala(s, 250), talent: 1 };
         },
         resultado: "Escribís un jingle que se repite hasta en el ascensor. La marca paga y el oficio suma.",
@@ -316,6 +319,7 @@ Under.EXTRA = {
         desc: "Un tema tuyo, recortado para el spot.",
         efectos: function (s) {
           Under.EXTRA._limpiar("extra_publicidad");
+          Under.MISIONES.sumar(s, "naty", 1);
           return { money: Under.SYSTEMS.efectivoEscala(s, 150), fans: Under.SYSTEMS.fansEscala(s, 150) };
         },
         resultado: "Recortás un tema y queda perfecto para el spot. Cobrás y un puñado de gente te descubre.",
@@ -334,42 +338,42 @@ Under.EXTRA = {
     ]);
   },
 
-  /* ---------- Un reality te quiere ---------- */
+  /* ---------- Streamers te invitan a un Discord ---------- */
   crearEventoReality: function (state) {
-    return Under.EXTRA._crear("extra_reality", "Un reality te quiere", [
-      "Un reality de cocina te quiere como participante famoso de la temporada.",
-      "Un programa de convivencia te ofrece entrar una semana para dar rating.",
-      "Un reality de competencia musical te propone ser parte del panel de jurados."
+    return Under.EXTRA._crear("extra_reality", "Un Discord con streamers", [
+      "Unos streamers que viste varias veces en La Sobre te invitan a una noche de Discord con ellos y su comunidad.",
+      "Los pibes que streamean, a los que cruzás seguido en La Sobre, te invitan a sumarte a un Discord en vivo y a charlar de música.",
+      "Un grupo de streamers de la escena (los viste rondando La Sobre) te invita a pasar una noche en su Discord, con tu música de fondo."
     ], [
       {
-        texto: "Participar",
-        desc: "Exposición masiva a cambio de un poco de ridículo.",
+        texto: "Sumarte al Discord",
+        desc: "Su comunidad se entera de quién sos, en vivo y sin filtros.",
         efectos: function (s) {
           Under.EXTRA._limpiar("extra_reality");
-          return { popularity: 5, fans: Under.SYSTEMS.fansEscala(s, 1200), _energia: -12, talent: -1 };
+          return { popularity: 4, fans: Under.SYSTEMS.fansEscala(s, 900), _relaciones: 3, _energia: -8 };
         },
-        resultado: "Participás y el público se encariña (o se burla). De cualquier forma, todos hablan de vos.",
-        log: "Participó en un reality."
+        resultado: "Pasás la noche en el Discord con los streamers: reaccionan a tus temas, se ríen con vos y te invitan a volver. Su comunidad te adopta.",
+        log: "Se sumó a un Discord con streamers de la escena."
       },
       {
-        texto: "Una sola aparición",
-        desc: "El rating sin el costo completo.",
+        texto: "Pasarte un rato",
+        desc: "Aparecés, saludás y te vas.",
         efectos: function (s) {
           Under.EXTRA._limpiar("extra_reality");
-          return { popularity: 2, fans: Under.SYSTEMS.fansEscala(s, 400) };
+          return { popularity: 2, fans: Under.SYSTEMS.fansEscala(s, 350), _relaciones: 1 };
         },
-        resultado: "Aparecés una noche, decís tu frase y te vas. Alcanza para que te recuerden.",
-        log: "Hizo una sola aparición en un reality."
+        resultado: "Entrás al Discord, saludás, dejas caer una anécdota de La Sobre y te vas. Alcanza para que te tengan presente.",
+        log: "Se pasó un rato por un Discord de streamers."
       },
       {
-        texto: "Rechazar",
+        texto: "No ir",
         desc: "Tu música no necesita ese reflector.",
         efectos: function (s) {
           Under.EXTRA._limpiar("extra_reality");
           return { talent: 1 };
         },
-        resultado: "Decís que no. El reality busca a otro famoso y tu carrera sigue su curso.",
-        log: "Rechazó participar en un reality."
+        resultado: "Decís que no. Los streamers buscan a otro y la noche transcurre sin vos.",
+        log: "Rechazó unirse a un Discord de streamers."
       }
     ]);
   },
@@ -561,6 +565,7 @@ Under.EXTRA = {
           Under.EXTRA._limpiar("under_plaza");
           Under.MISIONES.sumar(s, "sobre", 1);
           Under.MISIONES.sumar(s, "lucio", 1);
+          Under.MISIONES.sumar(s, "sobre_domingo", 1);
           return { fans: Under.SYSTEMS.fansEscala(s, 350), popularity: 3, _energia: -8 };
         },
         resultado: "Tocás en La Sobre con los pibes sentados alrededor. Las familias se quedan a escuchar y el barrio te adopta.",
@@ -572,6 +577,7 @@ Under.EXTRA = {
         efectos: function (s) {
           Under.EXTRA._limpiar("under_plaza");
           Under.MISIONES.sumar(s, "sobre", 1);
+          Under.MISIONES.sumar(s, "sobre_domingo", 1);
           return { money: Under.SYSTEMS.efectivoEscala(s, 120), fans: Under.SYSTEMS.fansEscala(s, 200), _energia: -10 };
         },
         resultado: "Tocás en La Sobre y vendés remeras desde una valija. El barrio compra y tu nombre queda sonando.",
@@ -592,30 +598,32 @@ Under.EXTRA = {
 
   /* ---------- Un video con Burger ---------- */
   crearEventoVideo: function (state) {
-    return Under.EXTRA._crear("under_video", "Un video con Burger", [
-      "Burger, el filmmaker de fruittyaudiovisual, te propone grabar un video casero para tu próximo tema.",
-      "Burger te ofrece filmar un videoclip low cost en el barrio, con cámara de teléfono y ojo de cine.",
-      "Fruitty audiovisual quiere un video crudo para uno de tus temas nuevos, con Burger en la cámara."
+    return Under.EXTRA._crear("under_video", "Burger hunter", [
+      "Burger, el cazador de tomas de fruittyaudiovisual, te propone grabar un video casero para tu próximo tema.",
+      "Burger hunter no descansa: te ofrece filmar un videoclip low cost en el barrio, con cámara de teléfono y ojo de cine.",
+      "Fruitty audiovisual quiere un video crudo para uno de tus temas nuevos, y Burger hunter está en la cámara."
     ], [
       {
         texto: "Grabar el video",
         desc: "Poco presupuesto, mucha calle.",
         efectos: function (s) {
           Under.EXTRA._limpiar("under_video");
+          Under.MISIONES.sumar(s, "burger", 1);
           return { money: -Under.SYSTEMS.efectivoEscala(s, 60), fans: Under.SYSTEMS.fansEscala(s, 500), popularity: 2, _energia: -8 };
         },
-        resultado: "El video de Burger sale crudo y real. Tu barrio se convierte en el set y la gente lo siente propio.",
-        log: "Grabó un video casero con Burger."
+        resultado: "El video de Burger hunter sale crudo y real. Tu barrio se convierte en el set y la gente lo siente propio.",
+        log: "Grabó un video casero con Burger hunter."
       },
       {
         texto: "Video minimalista",
         desc: "Una toma, vos y el micrófono.",
         efectos: function (s) {
           Under.EXTRA._limpiar("under_video");
+          Under.MISIONES.sumar(s, "burger", 1);
           return { fans: Under.SYSTEMS.fansEscala(s, 250), talent: 1 };
         },
-        resultado: "Burger filma una sola toma, sin cortes. La crudeza hace el resto y el tema gana fuerza.",
-        log: "Filmó un video minimalista con Burger."
+        resultado: "Burger hunter filma una sola toma, sin cortes. La crudeza hace el resto y el tema gana fuerza.",
+        log: "Filmó un video minimalista con Burger hunter."
       },
       {
         texto: "Postergarlo",
@@ -707,6 +715,181 @@ Under.EXTRA = {
         },
         resultado: "No vas. El hueco en " + est + " se lo dan a otro y la tarde pasa sin tu sonido.",
         log: "No fue al estudio " + est + "."
+      }
+    ]);
+  },
+
+  /* ============================================================
+     HACER MÚSICA: el oficio de escribir, grabar y producir
+     ============================================================ */
+
+  /* ---------- Una letra que no sale ---------- */
+  crearEventoEscribirLetras: function (state) {
+    return Under.EXTRA._crear("extra_letras", "Una letra que no sale", [
+      "Llevás tres horas en la mesa y la hoja sigue en blanco. La letra del próximo tema no sale.",
+      "La barra te ronda la cabeza pero no aterriza en el papel. Escribir también es laburar.",
+      "El estribillo se resiste y el demo ya suena. Necesitás una decisión antes de que se enfríe."
+    ], [
+      {
+        texto: "Escribir desde el barrio",
+        desc: "Lo que ves en La Sobre, sin vueltas.",
+        efectos: function (s) {
+          Under.EXTRA._limpiar("extra_letras");
+          Under.MISIONES.sumar(s, "letras", 1);
+          return { talent: 2 };
+        },
+        resultado: "Escribís desde lo que ves en La Sobre, sin vueltas. La letra sale cruda y tuya.",
+        log: "Escribió una letra desde el barrio."
+      },
+      {
+        texto: "Escribir con Agus",
+        desc: "Entre los dos, la letra se arma sola.",
+        efectos: function (s) {
+          Under.EXTRA._limpiar("extra_letras");
+          Under.MISIONES.sumar(s, "letras", 1);
+          Under.MISIONES.sumar(s, "agus", 1);
+          return { talent: 1, _relaciones: 2 };
+        },
+        resultado: "Agus te tira frases y entre los dos la letra se arma sola. La hoja deja de estar en blanco.",
+        log: "Escribió una letra con Agus."
+      },
+      {
+        texto: "Dejarlo para mañana",
+        desc: "No todo se fuerza.",
+        efectos: function (s) {
+          Under.EXTRA._limpiar("extra_letras");
+          return { talent: 1 };
+        },
+        resultado: "No la forzás. Mañana la hoja ya no va a estar tan en blanco.",
+        log: "Dejó una letra para después."
+      }
+    ]);
+  },
+
+  /* ---------- Una demo que vuelve ---------- */
+  crearEventoDemoVieja: function (state) {
+    return Under.EXTRA._crear("extra_demo", "Una demo que vuelve", [
+      "Revolviendo la carpeta de demos encontrás una grabación de tus comienzos. Todavía tiene algo.",
+      "Un amigo te manda un audio viejo que grabaron juntos en el estudio de la escena.",
+      "La carpeta 'demos' tiene un tema que nunca terminaste. Hoy suena mejor de lo que recordabas."
+    ], [
+      {
+        texto: "Convertirla en tema",
+        desc: "Pulirla y meterla al catálogo.",
+        efectos: function (s) {
+          Under.EXTRA._limpiar("extra_demo");
+          Under.MISIONES.sumar(s, "demo", 1);
+          return { money: -Under.SYSTEMS.efectivoEscala(s, 80), talent: 1, fans: Under.SYSTEMS.fansEscala(s, 400) };
+        },
+        resultado: "La pulís, la grabás en serio y entra al catálogo. Ese pedacito de tu comienzo se merecía la luz.",
+        log: "Convirtió una demo vieja en tema."
+      },
+      {
+        texto: "Reversionarla",
+        desc: "Mismo corazón, otro arreglo.",
+        efectos: function (s) {
+          Under.EXTRA._limpiar("extra_demo");
+          Under.MISIONES.sumar(s, "demo", 1);
+          return { talent: 2, fans: Under.SYSTEMS.fansEscala(s, 200) };
+        },
+        resultado: "Le cambiás el arreglo entero. La demo vieja renace con tu sonido de ahora y nadie la reconoce.",
+        log: "Reversionó una demo vieja."
+      },
+      {
+        texto: "Dejarla en la carpeta",
+        desc: "El pasado no hace falta tocarlo.",
+        efectos: function (s) {
+          Under.EXTRA._limpiar("extra_demo");
+          return { talent: 1 };
+        },
+        resultado: "Sigue guardada. A veces el pasado no hace falta tocarlo.",
+        log: "Guardó una demo vieja sin tocar."
+      }
+    ]);
+  },
+
+  /* ---------- Una sesión con un productor de la escena ---------- */
+  crearEventoSesionProductor: function (state) {
+    return Under.EXTRA._crear("extra_producir", "Una sesión con un productor de la escena", [
+      "Un productor de la escena te propone una sesión para darle forma a tu próximo tema.",
+      "Uno de los beats que te encanta es de un productor local que quiere laburar con vos.",
+      "Kilpatay te deja una tarde en La OBS para producir juntos lo que estás armando."
+    ], [
+      {
+        texto: "Grabar con él",
+        desc: "Su oído + tu idea = el tema.",
+        efectos: function (s) {
+          Under.EXTRA._limpiar("extra_producir");
+          Under.MISIONES.sumar(s, "productor_estudio", 1);
+          return { money: -Under.SYSTEMS.efectivoEscala(s, 100), talent: 2 };
+        },
+        resultado: "La sesión vuela y el tema sale con otro cuerpo. Los productores del under te abren la puerta.",
+        log: "Grabó una sesión con un productor de la escena."
+      },
+      {
+        texto: "Mostrarle tus demos",
+        desc: "Que elija con vos qué pulir.",
+        efectos: function (s) {
+          Under.EXTRA._limpiar("extra_producir");
+          Under.MISIONES.sumar(s, "productor_estudio", 1);
+          Under.MISIONES.sumar(s, "colega", 1);
+          return { _relaciones: 3, talent: 1 };
+        },
+        resultado: "Le pasás todo lo que tenés. Él elige qué pulir y te devuelve la lista armada. Quedó en deuda con vos, y eso en la escena vale plata.",
+        log: "Mostró sus demos a un productor de la escena."
+      },
+      {
+        texto: "No ir",
+        desc: "Preferís tu manera de laburar.",
+        efectos: function (s) {
+          Under.EXTRA._limpiar("extra_producir");
+          return { talent: 1 };
+        },
+        resultado: "Preferís tu manera de laburar. La sesión se pierde y el tema espera.",
+        log: "No fue a una sesión con un productor de la escena."
+      }
+    ]);
+  },
+
+  /* ---------- Jam en el estudio ---------- */
+  crearEventoJamEstudio: function (state) {
+    return Under.EXTRA._crear("extra_jam_estudio", "Jam en el estudio", [
+      "Alguien arma una jam en un estudio del under y faltan voces. Te llaman.",
+      "Una sesión de ida y vuelta: músicos de la escena, un estudio prestado y ganas de sonar.",
+      "La jam de los martes en el estudio de la zona te abre un hueco esta semana."
+    ], [
+      {
+        texto: "Sumarte",
+        desc: "Improvisar con la escena te suelta la mano.",
+        efectos: function (s) {
+          Under.EXTRA._limpiar("extra_jam_estudio");
+          Under.MISIONES.sumar(s, "sesion", 1);
+          Under.MISIONES.sumar(s, "artistas", 1);
+          return { fans: Under.SYSTEMS.fansEscala(s, 300), popularity: 1, _energia: -6 };
+        },
+        resultado: "Improvisás con la banda de la escena. De esa noche sale un groove que se te queda en la cabeza.",
+        log: "Se sumó a una jam en el estudio."
+      },
+      {
+        texto: "Grabar lo que sale",
+        desc: "Le das record y te llevás el audio.",
+        efectos: function (s) {
+          Under.EXTRA._limpiar("extra_jam_estudio");
+          Under.MISIONES.sumar(s, "sesion", 1);
+          return { talent: 2 };
+        },
+        resultado: "Le das record, improvisás y te llevás el audio entero. Entre todo ese ruido seguro hay un tema.",
+        log: "Grabó una jam en el estudio."
+      },
+      {
+        texto: "Dejarlo pasar",
+        desc: "El martes te pilla justo.",
+        efectos: function (s) {
+          Under.EXTRA._limpiar("extra_jam_estudio");
+          return { talent: 1 };
+        },
+        resultado: "El martes te pilla justo. La jam sigue sin vos y la escena lo entiende.",
+        log: "Dejó pasar una jam en el estudio."
       }
     ]);
   }

@@ -131,12 +131,12 @@ Under.UNDER = {
     ]);
   },
 
-  /* ---------- Radio comunitaria / podcast de la escena ---------- */
+  /* ---------- La radio del Cosquín Rock ---------- */
   crearEventoRadio: function (state) {
-    return Under.UNDER._crear("under_radio", "Una radio de la escena", [
-      "Una radio comunitaria de tu barrio quiere pasar tu música y te invita a su estudio.",
-      "Un podcast de la escena local te llama para una entrevista de una hora.",
-      "Un programa de radio universitaria arma un especial de artistas nuevos."
+    return Under.UNDER._crear("under_radio", "La radio del Cosquín Rock", [
+      "La radio del Cosquín Rock quiere pasar tu música y te invita a su estudio.",
+      "Radio Cosquín Rock te llama para una entrevista de una hora.",
+      "En la radio del Cosquín Rock arman un especial de artistas nuevos y te convocan."
     ], [
       {
         texto: "Dar la entrevista",
@@ -146,8 +146,8 @@ Under.UNDER = {
           Under.MISIONES.sumar(s, "radio", 1);
           return { popularity: 2, fans: Under.SYSTEMS.fansEscala(s, 400) };
         },
-        resultado: "La entrevista sale y un puñado de oyentes te escribe. Los medios chicos también suman.",
-        log: "Dio una entrevista en una radio de la escena."
+        resultado: "La entrevista sale en Radio Cosquín Rock y un puñado de oyentes te escribe. Los medios chicos también suman.",
+        log: "Dio una entrevista en Radio Cosquín Rock."
       },
       {
         texto: "Tocar en vivo al aire",
@@ -157,8 +157,8 @@ Under.UNDER = {
           Under.MISIONES.sumar(s, "radio", 1);
           return { fans: Under.SYSTEMS.fansEscala(s, 700), popularity: 3, talent: 1, _energia: -10 };
         },
-        resultado: "Tocás un tema en vivo al aire. Suena crudo y honesto, y a la gente le llega.",
-        log: "Tocó en vivo en una radio de la escena."
+        resultado: "Tocás un tema en vivo al aire en Radio Cosquín Rock. Suena crudo y honesto, y a la gente le llega.",
+        log: "Tocó en vivo en Radio Cosquín Rock."
       },
       {
         texto: "No ir",
@@ -168,7 +168,7 @@ Under.UNDER = {
           return { popularity: -1 };
         },
         resultado: "No vas. El conductor lo menciona de pasada, sin rencor.",
-        log: "No fue a una radio de la escena."
+        log: "No fue a Radio Cosquín Rock."
       }
     ]);
   },
@@ -186,6 +186,7 @@ Under.UNDER = {
         efectos: function (s) {
           Under.UNDER._limpiar("under_influencer");
           Under.MISIONES.sumar(s, "contenido", 1);
+          Under.MISIONES.sumar(s, "blake", 1);
           return { fans: Under.SYSTEMS.fansEscala(s, 500), popularity: 2, _energia: -5 };
         },
         resultado: "El contenido de Blake sale y su gente se pasa a la tuya. Cada creador que te nombró, suma.",
@@ -196,6 +197,7 @@ Under.UNDER = {
         desc: "Un gracias sincero y nada más.",
         efectos: function (s) {
           Under.UNDER._limpiar("under_influencer");
+          Under.MISIONES.sumar(s, "blake", 1);
           return { fans: Under.SYSTEMS.fansEscala(s, 150), popularity: 1 };
         },
         resultado: "Le agradecés a Blake públicamente. Pequeño gesto, pequeño empujón.",

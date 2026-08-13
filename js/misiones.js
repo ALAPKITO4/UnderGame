@@ -160,6 +160,33 @@ Under.MISIONES = (function () {
     { fans: 15000, popularity: 5, money: 4000 },
     "🎯 Misión completada: La agenda de Lucio. Estás en el mapa de la escena.");
 
+  /* La escena que filma, barde y reparte: Burger, CRO, Blake,
+     Naty vintage y los domingos de La Sobre. */
+  m("m_grind_burger_3", "grind", 1, 4, "🍔", "Burger hunter", "Filmá 3 videos con Burger", 3, "burger",
+    { fans: 4000, popularity: 3, money: 1000 },
+    "🎯 Misión completada: Burger hunter. Cada video tuyo sale más crudo y más visto.");
+  m("m_grind_cro_2", "grind", 2, 5, "🔥", "El respeto de CRO", "Medite 2 veces con CRO en la escena", 2, "cro",
+    { talent: 2, popularity: 4, fans: 4000 },
+    "🎯 Misión completada: El respeto de CRO. El veterano del rap ya te tiene en la mira.");
+  m("m_grind_blake_4", "grind", 1, 4, "📱", "Blake te muestra", "Viví 4 momentos de contenido con Blake", 4, "blake",
+    { fans: 3500, popularity: 3, _relaciones: 3 },
+    "🎯 Misión completada: Blake te muestra. El contenido que armás con Blake hace crecer tu nombre.");
+  m("m_grind_jingle_3", "grind", 2, 5, "🎙️", "Jingle de barrio", "Componé 3 temas para publicidad con Naty vintage", 3, "naty",
+    { money: 2500, popularity: 2, talent: 1 },
+    "🎯 Misión completada: Jingle de barrio. Naty vintage ya te recomienda a todas las marcas.");
+  m("m_grind_domingo_4", "grind", 1, 4, "🏞️", "Domingos en La Sobre", "Viví 4 domingos en La Sobre", 4, "sobre_domingo",
+    { fans: 3000, _relaciones: 3, popularity: 2 },
+    "🎯 Misión completada: Domingos en La Sobre. El barrio ya te espera cada domingo.");
+  m("m_grind_ciclos_4", "grind", 1, 5, "🎪", "El ciclo te quiere", "Participá en 4 ciclos del barrio", 4, "ciclos",
+    { fans: 5000, popularity: 3, _relaciones: 2 },
+    "🎯 Misión completada: El ciclo te quiere. Los ciclos de la zona te reservan fecha.");
+  m("m_grind_telonero_5", "grind", 2, 6, "🎤", "Siempre primero", "Abrí 5 shows de artistas más grandes", 5, "telonero",
+    { fans: 9000, popularity: 4, money: 2000 },
+    "🎯 Misión completada: Siempre primero. Abrir shows ya te sale de memoria.");
+  m("m_grind_feria_5", "grind", 2, 5, "🧺", "El puesto que no para", "Vendé 5 veces en ferias del barrio", 5, "feria",
+    { money: 1500, fans: 3000, _relaciones: 2 },
+    "🎯 Misión completada: El puesto que no para. Tu nombre corre por todos los puestos.");
+
   /* ============================================================
      SECCIÓN 2 — HACER MÚSICA (etapa 1-8)
      ============================================================ */
@@ -241,6 +268,21 @@ Under.MISIONES = (function () {
         "🎯 Misión completada: Concebir un " + p.nombre.toLowerCase() + ". La obra se completó.");
     });
   })();
+  m("m_musica_sesiones_4", "musica", 1, 4, "🎚️", "El oficio del estudio", "Grabá 4 sesiones de estudio", 4, "sesion",
+    { talent: 2, popularity: 3, money: 1200 },
+    "🎯 Misión completada: El oficio del estudio. El micro ya te conoce como a un habitué.");
+  m("m_musica_sesiones_10", "musica", 3, 6, "🎛️", "El que vive en el estudio", "Grabá 10 sesiones de estudio", 10, "sesion",
+    { talent: 3, popularity: 4, money: 4000 },
+    "🎯 Misión completada: El que vive en el estudio. Los ingenieros te guardan tu horario.");
+  m("m_musica_letras_6", "musica", 2, 5, "✍️", "Pluma que no para", "Escribí 6 letras nuevas", 6, "letras",
+    { talent: 3, popularity: 2, _relaciones: 2 },
+    "🎯 Misión completada: Pluma que no para. Las frases se te caen de los bolsillos.");
+  m("m_musica_demo_3", "musica", 2, 5, "📼", "De demo a tema", "Convertí 3 demos en temas", 3, "demo",
+    { fans: 6000, popularity: 3, money: 1500 },
+    "🎯 Misión completada: De demo a tema. Ningún pedacito de tu sonido queda en la carpeta.");
+  m("m_musica_productor_2", "musica", 3, 6, "🎧", "Oído por oído", "Grabá 2 temas con productores de la escena", 2, "productor_estudio",
+    { talent: 2, _relaciones: 4, popularity: 3 },
+    "🎯 Misión completada: Oído por oído. Los productores del under ya hablan bien de vos.");
 
   /* ============================================================
      SECCIÓN 3 — GIRAS Y ESCENARIOS (etapa 1-8)

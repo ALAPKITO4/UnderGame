@@ -193,6 +193,7 @@ function jugar(gen, per) {
          "gen_rap", "gen_rock", "gen_pop", "gen_urban",
          "gen2_rap", "gen2_rock", "gen2_pop", "gen2_urban",
          "extra_serie", "extra_videojuego", "extra_publicidad", "extra_reality",
+         "extra_letras", "extra_demo", "extra_producir", "extra_jam_estudio",
          "fan_club", "fan_hater", "fan_tatuaje",
          "under_casa", "under_plaza", "under_video", "under_fanzine", "under_estudio",
          "under_ensayo", "under_resena", "under_equipo",

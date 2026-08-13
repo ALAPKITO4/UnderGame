@@ -421,10 +421,10 @@ Under.DATA = {
 
   /* Nombres de canciones por género (se evita repetir seguidos) */
   SONG_NAMES: {
-    urban: ["Perreo a la carta", "La que se viene", "Bajón y azúcar", "En la disco", "Gato libre", "Flow de medianoche", "Maldita fiesta", "Playa virtual", "Ven a bailar", "Ritmo de la calle", "Candelita", "Se nota"],
-    rap: ["Ley del silencio", "Barrio dormido", "Plomo en la rima", "Vendaval", "Sin escalas", "Tinta en las manos", "Medianoche gris", "Ritual", "Antimateria", "Deuda pendiente", "Fuego lento", "Papel mojado"],
-    rock: ["Tormenta eléctrica", "Ciudad gris", "Noches de garaje", "Sirena rota", "Distorsión", "Laberinto", "Vía de escape", "Luna de hierro", "Incendio", "Bruma", "Adrenalina", "Última toma"],
-    pop: ["Bombón digital", "Luna de neón", "Corazón en modo avión", "Gravity", "Velocidad", "Azúcar en los labios", "Verano eterno", "Satélite", "Frío polar", "Como ayer", "Brillo", "Hora dorada"]
+    urban: ["Perreo a la carta", "La que se viene", "Bajón y azúcar", "En la disco", "Gato libre", "Flow de medianoche", "Maldita fiesta", "Playa virtual", "Ven a bailar", "Ritmo de la calle", "Candelita", "Se nota", "La foto del DNI", "Bailando en el colectivo", "El otro martes", "Chicle bajo la silla", "Tarde de piletón", "Fiesta en la vereda", "El perreo del domingo", "Cero stock", "La vuelta al pan"],
+    rap: ["Ley del silencio", "Barrio dormido", "Plomo en la rima", "Vendaval", "Sin escalas", "Tinta en las manos", "Medianoche gris", "Ritual", "Antimateria", "Deuda pendiente", "Fuego lento", "Papel mojado", "El pibe de la esquina", "Dos panchos y un feat", "Rima en la ronda", "La Sobre no duerme", "Barra de andén", "Cuaderno mojado", "El verso del bondi", "Media pila", "La calle no llama"],
+    rock: ["Tormenta eléctrica", "Ciudad gris", "Noches de garaje", "Sirena rota", "Distorsión", "Laberinto", "Vía de escape", "Luna de hierro", "Incendio", "Bruma", "Adrenalina", "Última toma", "Garaje a oscuras", "El último cable", "Amplificador roto", "Batería de cocina", "Ensayo a las tres", "Cuerda floja", "El depto vacío", "Bajo tierra", "Púa prestada"],
+    pop: ["Bombón digital", "Luna de neón", "Corazón en modo avión", "Gravity", "Velocidad", "Azúcar en los labios", "Verano eterno", "Satélite", "Frío polar", "Como ayer", "Brillo", "Hora dorada", "Verano y ananá", "Brillo de cámara", "Postal de la playa", "Corazón en 4K", "Melodía de ascensor", "El pop de la plaza", "Lentes de sol en invierno", "Domingo de radio", "Confeti barato"]
   },
 
   /* ---------- Sellos discográficos (FASE 3) ----------
@@ -1360,6 +1360,27 @@ Under.DATA = {
       },
       generar: function (s) { return Under.EXTRA.crearEventoEstudio(s); }
     },
+    /* El oficio de hacer música: escribir, producir y jamear. */
+    {
+      id: "extra_letras", peso: 2,
+      disponible: function (s) { return s.lanzamientos >= 1; },
+      generar: function (s) { return Under.EXTRA.crearEventoEscribirLetras(s); }
+    },
+    {
+      id: "extra_demo", peso: 2,
+      disponible: function (s) { return s.lanzamientos >= 2; },
+      generar: function (s) { return Under.EXTRA.crearEventoDemoVieja(s); }
+    },
+    {
+      id: "extra_producir", peso: 2,
+      disponible: function (s) { return s.lanzamientos >= 1 && Under.STATE.nivelCarrera(s).nivel <= 4; },
+      generar: function (s) { return Under.EXTRA.crearEventoSesionProductor(s); }
+    },
+    {
+      id: "extra_jam_estudio", peso: 2,
+      disponible: function (s) { return s.año >= 1 && Under.STATE.nivelCarrera(s).nivel <= 4; },
+      generar: function (s) { return Under.EXTRA.crearEventoJamEstudio(s); }
+    },
     /* Memoria de decisiones (PRIORIDAD 2): lo que hiciste años
        atrás vuelve. Tres hilos narrativos que reabren viejas
        cuentas cuando la escena ya cambió. */
@@ -1828,20 +1849,20 @@ Under.DATA = {
       condiciones: { flags: { trabajoConProductor: true } },
       importante: true,
       titulo: "Una recomendación que vale oro",
-      texto: "El productor con el que trabajaste años atrás ahora labura con un estudio grande.\n\nTe recomienda para grabar una sesión ahí.",
+      texto: "Killpay, el productor con el que trabajaste años atrás, ahora labura con un estudio grande.\n\nTe recomienda para grabar una sesión ahí.",
       opciones: [
         {
           texto: "Aceptar la recomendación",
-          resultado: "Grabás en un estudio de primer nivel. Los ingenieros quedan sorprendidos. Tu música entra en otra liga.",
+          resultado: "Grabás en un estudio de primer nivel gracias a Killpay. Los ingenieros quedan sorprendidos. Tu música entra en otra liga.",
           efectos: { money: -100, talent: 3, fans: 1500, popularity: 5 },
           flags: { estudioGrande: true },
-          log: "Grabaste en un estudio grande gracias a una recomendación."
+          log: "Grabaste en un estudio grande gracias a la recomendación de Killpay."
         },
         {
           texto: "Agradecer pero seguir tu camino",
-          resultado: "Agradecés el gesto, pero preferís seguir grabando donde ya tenés confianza. El productor respeta tu decisión.",
+          resultado: "Agradecés el gesto de Killpay, pero preferís seguir grabando donde ya tenés confianza. Él respeta tu decisión.",
           efectos: { talent: 1 },
-          log: "Declinaste la recomendación del productor."
+          log: "Declinaste la recomendación de Killpay."
         }
       ]
     },
@@ -1853,7 +1874,7 @@ Under.DATA = {
       añoMin: 3, añoMax: 6,
       importante: true,
       titulo: "Un video tuyo se está compartiendo",
-      texto: "Un video tuyo cantando a capela en La Sobre se está compartiendo por redes. En dos días tiene miles de vistas.\n\nNadie sabe qué va a pasar.",
+      texto: "Alguien grabó de cerca, con el celular, un video tuyo freestyleando en la ronda de La Sobre y se está compartiendo por los grupos. En dos días tiene miles de vistas y ya le suman memes.\n\nNadie sabe qué va a pasar.",
       opciones: [
         {
           texto: "Subirlo a tus plataformas",
@@ -2292,23 +2313,23 @@ Under.DATA = {
     {
       id: "tpl_tema_radio",
       titulo: "Una canción para un segmento",
-      texto: "Un programa de radio te pide un tema breve para su cortina o su segmento semanal. Pagan poco, pero el tema suena todas las semanas.",
+      texto: "La radio del Cosquín Rock te pide un tema breve para su cortina o su segmento semanal. Pagan poco, pero el tema suena todas las semanas.",
       opciones: [
         {
           texto: "Escribirlo",
           resultado: "Escribís un tema cortito hecho a medida. Cada semana suena y la gente lo asocia a vos.",
           efectos: function (state) { return { talent: 1, money: Under.SYSTEMS.efectivoEscala(state, 200), fans: Under.SYSTEMS.fansEscala(state, 200) }; },
-          log: "Escribió una cortina para un programa de radio."
+          log: "Escribió una cortina para Radio Cosquín Rock."
         },
         {
           texto: "Adaptar un tema viejo",
           resultado: "Le cambiás el arreglo a un tema que ya existía. Menos laburo, menos magia.",
           efectos: function (state) { return { money: Under.SYSTEMS.efectivoEscala(state, 150), fans: Under.SYSTEMS.fansEscala(state, 100) }; },
-          log: "Adaptó un tema viejo para un segmento de radio."
+          log: "Adaptó un tema viejo para un segmento de Radio Cosquín Rock."
         },
         {
           texto: "No",
-          resultado: "Tu catálogo no se presta. El programa usa otra cosa y el tema queda para vos.",
+          resultado: "Tu catálogo no se presta. La radio usa otra cosa y el tema queda para vos.",
           efectos: function (state) { return {}; },
           log: "No cedió un tema para un segmento de radio."
         }
