@@ -110,7 +110,7 @@ Under.MAIN = {
   ultimaResultado: null,
   _confirmAccion: null,
   showMisiones: false,
-  form: { nombre: "", genero: null, personalidad: null },
+  form: { nombre: "", genero: "rap", personalidad: null },
 
   /* ---------- Arranque ---------- */
   init: function () {
@@ -125,7 +125,7 @@ Under.MAIN = {
     this.estado = null;
     this.ultimaResultado = null;
     this.showMisiones = false;
-    this.form = { nombre: "", genero: null, personalidad: null };
+    this.form = { nombre: "", genero: "rap", personalidad: null };
     document.body.style.removeProperty("--accent");
     Under.UI.render();
   },
@@ -202,14 +202,17 @@ Under.MAIN = {
     this.checkCreacion();
   },
   checkCreacion: function () {
-    var ok = !!this.form.nombre.trim() && !!this.form.genero && !!this.form.personalidad;
+    var ok = !!this.form.nombre.trim() && !!this.form.personalidad;
     var b = document.getElementById("btn-empezar");
     if (b) b.disabled = !ok;
   },
 
   empezar: function () {
     var f = this.form;
-    if (!f.nombre.trim() || !f.genero || !f.personalidad) return;
+    if (!f.nombre.trim() || !f.personalidad) return;
+    /* El cantante es siempre rap/trap/under: forzamos el género sin
+       importar lo que diga el formulario (save viejo, tamper, etc.). */
+    f.genero = "rap";
     /* Guard (PRIORIDAD 11): si por alguma razón se eligió una
        personalidad bloqueada (save viejo, tamper), se cae a una
        base desbloqueada en vez de bloquear el arranque. */

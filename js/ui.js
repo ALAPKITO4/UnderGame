@@ -220,24 +220,21 @@ Under.UI = {
         '<input class="input" id="inp-nombre" maxlength="24" placeholder="Tu nombre artístico" value="' + Under.UI.esc(Under.MAIN.form.nombre) + '" oninput="Under.MAIN.nombreChanged(this.value)">' +
       '</div>';
 
-    /* Géneros */
-    html += '<div class="field"><label>Género principal</label><div class="grid-gen">';
-    var gids = Object.keys(Under.DATA.GENRES);
-    for (var g = 0; g < gids.length; g++) {
-      var gen = Under.DATA.GENRES[gids[g]];
-      var checked = Under.MAIN.form.genero === gen.id ? " checked" : "";
-      html +=
-        '<input type="radio" name="genero" id="gen-' + gen.id + '" value="' + gen.id + '"' + checked + ' onchange="Under.MAIN.pickGenero(this.value)">' +
-        '<label class="sel-card" for="gen-' + gen.id + '" style="--a:' + gen.color + '">' +
-          '<div class="em">' + gen.emoji + '</div>' +
-          '<div class="nm">' + Under.UI.esc(gen.nombre) + '</div>' +
-          '<div class="ds">' + Under.UI.esc(gen.ventaja) + '</div>' +
-          '<div class="vd"><span class="ok">✓ ' + Under.UI.esc(gen.ventaja) + '</span><br><span class="no">✗ ' + Under.UI.esc(gen.desventaja) + '</span></div>' +
-        '</label>';
-    }
-    html += '</div></div>';
+    /* Género: el cantante es siempre rap/trap/under. No hay
+       elección: la escena del juego es esa. */
+    html +=
+      '<div class="field">' +
+        '<label>Género</label>' +
+        '<div class="grid-gen">' +
+          '<div class="sel-card selected" style="--a:#a855f7">' +
+            '<div class="em">🎤</div>' +
+            '<div class="nm">Rap / Trap</div>' +
+            '<div class="ds">La escena del under es tu casa. La base es rap/trap/under.</div>' +
+          '</div>' +
+        '</div>' +
+      '</div>';
 
-/* Personalidades */
+    /* Personalidades */
     html += '<div class="field"><label>Personalidad</label><div class="grid-per">';
     var pids = Object.keys(Under.DATA.PERSONALITIES);
     for (var p = 0; p < pids.length; p++) {

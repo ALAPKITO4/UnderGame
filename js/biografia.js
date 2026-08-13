@@ -92,7 +92,7 @@ Under.BIOGRAFIA = {
     var fans = state.stats.fans;
 
     var parrafo =
-      "Arrancó en " + era.nombre + " con " + state.artista.genero + " y una " + state.artista.personalidad +
+      "Arrancó en " + era.nombre + " con rap/trap/under y una " + state.artista.personalidad +
       " que lo llevó a " + etapa.nombre.toLowerCase() + ". ";
 
     if (state.stats.talent >= 80) {

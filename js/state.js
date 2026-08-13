@@ -167,10 +167,10 @@ Under.STATE = {
   migrar: function (s) {
     if (!s) return s;
     if (s.decisiones === undefined) s.decisiones = [];
-    /* El género pop/electrónica se eliminó del juego: una partida
-       vieja con ese género se remapea al urbano (el más cercano). */
+    /* No hay elección de género: el cantante es siempre rap/trap/under.
+       Una partida vieja con género no soportado se remapea a rap. */
     if (!s.artista || !Under.DATA.GENRES[s.artista.genero]) {
-      if (s.artista) s.artista.genero = "urban";
+      if (s.artista) s.artista.genero = "rap";
     }
     if (s.giras === undefined) s.giras = [];
     if (s.totalGiras === undefined) s.totalGiras = 0;

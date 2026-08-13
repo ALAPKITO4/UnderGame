@@ -683,7 +683,7 @@ function jugar(gen, per) {
 function jugarRetiro() {
   sembrar();
   Under.MAIN.nuevaCarrera();
-  Under.MAIN.form = { nombre: "RetiroTest", genero: "urban", personalidad: "estrategico" };
+  Under.MAIN.form = { nombre: "RetiroTest", genero: "rap", personalidad: "estrategico" };
   Under.MAIN.empezar();
   var safety = 0;
 
@@ -782,13 +782,13 @@ Under.PREMIOS._forzarDerrota = 1;
 /* ---- Correr varias partidas ---- */
 var combinaciones = [
   ["rap", "estrategico"],
-  ["urban", "ambicioso"],
-  ["rock", "carismatico"],
-  ["rock", "artistico"],
+  ["rap", "ambicioso"],
+  ["rap", "carismatico"],
+  ["rap", "artistico"],
   ["rap", "independiente"],
-  ["urban", "estrategico"],
-  ["urban", "carismatico"],
-  ["rock", "ambicioso"]
+  ["rap", "ambicioso"],
+  ["rap", "carismatico"],
+  ["rap", "ambicioso"]
 ];
 combinaciones.forEach(function (c) { jugar(c[0], c[1]); });
 jugarRetiro();

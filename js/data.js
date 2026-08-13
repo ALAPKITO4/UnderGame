@@ -82,16 +82,6 @@ Under.DATA = {
      Ningún género es mejor: comercial paga rápido y escena paga
      hondo. */
   GENRES: {
-    urban: {
-      id: "urban",
-      nombre: "Reggaetón / Urbano",
-      emoji: "🔊",
-      color: "#f59e0b",
-      ventaja: "Crece rápido en plataformas y playlists.",
-      desventaja: "Cuesta que te tomen en serio como artista.",
-      stats: { popularity: 5, fans: 100 },
-      perfil: { critica: -0.25, comercial: 1.18, escena: 0.9, fidelidad: 0.92, pico: "Masivo", afinidad: "El baile y el hook" }
-    },
     rap: {
       id: "rap",
       nombre: "Rap / Trap",
@@ -101,16 +91,6 @@ Under.DATA = {
       desventaja: "Cuesta llegar al público masivo al principio.",
       stats: { talent: 3, popularity: -3 },
       perfil: { critica: 0.35, comercial: 0.92, escena: 1.15, fidelidad: 1.22, pico: "Culto", afinidad: "La palabra y la calle" }
-    },
-    rock: {
-      id: "rock",
-      nombre: "Rock / Indie",
-      emoji: "🎸",
-      color: "#ef4444",
-      ventaja: "Gran base de talento musical.",
-      desventaja: "El camino comercial es más lento.",
-      stats: { talent: 5, popularity: -4 },
-      perfil: { critica: 0.45, comercial: 0.95, escena: 1.2, fidelidad: 1.28, pico: "Fiel", afinidad: "El instrumento y el vivo" }
     }
   },
 
@@ -420,9 +400,7 @@ Under.DATA = {
 
   /* Nombres de canciones por género (se evita repetir seguidos) */
   SONG_NAMES: {
-    urban: ["Perreo a la carta", "La que se viene", "Bajón y azúcar", "En la disco", "Gato libre", "Flow de medianoche", "Maldita fiesta", "Playa virtual", "Ven a bailar", "Ritmo de la calle", "Candelita", "Se nota", "La foto del DNI", "Bailando en el colectivo", "El otro martes", "Chicle bajo la silla", "Tarde de piletón", "Fiesta en la vereda", "El perreo del domingo", "Cero stock", "La vuelta al pan"],
-    rap: ["Ley del silencio", "Barrio dormido", "Plomo en la rima", "Vendaval", "Sin escalas", "Tinta en las manos", "Medianoche gris", "Ritual", "Antimateria", "Deuda pendiente", "Fuego lento", "Papel mojado", "El pibe de la esquina", "Dos panchos y un feat", "Rima en la ronda", "La Sobre no duerme", "Barra de andén", "Cuaderno mojado", "El verso del bondi", "Media pila", "La calle no llama"],
-    rock: ["Tormenta eléctrica", "Ciudad gris", "Noches de garaje", "Sirena rota", "Distorsión", "Laberinto", "Vía de escape", "Luna de hierro", "Incendio", "Bruma", "Adrenalina", "Última toma", "Garaje a oscuras", "El último cable", "Amplificador roto", "Batería de cocina", "Ensayo a las tres", "Cuerda floja", "El depto vacío", "Bajo tierra", "Púa prestada"]
+    rap: ["Ley del silencio", "Barrio dormido", "Plomo en la rima", "Vendaval", "Sin escalas", "Tinta en las manos", "Medianoche gris", "Ritual", "Antimateria", "Deuda pendiente", "Fuego lento", "Papel mojado", "El pibe de la esquina", "Dos panchos y un feat", "Rima en la ronda", "La Sobre no duerme", "Barra de andén", "Cuaderno mojado", "El verso del bondi", "Media pila", "La calle no llama"]
   },
 
   /* ---------- Sellos discográficos (FASE 3) ----------
@@ -2306,7 +2284,7 @@ Under.DATA = {
     {
       id: "tpl_sync",
       titulo: "Quieren tu música para una película",
-      texto: "Una productora audiovisual quiere licenciar uno de tus temas para una escena clave.\n\nPagan por usar tu música, pero la ceden a una película que no conocés.",
+      texto: "Emily Burger quiere licenciar uno de tus temas para una escena clave.\n\nPagan por usar tu música, pero la ceden a una película que no conocés.",
       opciones: [
         {
           texto: "Aceptar la licencia",
