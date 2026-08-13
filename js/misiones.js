@@ -1285,6 +1285,231 @@ Under.MISIONES = (function () {
     "🎯 Misión completada: Cinco millones. Tu música ya dio la vuelta al mundo más de una vez.");
 
   /* ============================================================
+     SECCIÓN 11 — MAINSTREAM (etapa 4-8)
+     Cuando la carrera cruza la puerta grande, el circuito mainstream
+     empieza a ofrecerte cosas: radio, TV, streamers, festivales,
+     internacionales, sponsors, prensa. Misiones que reflejan esa
+     nueva vida: plata, fans globales y la tensión con el under.
+     ============================================================ */
+  m("m_msm_wrapped", "mainstream", 4, 8, "📊", "Wrapped Argentina", "Aparecé en el Wrapped de Spotify Argentina", 1, "wrapped",
+    { fans: 12000, popularity: 5, money: 3000 },
+    "🎯 Misión completada: Wrapped Argentina. La gente te descubre en el resumen del año.");
+  m("m_msm_playlist", "mainstream", 4, 8, "🎧", "Playlist editorial", "Entrá en una playlist editorial de Spotify", 1, "playlist",
+    { fans: 6000, popularity: 4 },
+    "🎯 Misión completada: Playlist editorial. Tu tema suena donde la gente va a descubrirte.");
+  m("m_msm_3playlist", "mainstream", 5, 8, "🎧", "Tres playlists", "Entrá en 3 playlists distintas", 3, "playlist",
+    { fans: 14000, popularity: 5 },
+    "🎯 Misión completada: Tres playlists. La industria entiende que tu nombre ya no es del under.");
+  m("m_msm_radio", "mainstream", 4, 8, "📻", "Radio Pop", "Pasá por la radio pop", 1, "radio_entre",
+    { fans: 6000, popularity: 4 },
+    "🎯 Misión completada: Radio Pop. Tu nombre sale del nicho y aparece en otros oídos.");
+  m("m_msm_3radio", "mainstream", 4, 8, "📻", "La radio te conoce", "Pasá por 3 radios distintas", 3, "radio_entre",
+    { fans: 14000, popularity: 5 },
+    "🎯 Misión completada: La radio te conoce. Ya no necesitás manager para entrar a un programa.");
+  m("m_msm_podcast", "mainstream", 4, 8, "🎙️", "Primer podcast", "Pasá por un podcast popular", 1, "streamer",
+    { fans: 8000, popularity: 4 },
+    "🎯 Misión completada: Primer podcast. Tu historia se escucha donde no sonabas.");
+  m("m_msm_tv", "mainstream", 4, 8, "📺", "Televisión", "Salí en un programa de TV", 1, "tv_show",
+    { fans: 14000, popularity: 4 },
+    "🎯 Misión completada: Televisión. La pantalla grande te encuentra.");
+  m("m_msm_3tv", "mainstream", 5, 8, "📺", "Tres programas", "Salí en 3 programas de TV", 3, "tv_show",
+    { fans: 28000, popularity: 5 },
+    "🎯 Misión completada: Tres programas. La TV ya te tiene fichado.");
+  m("m_msm_migue", "mainstream", 4, 8, "🎙️", "La Misa con Migue", "Pasá por La Misa de Migue Granados", 1, "streamer",
+    { fans: 18000, popularity: 5 },
+    "🎯 Misión completada: La Misa con Migue. Tu nombre corrió entre los streamings.");
+  m("m_msm_coscu", "mainstream", 4, 8, "🎙️", "Coscu Army", "Pasá por el stream de Coscu", 1, "streamer",
+    { fans: 25000, popularity: 6 },
+    "🎯 Misión completada: Coscu Army. La army te viraliza.");
+  m("m_msm_4streamers", "mainstream", 5, 8, "🎙️", "Cabina de oro", "Pasá por 4 streamers distintos", 4, "streamer",
+    { fans: 35000, popularity: 6 },
+    "🎯 Misión completada: Cabina de oro. Ya sos parte del calendario de los creadores.");
+  m("m_msm_fest", "mainstream", 4, 8, "🎪", "Tu primer festival", "Tocá en un festival mainstream", 1, "fest",
+    { fans: 8000, popularity: 3, money: 1500 },
+    "🎯 Misión completada: Tu primer festival. La gente te descubre en vivo.");
+  m("m_msm_cosquin", "mainstream", 4, 8, "🎪", "Cosquín Rock", "Tocá en Cosquín Rock", 3, "fest",
+    { fans: 28000, popularity: 6, money: 8000 },
+    "🎯 Misión completada: Cosquín Rock. La prensa del rock argentino te nombra.");
+  m("m_msm_lolla", "mainstream", 5, 8, "🎪", "Lollapalooza", "Tocá en Lollapalooza Argentina", 4, "fest",
+    { fans: 35000, popularity: 7, money: 12000 },
+    "🎯 Misión completada: Lollapalooza. Pisaste el escenario grande del país.");
+  m("m_msm_personal", "mainstream", 4, 8, "🎪", "Personal Fest", "Tocá en Personal Fest", 2, "fest",
+    { fans: 22000, popularity: 5, money: 6000 },
+    "🎯 Misión completada: Personal Fest. La gente te descubre en vivo.");
+  m("m_msm_primavera", "mainstream", 5, 8, "🎪", "Primavera Sound", "Tocá en Primavera Sound", 5, "fest",
+    { fans: 38000, popularity: 7, money: 12000 },
+    "🎯 Misión completada: Primavera Sound. La prensa internacional te nombra.");
+  m("m_msm_obras", "mainstream", 4, 8, "🏛️", "Teatro Obras", "Tocá en el Teatro Obras", 1, "show_arena",
+    { fans: 15000, popularity: 4, money: 12000 },
+    "🎯 Misión completada: Teatro Obras. La catedral del rock te abrió las puertas.");
+  m("m_msm_gran_rex", "mainstream", 5, 8, "🏛️", "Gran Rex", "Llená el Gran Rex", 1, "show_arena",
+    { fans: 28000, popularity: 6, money: 18000 },
+    "🎯 Misión completada: Gran Rex. La noche sale redonda y la gente la cuenta por años.");
+  m("m_msm_movistar", "mainstream", 6, 8, "🏛️", "Movistar Arena", "Tocá en el Movistar Arena", 2, "show_arena",
+    { fans: 40000, popularity: 7, money: 25000 },
+    "🎯 Misión completada: Movistar Arena. Tu nombre cruza el ámbito under.");
+  m("m_msm_3arena", "mainstream", 6, 8, "🏛️", "Tres arenas", "Llená 3 arenas", 3, "show_arena",
+    { fans: 60000, popularity: 7, money: 40000 },
+    "🎯 Misión completada: Tres arenas. La escena te ve de otra manera.");
+  m("m_msm_estadio_ar", "mainstream", 6, 8, "🏟️", "Estadio argentino", "Tocá en un estadio grande del país", 1, "show_estadio_ar",
+    { fans: 80000, popularity: 8, money: 60000 },
+    "🎯 Misión completada: Estadio argentino. Llenaste un Monumental, Kempes, Bombonera, La Plata o Cilindro.");
+  m("m_msm_5_colabs", "mainstream", 4, 8, "🤝", "Cinco colaboraciones", "Hacé 5 colaboraciones mainstream", 5,
+    function (s) { return s.totalColabs || 0; },
+    { fans: 25000, popularity: 5 },
+    "🎯 Misión completada: Cinco colaboraciones. La industria te tiene en la libreta.");
+  m("m_msm_10_colabs", "mainstream", 5, 8, "🤝", "Diez colaboraciones", "Hacé 10 colaboraciones", 10,
+    function (s) { return s.totalColabs || 0; },
+    { fans: 45000, popularity: 6 },
+    "🎯 Misión completada: Diez colaboraciones. La rueda sigue girando.");
+  m("m_msm_colab_duki", "mainstream", 6, 8, "🐲", "Duki", "Lográ una colaboración con Duki", 1,
+    function (s) { return (s.colaboraciones || []).some(function (c) { return c.partner === "Duki"; }); },
+    { fans: 80000, popularity: 8, money: 35000 },
+    "🎯 Misión completada: Duki. El rey del trap tiene tu nombre en un tema.");
+  m("m_msm_colab_paulo", "mainstream", 5, 8, "🎤", "Paulo Londra", "Lográ una colaboración con Paulo Londra", 1,
+    function (s) { return (s.colaboraciones || []).some(function (c) { return c.partner === "Paulo Londra"; }); },
+    { fans: 60000, popularity: 7, money: 28000 },
+    "🎯 Misión completada: Paulo Londra. Una declaración de carrera.");
+  m("m_msm_colab_becerra", "mainstream", 5, 8, "💜", "María Becerra", "Lográ una colaboración con María Becerra", 1,
+    function (s) { return (s.colaboraciones || []).some(function (c) { return c.partner === "María Becerra"; }); },
+    { fans: 50000, popularity: 7, money: 25000 },
+    "🎯 Misión completada: María Becerra. La reina del pop urbano tiene tu nombre.");
+  m("m_msm_colab_lit", "mainstream", 4, 8, "🔱", "Lit Killah", "Lográ una colaboración con Lit Killah", 1,
+    function (s) { return (s.colaboraciones || []).some(function (c) { return c.partner === "Lit Killah"; }); },
+    { fans: 35000, popularity: 6, money: 20000 },
+    "🎯 Misión completada: Lit Killah. Tu tema pega primero en la calle.");
+  m("m_msm_4_estrellas", "mainstream", 6, 8, "🌟", "Las cuatro figuras", "Colaborá con las 4 figuras grandes", 4,
+    function (s) {
+      var n = (s.colaboraciones || []).filter(function (c) {
+        return c.partner === "Duki" || c.partner === "Paulo Londra" ||
+               c.partner === "María Becerra" || c.partner === "Lit Killah";
+      }).length;
+      return n;
+    },
+    { fans: 120000, popularity: 9, money: 60000 },
+    "🎯 Misión completada: Las cuatro figuras. Tu nombre está en las cuatro coronas grandes del país.");
+  m("m_msm_disco_oro", "mainstream", 4, 8, "🥇", "Disco de oro", "Conseguí un disco de oro", 1,
+    function (s) { return (s.discografia || []).some(function (d) { return (d.repros || 0) >= 1000000; }); },
+    { fans: 25000, popularity: 7, money: 8000 },
+    "🎯 Misión completada: Disco de oro. La industria te certifica.");
+  m("m_msm_disco_plat", "mainstream", 5, 8, "🥈", "Disco de platino", "Conseguí un disco de platino", 1,
+    function (s) { return (s.discografia || []).some(function (d) { return (d.repros || 0) >= 5000000; }); },
+    { fans: 45000, popularity: 8, money: 18000 },
+    "🎯 Misión completada: Disco de platino. Tu tema rompió récords.");
+  m("m_msm_disco_diam", "mainstream", 6, 8, "💎", "Disco de diamante", "Conseguí un disco de diamante", 1,
+    function (s) { return (s.discografia || []).some(function (d) { return (d.repros || 0) >= 10000000; }); },
+    { fans: 90000, popularity: 10, money: 40000 },
+    "🎯 Misión completada: Disco de diamante. La escena te cuenta entre los que rompieron la barrera.");
+  m("m_msm_videoclip", "mainstream", 4, 8, "🎬", "Videoclip", "Filmá un videoclip oficial", 1,
+    function (s) { return (s.discografia || []).some(function (d) { return d.video; }); },
+    { fans: 4500, popularity: 3, money: 2000 },
+    "🎯 Misión completada: Videoclip. Tu tema se ve, no solo se escucha.");
+  m("m_msm_video_viral", "mainstream", 4, 8, "🎬", "Video viral", "Tu video supera 100k vistas", 1,
+    function (s) { return (s.discografia || []).some(function (d) { return d.video && (d.repros || 0) >= 100000; }); },
+    { fans: 15000, popularity: 5 },
+    "🎯 Misión completada: Video viral. La gente comparte tu clip sin pedir permiso.");
+  m("m_msm_tiktok", "mainstream", 4, 8, "📱", "TikTok", "Tu audio se hace tendencia en TikTok", 1,
+    function (s) { return (s.discografia || []).some(function (d) { return d.tier === "viral" || d.tier === "global"; }); },
+    { fans: 22000, popularity: 5 },
+    "🎯 Misión completada: TikTok. La gente usa tu audio en su baile de 15 segundos.");
+  m("m_msm_millo_streams", "mainstream", 4, 8, "🎧", "Un millón de streams", "Sumá un millón de reproducciones", 1000000,
+    function (s) { return s.totalReproducciones; },
+    { fans: 6000, money: 4000 },
+    "🎯 Misión completada: Un millón de streams. La regalía se empieza a notar.");
+  m("m_msm_5m_streams", "mainstream", 5, 8, "🎧", "Cinco millones", "Sumá cinco millones de reproducciones", 5000000,
+    function (s) { return s.totalReproducciones; },
+    { fans: 18000, popularity: 5, money: 14000 },
+    "🎯 Misión completada: Cinco millones. Tu música ya dio la vuelta al mundo más de una vez.");
+  m("m_msm_25m_streams", "mainstream", 6, 8, "🎧", "Veinticinco millones", "Sumá veinticinco millones de reproducciones", 25000000,
+    function (s) { return s.totalReproducciones; },
+    { fans: 60000, popularity: 7, money: 35000 },
+    "🎯 Misión completada: Veinticinco millones. La cifra que la Argentina entera reconoce.");
+  m("m_msm_mexico", "mainstream", 5, 8, "🇲🇽", "México", "Conquistá el mercado mexicano", 1,
+    function (s) { return (s.mercados || []).some(function (m) { return m.pais === "México"; }); },
+    { fans: 30000, popularity: 6 },
+    "🎯 Misión completada: México. El mercado más grande del pop latino te conoce.");
+  m("m_msm_espana", "mainstream", 5, 8, "🇪🇸", "España", "Conquistá el mercado español", 1,
+    function (s) { return (s.mercados || []).some(function (m) { return m.pais === "España"; }); },
+    { fans: 28000, popularity: 5 },
+    "🎯 Misión completada: España. La madre patria te descarga.");
+  m("m_msm_3_mercados", "mainstream", 6, 8, "🌎", "Tres fronteras", "Conquistá 3 mercados internacionales", 3,
+    function (s) { return (s.mercados || []).length; },
+    { fans: 40000, popularity: 6 },
+    "🎯 Misión completada: Tres fronteras. La escena ya sabe que no quedás en casa.");
+  m("m_msm_gardel", "mainstream", 4, 8, "🏆", "Premio Gardel", "Ganá un Premio Gardel", 1,
+    function (s) { return (s.premios || []).length; },
+    { fans: 35000, popularity: 8, money: 12000 },
+    "🎯 Misión completada: Premio Gardel. La industria te nombra entre los mejores del año.");
+  m("m_msm_3_gardel", "mainstream", 5, 8, "🏆", "Tres Gardel", "Ganá 3 Premios Gardel", 3,
+    function (s) { return (s.premios || []).length; },
+    { fans: 50000, popularity: 9, money: 24000 },
+    "🎯 Misión completada: Tres Gardel. La academia te tiene en la mesa.");
+  m("m_msm_latin_grammy", "mainstream", 6, 8, "🌎", "Latin Grammy", "Ganá un Latin Grammy", 1,
+    function (s) { return (s.premios || []).some(function (p) { return p.id === "global"; }); },
+    { fans: 80000, popularity: 10, money: 35000 },
+    "🎯 Misión completada: Latin Grammy. La academia latina te certifica.");
+  m("m_msm_billboard", "mainstream", 5, 8, "📰", "Billboard Latin", "Aparecé en Billboard Latin", 1, "billboard",
+    { fans: 25000, popularity: 6, _legado: 8 },
+    "🎯 Misión completada: Billboard Latin. La industria te empieza a tratar distinto.");
+  m("m_msm_mtv", "mainstream", 4, 8, "📺", "MTV Latam", "Salí en MTV Latinoamérica", 1, "mtv",
+    { fans: 18000, popularity: 5 },
+    "🎯 Misión completada: MTV Latam. La pantalla del cable te da aire.");
+  m("m_msm_press_int", "mainstream", 5, 8, "📰", "Prensa internacional", "Salí en prensa internacional", 1, "press_int",
+    { fans: 18000, popularity: 4, _legado: 5 },
+    "🎯 Misión completada: Prensa internacional. La crítica te nombra afuera.");
+  m("m_msm_sponsor", "mainstream", 4, 8, "💰", "Sponsor de marca", "Firmá tu primer sponsor de marca", 1, "sponsor",
+    { money: 25000, popularity: 4 },
+    "🎯 Misión completada: Sponsor de marca. La primera pauta grande entra.");
+  m("m_msm_3_sponsors", "mainstream", 5, 8, "💰", "Sponsor de tres marcas", "Firmá 3 sponsors", 3, "sponsor",
+    { money: 60000, popularity: 5 },
+    "🎯 Misión completada: Sponsor de tres marcas. La industria te quiere como cara.");
+  m("m_msm_reloj", "mainstream", 5, 8, "💰", "Reloj de lujo", "Firmá una campaña de un reloj de lujo", 1,
+    function (s) { return s.flags.sponsor_reloj; },
+    { money: 60000, popularity: 5 },
+    "🎯 Misión completada: Reloj de lujo. La marca te lleva a otro nicho.");
+  m("m_msm_libro", "mainstream", 4, 8, "📚", "Libro sobre tu historia", "Publicá un libro sobre tu historia", 1, "libro",
+    { fans: 18000, popularity: 3, _relaciones: 2 },
+    "🎯 Misión completada: Libro sobre tu historia. La cultura te toma en cuenta.");
+  m("m_msm_moda", "mainstream", 4, 8, "👗", "Pasarela de moda", "Pasá por la pasarela de la moda", 1, "moda",
+    { fans: 20000, popularity: 5 },
+    "🎯 Misión completada: Pasarela de moda. Tu cara se cruza con la moda.");
+  m("m_msm_biopic", "mainstream", 6, 8, "🎥", "Biopic", "Anuncian un biopic sobre tu historia", 1, "biopic",
+    { fans: 45000, popularity: 8, money: 30000 },
+    "🎯 Misión completada: Biopic. Tu historia se va a contar en pantalla.");
+  m("m_msm_actuacion", "mainstream", 4, 8, "🎬", "Papel en una serie", "Sacá un papel en una serie", 1, "actuacion",
+    { fans: 25000, popularity: 5 },
+    "🎯 Misión completada: Papel en una serie. La pantalla te da otra capa.");
+  m("m_msm_vegas", "mainstream", 5, 8, "🎰", "Las Vegas", "Hacé una residencia en Las Vegas", 1, "vegas",
+    { fans: 15000, popularity: 3, money: 22000 },
+    "🎯 Misión completada: Las Vegas. La prensa gringa y la argentina te cubrieron.");
+  m("m_msm_olimpia", "mainstream", 5, 8, "⚽", "Apertura de partido", "Cantá en la apertura de un partido", 1, "olimpia",
+    { fans: 50000, popularity: 7 },
+    "🎯 Misión completada: Apertura de partido. La cancha te escuchó entero.");
+  m("m_msm_rugby", "mainstream", 5, 8, "🏉", "Pumas", "Cantá el himno en un partido de los Pumas", 1, "rugby",
+    { fans: 28000, popularity: 5 },
+    "🎯 Misión completada: Pumas. Los himnos a la mitad del campo.");
+  m("m_msm_fan_messi", "mainstream", 7, 8, "🐐", "Messi te cita", "Messi cita tu tema en una historia", 1, "fan_messi",
+    { fans: 60000, popularity: 8 },
+    "🎯 Misión completada: Messi te cita. Tu tema se dispara en streams.");
+  m("m_msm_university", "mainstream", 4, 8, "🎓", "Universidad", "Dá una charla en una universidad", 1, "charla",
+    { fans: 8000, popularity: 2, _legado: 8 },
+    "🎯 Misión completada: Universidad. La academia te cuenta.");
+  m("m_msm_teatro", "mainstream", 4, 8, "🎭", "Teatro independiente", "Hacé un show íntimo en un teatro", 1, "teatro",
+    { fans: 12000, popularity: 3, money: 8000 },
+    "🎯 Misión completada: Teatro independiente. La gente te siente cerca.");
+  m("m_msm_5_fest", "mainstream", 5, 8, "🎪", "Asiduo de festivales", "Tocá en 5 festivales", 5, "fest",
+    { fans: 30000, popularity: 6 },
+    "🎯 Misión completada: Asiduo de festivales. El calendario grande ya te tiene agendado.");
+  m("m_msm_legado_70", "mainstream", 5, 8, "📜", "Legado 70", "Acumulá 70 de legado", 70,
+    function (s) { return s.legado || 0; },
+    { fans: 30000, popularity: 5, _legado: 5 },
+    "🎯 Misión completada: Legado 70. La escena te cita entre los grandes.");
+  m("m_msm_legado_150", "mainstream", 6, 8, "📜", "Legado 150", "Acumulá 150 de legado", 150,
+    function (s) { return s.legado || 0; },
+    { fans: 60000, popularity: 7, _legado: 10 },
+    "🎯 Misión completada: Legado 150. Tu nombre ya figura en cualquier conversación.");
+
+  /* ============================================================
      METADATOS DE SECCIONES (nombre + tope de misiones activas)
      ============================================================ */
   var SECCIONES = {
@@ -1297,7 +1522,8 @@ Under.MISIONES = (function () {
     vida:          { nombre: "💛 Vida y bienestar",             cap: 3 },
     internacional: { nombre: "🌎 Salir al mundo",               cap: 3 },
     crisis:        { nombre: "🔄 Crisis y reinvención",         cap: 3 },
-    hitos:         { nombre: "🏆 Hitos de la carrera",          cap: 3 }
+    hitos:         { nombre: "🏆 Hitos de la carrera",          cap: 3 },
+    mainstream:    { nombre: "🌟 Mainstream",                   cap: 3 }
   };
 
   function _def(id) {

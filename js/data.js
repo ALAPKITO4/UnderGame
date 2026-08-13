@@ -523,6 +523,38 @@ Under.DATA = {
     }
   },
 
+  /* ---------- Estrellas argentinas grandes (PRIORIDAD 12) ----------
+     Colaboraciones con las figuras más grandes del país. Solo se
+     desbloquean cuando tu público crece: cada tiene un piso de
+     fans que tenés que haber cruzado para que la colab aparezca.
+     El camino under reduce la probabilidad de manera importante. */
+  ESTRELLAS_AR: {
+    duki: {
+      id: "duki", nombre: "Duki", emoji: "🐲",
+      fansMin: 3000000,
+      calidad: 10, audiencia: 4.5, retencion: 0.35,
+      desc: "el máximo referente del trap argentino — su nombre en tu tema te lleva a público en todo el país de un plumazo"
+    },
+    paulo: {
+      id: "paulo", nombre: "Paulo Londra", emoji: "🎤",
+      fansMin: 2000000,
+      calidad: 9, audiencia: 3.5, retencion: 0.4,
+      desc: "uno de los más grandes del país — su nombre en tu tema es una declaración de carrera"
+    },
+    becerra: {
+      id: "becerra", nombre: "María Becerra", emoji: "💜",
+      fansMin: 1500000,
+      calidad: 9, audiencia: 3.2, retencion: 0.4,
+      desc: "la reina del pop urbano — una feat con ella trasciende el Río de la Plata"
+    },
+    lit: {
+      id: "lit", nombre: "Lit Killah", emoji: "🔱",
+      fansMin: 1000000,
+      calidad: 8, audiencia: 2.5, retencion: 0.45,
+      desc: "uno de los más pesados de la escena — tu tema pega primero en la calle"
+    }
+  },
+
   /* ---------- Premios (FASE 3) ----------
      Se ofrecen según nivel de carrera y no se repiten por categoría. */
   PREMIOS: [
@@ -1580,6 +1612,17 @@ Under.DATA = {
           !(s.momentum <= 22 && s.stats.popularity <= 38);
       },
       generar: function (s) { return Under.CRISIS.crearEventoEvolucion(s); }
+    },
+    /* PRIORIDAD 12: a partir de nivel 4, el circuito mainstream
+       empieza a ofrecerte lugares: radio, TV, streamers, festivales,
+       sponsors, biopic. La escena del under ya quedó atrás. Una
+       vez por año y se desactiva con un flag anual. */
+    {
+      id: "mainstream_evento", peso: 2,
+      disponible: function (s) {
+        return s.año >= 4 && Under.STATE.nivelCarrera(s).nivel >= 4 && !s.flags.msmEsteAnio;
+      },
+      generar: function (s) { return Under.MAINSTREAM.crear(s); }
     }
   ],
 

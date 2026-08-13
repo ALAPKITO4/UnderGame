@@ -482,6 +482,9 @@ Under.UI = {
 
   tplEvento: function (ev, num, total) {
     var s = Under.MAIN.estado;
+    if (!ev || !ev.opciones) {
+      return '<div class="card"><div class="final-sec-h">⚠️ Evento roto</div><p>Este evento no tiene opciones: ' + (ev && ev.id) + '</p></div>';
+    }
     var texto = Under.UI.txt(s, ev.texto);
     var opciones = ev.opciones.map(function (o, i) {
       var letras = ["A", "B", "C", "D", "E"];

@@ -180,6 +180,31 @@ Under.STATE = {
     if (s.misiones === undefined) s.misiones = {};
     if (s.contadores === undefined) s.contadores = {};
     if (s.misionesUsadas === undefined) s.misionesUsadas = {};
+    /* PRIORIDAD 12: contadores de la sección mainstream (se suman
+       a `s.contadores` con `Under.MISIONES.sumar`). */
+    var c = s.contadores;
+    if (c.wrapped === undefined) c.wrapped = 0;
+    if (c.playlist === undefined) c.playlist = 0;
+    if (c.radio_entre === undefined) c.radio_entre = 0;
+    if (c.streamer === undefined) c.streamer = 0;
+    if (c.tv_show === undefined) c.tv_show = 0;
+    if (c.fest === undefined) c.fest = 0;
+    if (c.show_arena === undefined) c.show_arena = 0;
+    if (c.show_estadio_ar === undefined) c.show_estadio_ar = 0;
+    if (c.sponsor === undefined) c.sponsor = 0;
+    if (c.libro === undefined) c.libro = 0;
+    if (c.moda === undefined) c.moda = 0;
+    if (c.biopic === undefined) c.biopic = 0;
+    if (c.actuacion === undefined) c.actuacion = 0;
+    if (c.press_int === undefined) c.press_int = 0;
+    if (c.mtv === undefined) c.mtv = 0;
+    if (c.billboard === undefined) c.billboard = 0;
+    if (c.vegas === undefined) c.vegas = 0;
+    if (c.olimpia === undefined) c.olimpia = 0;
+    if (c.rugby === undefined) c.rugby = 0;
+    if (c.fan_messi === undefined) c.fan_messi = 0;
+    if (c.charla === undefined) c.charla = 0;
+    if (c.teatro === undefined) c.teatro = 0;
     if (s.sello === undefined) s.sello = null;
     if (s.energia === undefined) s.energia = 100;
     if (s.relaciones === undefined) s.relaciones = 50;

@@ -41,7 +41,7 @@ global.document = {
 var fs = require("fs");
 var path = require("path");
 var root = __dirname;
- ["js/data.js", "js/state.js", "js/publico.js", "js/systems.js", "js/music.js",
+ ["js/data.js", "js/mainstream.js", "js/state.js", "js/publico.js", "js/systems.js", "js/music.js",
   "js/sello.js", "js/giras.js", "js/colabs.js", "js/premios.js",
   "js/albumes.js", "js/escandalos.js", "js/equipo.js", "js/vida.js",
   "js/inversiones.js", "js/retiro.js",

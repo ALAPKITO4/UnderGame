@@ -32,6 +32,41 @@ Under.COLABS = {
       };
     }
     var nivel = Under.STATE.nivelCarrera(state).nivel;
+    var fans = state.stats.fans || 0;
+
+    /* PRIORIDAD 12: estrellas argentinas grandes. Cada una tiene
+       un piso de fans que el jugador tiene que haber cruzado para
+       que la propuesta aparezca. La probabilidad base sube con
+       cuántos artistas desbloqueó y se reduce a la mitad si el
+       jugador eligió quedarse como leyenda del under. */
+    if (nivel >= 4 && Under.DATA.ESTRELLAS_AR) {
+      var candidates = [];
+      for (var ek in Under.DATA.ESTRELLAS_AR) {
+        var ar = Under.DATA.ESTRELLAS_AR[ek];
+        if (fans >= ar.fansMin) candidates.push(ar);
+      }
+      if (candidates.length) {
+        var prob = Math.min(0.5, candidates.length * 0.13);
+        if (state.flags && state.flags.camino === "under") prob *= 0.4;
+        if (Math.random() < prob) {
+          /* El de mayor piso de fans gana si hay varios, para que
+             la propuesta sea la más importante de las disponibles. */
+          candidates.sort(function (a, b) { return b.fansMin - a.fansMin; });
+          var top = candidates[0];
+          return {
+            tipo: "estrella_ar",
+            nombre: top.nombre,
+            idRed: null,
+            calidad: top.calidad,
+            audiencia: top.audiencia,
+            retencion: top.retencion,
+            desc: top.desc,
+            fansMin: top.fansMin
+          };
+        }
+      }
+    }
+
     var tipo;
     if (nivel >= 6) tipo = Math.random() < 0.5 ? "estrella" : "culto";
     else if (nivel >= 3) tipo = "igual";
