@@ -219,9 +219,9 @@ Under.UNDER = {
   /* ---------- Un rival de otra escena te bardea ---------- */
   crearEventoRival: function (state) {
     return Under.UNDER._crear("under_rival", "Un rival te bardea", [
-      "Un artista de otra escena te bardea en redes por tu último tema.",
-      "En un programa de radio, un rapero de otra zona dice que tu música es una copia.",
-      "Un video que se burla de tu forma de cantar se comparte en tu ciudad."
+      "Lolo Morales, un artista de otra escena, te bardea en redes por tu último tema.",
+      "Lolo Morales dice en un programa de radio que tu música es una copia.",
+      "Un video de Lolo Morales burlándose de tu forma de cantar se comparte en tu ciudad."
     ], [
       {
         texto: "Responder con un tema",
