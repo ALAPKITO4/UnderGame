@@ -1035,12 +1035,12 @@ Under.UNDER = {
     ]);
   },
 
-  /* ---------- Tu video en La Sobre se viraliza ---------- */
+  /* ---------- Tu video se viraliza ---------- */
   crearEventoViralSobre: function (state) {
-    return Under.UNDER._crear("under_viral_sobre", "Tu video en La Sobre se viraliza", [
-      "Un video tuyo tirando rimas en La Sobre se hizo viral en redes. En dos días tiene miles de visitas. Nadie sabe qué va a pasar.",
-      "Alguien grabó tus rimas en La Sobre y el video explotó. En dos días son miles de visitas y la escena entera lo está viendo.",
-      "Un video tuyo tirando rimas en La Sobre no para de sumar vistas. En dos días ya son miles, y el revuelo llega más lejos de lo que imaginabas."
+    return Under.UNDER._crear("under_viral_sobre", "Tu video se viraliza", [
+      "Un video tuyo tirando rimas se hizo viral en redes. En dos días tiene miles de visitas. Nadie sabe qué va a pasar.",
+      "Alguien grabó tus rimas y el video explotó. En dos días son miles de visitas y la escena entera lo está viendo.",
+      "Un video tuyo tirando rimas no para de sumar vistas. En dos días ya son miles, y el revuelo llega más lejos de lo que imaginabas."
     ], [
       {
         texto: "Montarte en la ola",
@@ -1052,7 +1052,7 @@ Under.UNDER = {
           return { fans: Under.SYSTEMS.fansEscala(s, 1500), popularity: 4, _energia: -8 };
         },
         resultado: "Aprovechás el momento: subís contenido, respondés comentarios, y el video te lleva una audiencia que ayer no existía.",
-        log: "Se montó en la ola de su video viral en La Sobre."
+        log: "Se montó en la ola de su video viral."
       },
       {
         texto: "Dejarlo que crezca solo",
@@ -1073,7 +1073,7 @@ Under.UNDER = {
           return {};
         },
         resultado: "No le das importancia. El video pasa, y tu carrera sigue su propio ritmo.",
-        log: "Ignoró la viralización de su video en La Sobre."
+        log: "Ignoró la viralización de su video."
       }
     ]);
   },
@@ -1589,23 +1589,23 @@ Under.UNDER = {
     ]);
   },
 
-  /* ---------- Una feria del barrio ---------- */
+  /* ---------- Te reconocen en un concierto ---------- */
   crearEventoFeria: function (state) {
-    return Under.UNDER._crear("under_feria", "Una feria del barrio", [
-      "En la feria comunitaria del barrio te ofrecen un puesto para vender tu material.",
-      "Un mercadillo de discos y fanzines te deja un lugar para tus maquetas y stickers.",
-      "Una feria cultural de tu zona te da un espacio para mostrar tu música en vivo."
+    return Under.UNDER._crear("under_feria", "Te reconocen en un concierto", [
+      "Unos chicos en un concierto te reconocen y se acercan a intentar comprarte tus canciones.",
+      "Después del toque, unos pibes te paran: te vieron, te reconocen y quieren comprarte tus temas.",
+      "En un concierto, un grupo de chicos te reconoce y quiere llevarse tus canciones, con plata en mano."
     ], [
       {
-        texto: "Ir a vender",
-        desc: "Poca plata, pero contacto cara a cara.",
+        texto: "Venderles",
+        desc: "Poca plata, pero fans de verdad.",
         efectos: function (s) {
           Under.UNDER._limpiar("under_feria");
           Under.MISIONES.sumar(s, "feria", 1);
           return { money: Under.SYSTEMS.efectivoEscala(s, 180), fans: Under.SYSTEMS.fansEscala(s, 200), _energia: -8 };
         },
-        resultado: "Vendés algunas maquetas y te llevás charlas que valen más que la plata.",
-        log: "Vendió su material en una feria del barrio."
+        resultado: "Les vendés tus canciones y te llevás charlas que valen más que la plata.",
+        log: "Vendió sus canciones a unos pibes que lo reconocieron."
       },
       {
         texto: "Regalar demos",
@@ -1615,7 +1615,7 @@ Under.UNDER = {
           return { fans: Under.SYSTEMS.fansEscala(s, 400), _relaciones: 3 };
         },
         resultado: "Repartís demos gratis. Un montón de manos nuevas con tu nombre y tu sonido.",
-        log: "Regaló demos en una feria del barrio."
+        log: "Regaló demos a los pibes que lo reconocieron."
       },
       {
         texto: "Quedarte en el estudio",
@@ -1624,8 +1624,8 @@ Under.UNDER = {
           Under.UNDER._limpiar("under_feria");
           return { talent: 1 };
         },
-        resultado: "No vas. La feria sigue sin vos y el estudio te lo agradece.",
-        log: "Prefirió el estudio antes que una feria del barrio."
+        resultado: "No te acercás. Los pibes se van con las ganas y el estudio te lo agradece.",
+        log: "Prefirió el estudio antes que vender sus canciones."
       }
     ]);
   },
@@ -2223,9 +2223,9 @@ Under.UNDER = {
   /* ---------- La Sobre: el lugar más crudo ---------- */
   crearEventoLaSobre: function (state) {
     return Under.UNDER._crear("under_la_sobre", "La Sobre te abre el sótano", [
-      "Lucio te abre una noche en La Sobre, el lugar más crudo del under. Ahí no hay escenario ni red: es la prueba de los de verdad.",
-      "Lucio te ofrece una fecha en La Sobre: el antro donde el under se mide sin vueltas.",
-      "Lucio te quiere en el cartel de La Sobre. El lugar más básico de la escena, y por eso el más respetado."
+      "smi te abre una noche en La Sobre, el lugar más crudo del under. Ahí no hay escenario ni red: es la prueba de los de verdad.",
+      "smi te ofrece una fecha en La Sobre: el antro donde el under se mide sin vueltas.",
+      "smi te quiere en el cartel de La Sobre. El lugar más básico de la escena, y por eso el más respetado."
     ], [
       {
         texto: "Tocar en La Sobre",
