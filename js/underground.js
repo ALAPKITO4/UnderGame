@@ -84,10 +84,10 @@ Under.UNDER = {
     var esc2 = Under.UNDER._escenario();
     var esc3 = Under.UNDER._escenario();
     return Under.UNDER._crear("under_ciudad", "Un toque en la escena", [
-      "Lucio, el organizador, te llama: un bar del bajo te ofrece un viernes en " + esc.nombre + ". Poca gente, cero escenario: un rincón con dos parlantes y una puerta que no cierra del todo.",
-      "Lucio te consigue un hueco en el ciclo de artistas nuevos que arranca en " + esc2.nombre + ". Te ofrecen la primera fecha.",
-      "Lucio arma un toque en " + esc3.nombre + " y te llama. Entrada a la gorra y mucho ruido.",
-      "Lucio te pasa el dato: los amigos con la 3flip te ofrecen tu primera fecha."
+      "Pulmón, el organizador, te llama: un bar del bajo te ofrece un viernes en " + esc.nombre + ". Poca gente, cero escenario: un rincón con dos parlantes y una puerta que no cierra del todo.",
+      "Pulmón te consigue un hueco en el ciclo de artistas nuevos que arranca en " + esc2.nombre + ". Te ofrecen la primera fecha.",
+      "Pulmón arma un toque en " + esc3.nombre + " y te llama. Entrada a la gorra y mucho ruido.",
+      "Pulmón te pasa el dato: los amigos con la 3flip te ofrecen tu primera fecha."
     ], [
       {
         texto: "Aceptar el toque",
@@ -266,9 +266,9 @@ Under.UNDER = {
   /* ---------- Batalla de freestyle ---------- */
   crearEventoFreestyle: function (state) {
     return Under.UNDER._crear("under_freestyle", "Batalla de freestyle", [
-      "Hay una batalla de freestyle en La Sobre y te anotaron sin preguntarte.",
-      "Un cypher improvisado en La Sobre. Todos esperan que sueltes la mejor barra.",
-      "Un conocido te desafía a un duelo de rimas en una joda de La Sobre."
+      "Hay una conpe en La Sobre y te anotaron sin preguntarte.",
+      "Un cypher improvisado en una conpe de La Sobre. Todos esperan que sueltes la mejor barra.",
+      "Un conocido te desafía a un duelo de rimas en una conpe de la sobre."
     ], [
       {
         texto: "Batallar",
@@ -442,9 +442,9 @@ Under.UNDER = {
   /* ---------- Se filtra una maqueta ---------- */
   crearEventoFiltracion: function (state) {
     return Under.UNDER._crear("under_filtracion", "Una maqueta filtrada", [
-      "Lucio filtró una maqueta vieja tuya que nunca terminaste.",
-      "Lucio sube a internet una demo de tus inicios sin avisarte.",
-      "Lucio filtra una versión descartada de tu último tema en un foro."
+      "Nahuel Ludueña filtró una maqueta vieja tuya que nunca terminaste.",
+      "Nahuel Ludueña sube a internet una demo de tus inicios sin avisarte.",
+      "Nahuel Ludueña filtra una versión descartada de tu último tema en un foro."
     ], [
       {
         texto: "Reclamarla como tuya",
@@ -475,46 +475,6 @@ Under.UNDER = {
         },
         resultado: "La entrás al estudio, la terminás como correspondía y la relanzás. La historia termina bien.",
         log: "Convirtió una filtración en un lanzamiento cuidado."
-      }
-    ]);
-  },
-
-  /* ---------- Un barrio hace suyo un tema ---------- */
-  crearEventoZona: function (state) {
-    return Under.UNDER._crear("under_zona", "Tu tema es del barrio", [
-      "Un tema tuyo se volvió el himno no oficial de un barrio.",
-      "Los chicos de una zona hacen un baile con tu canción y lo suben a redes."
-    ], [
-      {
-        texto: "Abrazarlo",
-        desc: "Dejás que sea de ellos. Eso construye una base real.",
-        efectos: function (s) {
-          Under.UNDER._limpiar("under_zona");
-          Under.MISIONES.sumar(s, "barrio", 1);
-          return { fans: Under.SYSTEMS.fansEscala(s, 800), popularity: 3 };
-        },
-        resultado: "Lo abrazás y hasta subís un video bailando el paso. La zona te hace suyo para siempre.",
-        log: "Abrazó el fenómeno de un tema en su barrio."
-      },
-      {
-        texto: "Capitalizarlo con merch",
-        desc: "El momento rinde plata si lo apurás.",
-        efectos: function (s) {
-          Under.UNDER._limpiar("under_zona");
-          return { money: Under.SYSTEMS.efectivoEscala(s, 200), fans: Under.SYSTEMS.fansEscala(s, 300), popularity: 1 };
-        },
-        resultado: "Vendés stickers y remeras con el paso de moda. Algunos lo celebran, otros lo leen como oportunismo.",
-        log: "Capitalizó con merch el fenómeno de un tema."
-      },
-      {
-        texto: "Dejarlo ser",
-        desc: "No tocar nada: la ola pasa sola.",
-        efectos: function (s) {
-          Under.UNDER._limpiar("under_zona");
-          return {};
-        },
-        resultado: "No hacés nada. El tema hizo su vida y el barrio lo sigue cantando igual.",
-        log: "Dejó que un tema hiciera su vida en el barrio."
       }
     ]);
   },
@@ -803,9 +763,9 @@ Under.UNDER = {
   /* ---------- Telonero en Pétalos del Sol ---------- */
   crearEventoPetalos: function (state) {
     return Under.UNDER._crear("under_petalos", "Telonero en Pétalos del Sol", [
-      "Lucio te consigue el telonero de La Family Racks en Pétalos del Sol, un lugar chico pero con nombre. Es tu primer escenario real frente a gente que no te conoce.",
-      "La Family Racks llena Pétalos del Sol los viernes y Lucio te propone como telonero. Lugar chico, gente que no te conoce: la primera prueba de verdad.",
-      "Lucio te abre la puerta de Pétalos del Sol: tocás de telonero antes de La Family Racks. Lugar chico, pero es tu primer escenario real."
+      "Fabrizio te pone como telonero de la family rack, y que después sigue.",
+      "La Family Racks llena Pétalos del Sol los viernes y Fabrizio te propone como telonero. Lugar chico, gente que no te conoce: la primera prueba de verdad.",
+      "Fabrizio te abre la puerta de Pétalos del Sol: tocás de telonero antes de La Family Racks. Lugar chico, pero es tu primer escenario real."
     ], [
       {
         texto: "Aceptar y tocar sin red",
@@ -1675,9 +1635,9 @@ Under.UNDER = {
   /* ---------- Una fiesta privada te paga ---------- */
   crearEventoFiesta: function (state) {
     return Under.UNDER._crear("under_fiesta", "Una fiesta privada te llama", [
-      "Una fiesta privada te ofrece un caché en mano por tocar tres horas.",
-      "Un evento de fin de año de una empresa quiere música en vivo para sus empleados.",
-      "Una cumpleaños de un personaje de la zona quiere que le pongas la música."
+      "En el cumpleaños de marti y kiwa quieren que cantes en vivo.",
+      "En el cumple de Marti y Kiwa arman una juntada y te llaman para poner la música.",
+      "En la fiesta de Marti y Kiwa quieren que cantes en vivo toda la noche."
     ], [
       {
         texto: "Tocar la fiesta",
@@ -1720,103 +1680,11 @@ Under.UNDER = {
     ]);
   },
 
-  /* ---------- Te piden la banda en vivo ---------- */
-  crearEventoBanda: function (state) {
-    var nombre = Under.UNDER._artista();
-    return Under.UNDER._crear("under_banda", "Te piden la banda en vivo", [
-      nombre + ", un artista del under, te pide que lo acompañes con una banda en vivo para su fecha.",
-      nombre + " necesita músicos para el show de un cantante local y piensa en vos.",
-      "Una banda de tu ciudad quiere sumarte como voz invitada en una gira chica."
-    ], [
-      {
-        texto: "Sumarte",
-        desc: "Otra escuela: tocar para otro también enseña.",
-        efectos: function (s) {
-          Under.UNDER._limpiar("under_banda");
-          Under.MISIONES.sumar(s, "banda", 1);
-          return { money: Under.SYSTEMS.efectivoEscala(s, 250), talent: 2, _energia: -12 };
-        },
-        resultado: "Te sumás y la fecha sale perfecta. Aprendés más de lo que esperabas y la escena te anota como músico serio.",
-        log: "Se sumó como músico a un show de otro artista."
-      },
-      {
-        texto: "Proponer tu propio set",
-        desc: "Ya que estás, que te escuchen a vos.",
-        efectos: function (s) {
-          Under.UNDER._limpiar("under_banda");
-          return { talent: 1, popularity: 2, fans: Under.SYSTEMS.fansEscala(s, 200) };
-        },
-        resultado: "Negociás: tocás para él y al final abrís vos. El público se queda con las dos cosas.",
-        log: "Abrió su propio set en la fecha de otro artista."
-      },
-      {
-        texto: "Declinar",
-        desc: "Tu música primero.",
-        efectos: function (s) {
-          Under.UNDER._limpiar("under_banda");
-          return {};
-        },
-        resultado: "Decís que no. Otro ocupa tu lugar y la fecha sale igual.",
-        log: "Declinó tocar para otro artista."
-      }
-    ]);
-  },
-
-  /* ---------- Tu tema se vuelve un grito ---------- */
-  crearEventoManifiesto: function (state) {
-    return Under.UNDER._crear("under_manifiesto", "Tu tema es un grito", [
-      "Un tema tuyo se convirtió en el himno de una movida barrial que está creciendo.",
-      "Una causa local adoptó una canción tuya y la cantan en cada encuentro.",
-      "Los pibes de una zona usan tu tema como bandera para una pelea que los une."
-    ], [
-      {
-        texto: "Abrazarlo como propio",
-        desc: "Que tu música sea de la gente.",
-        efectos: function (s) {
-          Under.UNDER._limpiar("under_manifiesto");
-          Under.MISIONES.sumar(s, "movida", 1);
-          return { fans: Under.SYSTEMS.fansEscala(s, 900), popularity: 3, _relaciones: 4 };
-        },
-        resultado: "Lo abrazás y hasta le dedicás una historia a la movida. Tu tema se vuelve algo más grande que una canción.",
-        log: "Abrazó el himno que se volvió su tema en el barrio."
-      },
-      {
-        texto: "Sumarte a la movida",
-        desc: "Estar adentro, con todo lo que implica. Un riesgo real.",
-        riesgo: 0.5,
-        efectos: function (s) {
-          Under.UNDER._limpiar("under_manifiesto");
-          Under.MISIONES.sumar(s, "movida", 1);
-          return { fans: Under.SYSTEMS.fansEscala(s, 1800), popularity: 5, _relaciones: 4, _energia: -10 };
-        },
-        resultado: "Te sumás de lleno y la movida te lleva en hombros. Tu nombre crece con ellos.",
-        log: "Se sumó de lleno a la movida que adoptó su tema.",
-        riesgoEfectos: function (s) {
-          Under.UNDER._limpiar("under_manifiesto");
-          return { fans: Under.SYSTEMS.fansEscala(s, 400), popularity: -3, _energia: -12, _relaciones: -2 };
-        },
-        riesgoResultado: "Te sumás y el fuego te quema: la movida se parte y tu nombre queda pegado a un lado de la pelea.",
-        riesgoLog: "La movida a la que se sumó terminó quemándolo."
-      },
-      {
-        texto: "Mantener distancia",
-        desc: "Tu música, tu política, por separado.",
-        efectos: function (s) {
-          Under.UNDER._limpiar("under_manifiesto");
-          return { popularity: -1 };
-        },
-        resultado: "No te metés. La movida sigue cantando tu tema igual, pero vos quedás del lado de afuera.",
-        log: "Mantuvo distancia de la movida que adoptó su tema."
-      }
-    ]);
-  },
-
   /* ---------- Ensayar en serio ---------- */
   crearEventoEnsayo: function (state) {
-    var nombre = Under.UNDER._artista();
     return Under.UNDER._crear("under_ensayo", "El ensayo que te forma", [
-      nombre + ", un amigo con un estudio chico, te propone ensayar una vez por semana: juntar canciones y afinarlas de verdad.",
-      nombre + " te deja su sala dos horas por semana a cambio de que lo ayudes con sus proyectos.",
+      "Yeso, un amigo con un estudio chico, te propone ensayar una vez por semana: juntar canciones y afinarlas de verdad.",
+      "Yeso te deja su sala dos horas por semana a cambio de que lo ayudes con sus proyectos.",
       "Encontrás un espacio de ensayo barato en tu barrio. Solo, con el micrófono y las ideas."
     ], [
       {

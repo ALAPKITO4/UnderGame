@@ -192,11 +192,6 @@ Under.MAIN = {
     this.form.nombre = v;
     this.checkCreacion();
   },
-  pickGenero: function (v) {
-    this.form.genero = v;
-    document.body.style.setProperty("--accent", Under.DATA.GENRES[v].color);
-    this.checkCreacion();
-  },
   pickPersonalidad: function (v) {
     this.form.personalidad = v;
     this.checkCreacion();

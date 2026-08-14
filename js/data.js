@@ -208,7 +208,7 @@ Under.DATA = {
     { nombre: "Emile",          rol: "artista",            grupo: "los amigos y fruittyaudiovisual" },
     { nombre: "Pascu",          rol: "artista",            grupo: "los amigos" },
     { nombre: "Pulmon1312",     rol: "artista y DJ",       grupo: "los amigos OBS" },
-    { nombre: "Tuconeone",      rol: "artista",            grupo: "los amigos" },
+    { nombre: "Tukone",         rol: "artista",            grupo: "los amigos" },
     { nombre: "Ivinn",          rol: "creador del under de Sierras Chicas", grupo: null },
     { nombre: "Burger",         rol: "filmmaker",          grupo: "fruittyaudiovisual" },
     { nombre: "Genaa",          rol: "público activo",     grupo: null },
@@ -360,7 +360,7 @@ Under.DATA = {
   ARTISTAS_ESCENA: [
     "Marti", "Fabrizio", "Benja Fuego", "Lucio Fuego", "KIWA",
     "Drokerr", "EssKiff", "gk", "Ghosfe", "Vlempiree",
-    "Caupiii", "Emile", "Pascu", "Pulmon1312", "Tuconeone",
+    "Caupiii", "Emile", "Pascu", "Pulmon1312", "Tukone",
     "Ivinn", "Burger", "Genaa", "Agus", "Agusfornite"
   ],
 
@@ -834,11 +834,6 @@ Under.DATA = {
       generar: function (s) { return Under.UNDER.crearEventoFiltracion(s); }
     },
     {
-      id: "under_zona", peso: 2,
-      disponible: function (s) { return s.lanzamientos >= 1 && Under.STATE.nivelCarrera(s).nivel <= 3; },
-      generar: function (s) { return Under.UNDER.crearEventoZona(s); }
-    },
-    {
       id: "under_maqueta", peso: 2,
       disponible: function (s) { return s.año >= 1 && Under.STATE.nivelCarrera(s).nivel <= 3; },
       generar: function (s) { return Under.UNDER.crearEventoMaqueta(s); }
@@ -1254,16 +1249,6 @@ Under.DATA = {
       id: "under_fiesta", peso: 2,
       disponible: function (s) { return s.año >= 1 && Under.STATE.nivelCarrera(s).nivel <= 3; },
       generar: function (s) { return Under.UNDER.crearEventoFiesta(s); }
-    },
-    {
-      id: "under_banda", peso: 2,
-      disponible: function (s) { return s.lanzamientos >= 1 && Under.STATE.nivelCarrera(s).nivel <= 3; },
-      generar: function (s) { return Under.UNDER.crearEventoBanda(s); }
-    },
-    {
-      id: "under_manifiesto", peso: 2,
-      disponible: function (s) { return s.año >= 3 && Under.STATE.nivelCarrera(s).nivel <= 3; },
-      generar: function (s) { return Under.UNDER.crearEventoManifiesto(s); }
     },
     {
       id: "under_ensayo", peso: 2,
@@ -2284,7 +2269,7 @@ Under.DATA = {
     {
       id: "tpl_sync",
       titulo: "Quieren tu música para una película",
-      texto: "Emily Burger quiere licenciar uno de tus temas para una escena clave.\n\nPagan por usar tu música, pero la ceden a una película que no conocés.",
+      texto: "Emile y Burger quieren licenciar uno de tus temas para una escena clave del corto de su facu.\n\nPagan por usar tu música, pero la ceden a una película que no conocés.",
       opciones: [
         {
           texto: "Aceptar la licencia",

@@ -729,7 +729,7 @@ Under.EXTRA = {
   crearEventoDemoVieja: function (state) {
     return Under.EXTRA._crear("extra_demo", "Una demo que vuelve", [
       "Revolviendo la carpeta de demos encontrás una grabación de tus comienzos. Todavía tiene algo.",
-      "tukone te manda un audio viejo que grabaron juntos en el estudio de la escena.",
+      "Tukone te manda un audio viejo que grabaron juntos en el estudio de la escena.",
       "La carpeta 'demos' tiene un tema que nunca terminaste. Hoy suena mejor de lo que recordabas."
     ], [
       {
@@ -770,9 +770,9 @@ Under.EXTRA = {
   /* ---------- Una sesión con un productor de la escena ---------- */
   crearEventoSesionProductor: function (state) {
     return Under.EXTRA._crear("extra_producir", "Una sesión con un productor de la escena", [
-      "Un productor de la escena te propone una sesión para darle forma a tu próximo tema.",
-      "Uno de los beats que te encanta es de un productor local que quiere laburar con vos.",
-      "Killpatay te deja una tarde en La OBS para producir juntos lo que estás armando."
+      "Massita0chuku te propone una sesión para darle forma a tu próximo tema.",
+      "Massita0chuku tiene un beat que te encanta y quiere laburar con vos.",
+      "Massita0chuku te deja una tarde en su estudio para producir juntos lo que estás armando."
     ], [
       {
         texto: "Grabar con él",

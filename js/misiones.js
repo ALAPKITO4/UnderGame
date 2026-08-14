@@ -322,9 +322,9 @@ Under.MISIONES = (function () {
   m("m_musica_demo_3", "musica", 2, 5, "📼", "De demo a tema", "Convertí 3 demos en temas", 3, "demo",
     { fans: 6000, popularity: 3, money: 1500 },
     "🎯 Misión completada: De demo a tema. Ningún pedacito de tu sonido queda en la carpeta.");
-  m("m_ref_tukone_demo", "musica", 4, 8, "📼", "El pasado que vuelve", "Ya sos referente del under: convertí 5 demos en temas, de las que te manda tukone", 5, "demo",
+  m("m_ref_tukone_demo", "musica", 4, 8, "📼", "El pasado que vuelve", "Ya sos referente del under: convertí 5 demos en temas, de las que te manda Tukone", 5, "demo",
     { talent: 2, fans: 15000, _legado: 3 },
-    "🎯 Misión completada: El pasado que vuelve. tukone y su audio viejo: el pasado también lanza.",
+    "🎯 Misión completada: El pasado que vuelve. Tukone y su audio viejo: el pasado también lanza.",
     function (s) { return Under.MISIONES._decidio(s, "extra_demo"); });
   m("m_musica_productor_2", "musica", 3, 6, "🎧", "Oído por oído", "Grabá 2 temas con productores de la escena", 2, "productor_estudio",
     { talent: 2, _relaciones: 4, popularity: 3 },
@@ -1156,9 +1156,6 @@ Under.MISIONES = (function () {
   m("m3_fiesta_3", "escena", 1, 4, "🎉", "Noches que pagan", "Tocá en 3 fiestas privadas", 3, "fiesta",
     { money: 3500, fans: 3000, _energia: 5 },
     "🎯 Misión completada: Noches que pagan. La plata en mano del under también existe.");
-  m("m3_banda_4", "escena", 2, 5, "🎸", "Músico de confianza", "Tocá 4 veces como músico de sesión", 4, "banda",
-    { talent: 4, money: 2500, _relaciones: 4 },
-    "🎯 Misión completada: Músico de confianza. Todos te llaman cuando necesitan a alguien serio.");
   m("m3_vivo_25", "escena", 3, 6, "🎤", "Veinticinco noches en vivo", "Sumá 25 shows entre toques, teloneros, fiestas y giras", 25,
     function (s) {
       var c = s.contadores || {};
@@ -1177,9 +1174,6 @@ Under.MISIONES = (function () {
   m("m3_taller_3", "red", 1, 4, "📚", "El maestro del barrio", "Dá 3 talleres en tu zona", 3, "taller",
     { talent: 3, _relaciones: 6, fans: 4000 },
     "🎯 Misión completada: El maestro del barrio. Enseñar también te formó a vos.");
-  m("m3_movida_2", "red", 2, 5, "🚩", "Dos movidas tuyas", "Que 2 movidas adopten tus temas", 2, "movida",
-    { fans: 12000, popularity: 5, _relaciones: 5 },
-    "🎯 Misión completada: Dos movidas tuyas. Tu música ya es bandera.");
   m("m3_contenido_4", "red", 1, 4, "📱", "La máquina de contenido", "Colaborá 4 veces con creadores", 4, "contenido",
     { fans: 8000, popularity: 4, money: 1000 },
     "🎯 Misión completada: La máquina de contenido. Tu música ya vive en los reels.");
@@ -1190,9 +1184,6 @@ Under.MISIONES = (function () {
   m("m3_feria_3", "red", 1, 4, "🧺", "El que vende en la feria", "Vendé 3 veces en ferias del barrio", 3, "feria",
     { money: 2500, fans: 3000, _relaciones: 4 },
     "🎯 Misión completada: El que vende en la feria. Tu nombre corre por los puestos.");
-  m("m3_barrio_3", "red", 1, 4, "🏘️", "Himno del barrio", "Que el barrio haga suyos 3 temas tuyos", 3, "barrio",
-    { fans: 15000, popularity: 4, _relaciones: 5 },
-    "🎯 Misión completada: Himno del barrio. Tres temas que ya no son tuyos: son de la zona.");
 
   /* Público: el under que se entera */
   m("m3_fans_25k", "publico", 1, 4, "👥", "Veinticinco mil oídos", "Llegá a 25.000 fans", 25000, function (s) { return s.stats.fans; },

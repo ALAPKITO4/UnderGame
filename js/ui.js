@@ -220,16 +220,15 @@ Under.UI = {
         '<input class="input" id="inp-nombre" maxlength="24" placeholder="Tu nombre artístico" value="' + Under.UI.esc(Under.MAIN.form.nombre) + '" oninput="Under.MAIN.nombreChanged(this.value)">' +
       '</div>';
 
-    /* Género: el cantante es siempre rap/trap/under. No hay
-       elección: la escena del juego es esa. */
+    /* No hay elección de género: el cantante es siempre rap/trap/under. */
     html +=
       '<div class="field">' +
-        '<label>Género</label>' +
+        '<label>Escena</label>' +
         '<div class="grid-gen">' +
-          '<div class="sel-card selected" style="--a:#a855f7">' +
+          '<div class="sel-card fixed">' +
             '<div class="em">🎤</div>' +
-            '<div class="nm">Rap / Trap</div>' +
-            '<div class="ds">La escena del under es tu casa. La base es rap/trap/under.</div>' +
+            '<div class="nm">Rap / Trap / Under</div>' +
+            '<div class="ds">La escena del juego es el under. Arrancás rapeando desde abajo.</div>' +
           '</div>' +
         '</div>' +
       '</div>';
